@@ -1,0 +1,53 @@
+{
+  "name": "wechat-trade",
+  "version": "0.1.0",
+  "description": "Wechat Trade Client",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "test": "jest",
+    "tcover": "jest --coverage"
+  },
+  "keywords": [
+    "Wechat",
+    "API"
+  ],
+  "author": "BitterCoffee",
+  "license": "ISC",
+  "dependencies": {
+    "class-transformer": "^0.2.3",
+    "csvtojson": "^2.0.10",
+    "fast-xml-parser": "^3.17.3",
+    "moment": "^2.26.0",
+    "nanoid": "^3.1.9",
+    "reflect-metadata": "^0.1.13",
+    "typescriptcollectionsframework": "^4.4.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^14.0.4",
+    "@types/reflect-metadata": "^0.1.0",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/*-test.ts"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true,
+        "isolatedModules": true
+      }
+    }
+  }
+}
