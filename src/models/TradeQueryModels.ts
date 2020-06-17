@@ -1,6 +1,7 @@
-import { Expose } from "class-transformer";
-import { TradeStatusEnum } from "../enums/TradeStatusEnum";
-import { TradeCreateNotifyModel } from "./TradeCreateModels";
+import { Expose } from 'class-transformer';
+
+import { TradeStatusEnum } from '../enums/TradeStatusEnum';
+import { TradeCreateNotifyModel } from './TradeCreateModels';
 
 export class TradeQueryResponseModel extends TradeCreateNotifyModel {
 	/**

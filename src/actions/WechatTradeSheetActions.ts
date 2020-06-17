@@ -1,7 +1,12 @@
-import { WechatTradeAction, DefaultRequest, DefaultResponse } from "./WechatTradeAction";
-import { TradeBillAllModel, TradeBillSuccessModel, TradeBillRefundModel, TradeFundflowModel } from "../models/TradeSheetlModels";
-import { TradeBillAllResponseModel, TradeBillSuccessResponseModel, TradeBillRefundResponseModel, TradeFundflowResponseModel } from "../models/TradeSheetResponseModels";
-import { SignTypeEnum } from "../enums/SignTypeEnum";
+import { SignTypeEnum } from '../enums/SignTypeEnum';
+import {
+    TradeBillAllModel, TradeBillRefundModel, TradeBillSuccessModel, TradeFundflowModel
+} from '../models/TradeSheetModels';
+import {
+    TradeBillAllResponseModel, TradeBillRefundResponseModel, TradeBillSuccessResponseModel,
+    TradeFundflowResponseModel
+} from '../models/TradeSheetModels';
+import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
 
 /**
  * 下载所有交易账单

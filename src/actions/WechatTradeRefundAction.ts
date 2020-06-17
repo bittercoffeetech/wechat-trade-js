@@ -1,5 +1,5 @@
-import { WechatTradeAction, DefaultRequest, DefaultResponse } from "./WechatTradeAction";
-import { TradeRefundModel, TradeRefundResponseModel } from "../models/TradeRefundModels";
+import { TradeRefundModel, TradeRefundResponseModel } from '../models/TradeRefundModels';
+import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
 
 /**
  * 退款申请

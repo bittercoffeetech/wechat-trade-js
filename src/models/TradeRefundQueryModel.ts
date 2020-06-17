@@ -1,11 +1,13 @@
+import 'reflect-metadata';
+
+import { Expose, Type } from 'class-transformer';
 import { Moment } from 'moment';
-import { TradeNoModel, TradeCashFeeModel, TradeRefundCouponInfo } from './TradeCommonResponse';
-import { Expose, Type } from "class-transformer";
-import { RefundStatusEnum } from '../enums/RefundStatusEnum';
+
+import { ApiField } from '../decorators';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundChannelEnum } from '../enums/RefundChannelEnum';
-import { ApiField } from '../decorators';
-import "reflect-metadata";
+import { RefundStatusEnum } from '../enums/RefundStatusEnum';
+import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo } from './TradeCommonResponse';
 
 export class TradeRefundQueryModel extends TradeNoModel {
     /**

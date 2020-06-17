@@ -1,5 +1,5 @@
-import { WechatTradeAction, DefaultRequest, DefaultResponse } from "./WechatTradeAction";
-import { TradeCreateModel, TradeCreateResponseModel } from "../models/TradeCreateModels";
+import { TradeCreateModel, TradeCreateResponseModel } from '../models/TradeCreateModels';
+import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
 
 /**
  * 统一下单

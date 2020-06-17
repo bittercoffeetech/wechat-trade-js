@@ -1,6 +1,6 @@
-import { WechatTradeResponse, DefaultResponse } from "./WechatTradeAction"
-import { TradeCreateNotifyModel } from "../models/TradeCreateModels"
-import { TradeRefundNotifyModel } from "../models/TradeRefundModels"
+import { TradeCreateNotifyModel } from '../models/TradeCreateModels';
+import { TradeRefundNotifyModel } from '../models/TradeRefundModels';
+import { DefaultResponse, WechatTradeResponse } from './WechatTradeAction';
 
 /**
  * 支付结果通知

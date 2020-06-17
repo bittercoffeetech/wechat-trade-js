@@ -1,4 +1,4 @@
-import { SignTypeEnum } from "../enums/SignTypeEnum";
+import { SignTypeEnum } from '../enums/SignTypeEnum';
 
 /**
  * 通用返回内容定义

@@ -1,4 +1,6 @@
-import { WechatTradeAction, DefaultRequest, DefaultResponse } from "./WechatTradeAction";import { TradeNoModel } from "../models/TradeCommonResponse";import { TradeQueryResponseModel } from "../models/TradeQueryModels";
+import { TradeNoModel } from '../models/TradeCommonResponse';
+import { TradeQueryResponseModel } from '../models/TradeQueryModels';
+import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
 
 /**
  * 订单查询

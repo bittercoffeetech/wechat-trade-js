@@ -1,11 +1,13 @@
-import { Expose, Transform, Type } from "class-transformer";
-import { FeeTypeEnum } from "../enums/FeeTypeEnum";
-import { TradeTypeEnum } from "../enums/TradeTypeEnum";
-import moment from "moment";
-import { TradeAppModel } from './TradeCommons';
+import 'reflect-metadata';
+
+import { Expose, Transform, Type } from 'class-transformer';
+import moment from 'moment';
+
+import { ApiField } from '../decorators';
+import { FeeTypeEnum } from '../enums/FeeTypeEnum';
+import { TradeTypeEnum } from '../enums/TradeTypeEnum';
 import { TradeCashFeeModel, TradeCouponInfo } from './TradeCommonResponse';
-import "reflect-metadata";
-import { ApiField } from "../decorators";
+import { TradeAppModel } from './TradeCommons';
 
 export class TradeGoodInfo {
     /**
