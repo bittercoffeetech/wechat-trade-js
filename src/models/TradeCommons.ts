@@ -6,97 +6,112 @@ import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { ResultStatusEnum } from '../enums/ResultStatusEnum';
 import { SignTypeEnum } from '../enums/SignTypeEnum';
 
+/**
+ * 应用标识
+ */
 export class TradeAppModel {
 
     /**
      * 应用标识
      */
-    @Expose({ name: 'appid' })
-    appId!: string;
+	@Expose({ name: 'appid' })
+	appId!: string;
 
     /**
      * 商户标识
      */
-    @Expose({ name: 'mch_id' })
-    mchId!: string;
+	@Expose({ name: 'mch_id' })
+	mchId!: string;
 }
 
+/**
+ * 签名信息
+ */
 export class TradeSignatureModel extends TradeAppModel {
 
     /**
      * 干扰字符串
      */
-    @Expose({ name: 'nonce_str' })
-    nonceStr!: string;
+	@Expose({ name: 'nonce_str' })
+	nonceStr!: string;
 
 	/**
 	 * 签名算法
 	 */
-    @Expose({ name: 'sign_type' })
-    signType: SignTypeEnum = SignTypeEnum.MD5;
+	@Expose({ name: 'sign_type' })
+	signType: SignTypeEnum = SignTypeEnum.MD5;
 
 	/**
 	 * 签名
 	 */
-    @Expose({ name: 'sign' })
-    sign!: string;
+	@Expose({ name: 'sign' })
+	sign!: string;
 }
 
 /**
  * 返回信息
  */
 export class TradeReturnModel {
-    
+
 	/**
 	 * 返回状态码 SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
 	 */
-    @Expose({ name: 'return_code' })
-    returnCode!: ResultStatusEnum;
+	@Expose({ name: 'return_code' })
+	returnCode!: ResultStatusEnum;
 
 	/**
 	 * 返回信息，如非空，未知错误原因,签名失败,参数格式校验错误
 	 */
-    @Expose({ name: 'return_msg' })
-    returnMessage?: string;
+	@Expose({ name: 'return_msg' })
+	returnMessage?: string;
 
-    get isSuccess(): boolean {
-        return ResultStatusEnum.SUCCESS == this.returnCode;
-    }
+	get isSuccess(): boolean {
+		return ResultStatusEnum.SUCCESS == this.returnCode;
+	}
 }
 
+/**
+ * 错误返回
+ */
 export class TradeErrorReturnModel extends TradeReturnModel {
-    
+
     /**
      * 错误代码
      */
-    @Expose({ name: 'error_code' })
-    errorCode?: string;
+	@Expose({ name: 'error_code' })
+	errorCode?: string;
 }
 
+/**
+ * 业务结果
+ */
 export class TradeResultModel {
 	/**
 	 * 返回状态码 SUCCESS/FAIL
 	 */
-    @Expose({ name: "result_code" })
-    resultCode!: ResultStatusEnum;
+	@Expose({ name: "result_code" })
+	resultCode!: ResultStatusEnum;
 
 	/**
 	 * 错误代码
 	 */
-    @Expose({ name: "err_code" })
-    errorCode!: string;
+	@Expose({ name: "err_code" })
+	errorCode!: string;
 
 	/**
 	 * 错误代码描述
 	 */
-    @Expose({ name: "err_code_des" })
-    errorMessage?: string;
+	@Expose({ name: "err_code_des" })
+	errorMessage?: string;
 
-    get isSuccess(): boolean {
-        return ResultStatusEnum.SUCCESS == this.resultCode;
-    }
+	get isSuccess(): boolean {
+		return ResultStatusEnum.SUCCESS == this.resultCode;
+	}
 }
 
+/**
+ * 交易标识
+ */
 export class TradeNoModel {
     /**
 	 * <p>商户订单号 商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。</p>
@@ -111,6 +126,9 @@ export class TradeNoModel {
 	transactionId!: string;
 }
 
+/**
+ * 金额相关
+ */
 export class TradeFeeModel extends TradeNoModel {
 	/**
 	 * 标价金额 订单总金额，单位为分
@@ -125,6 +143,9 @@ export class TradeFeeModel extends TradeNoModel {
 	settlementTotalFee!: number;
 }
 
+/**
+ * 现金信息
+ */
 export class TradeCashFeeModel extends TradeFeeModel {
 	/**
 	 * 符合ISO 4217标准的三位字母代码，默认人民币：CNY
@@ -146,19 +167,22 @@ export class TradeCashFeeModel extends TradeFeeModel {
 
 }
 
+/**
+ * 优惠券
+ */
 export class TradeCouponInfo {
 
 	/**
 	 * 代金券ID
 	 */
-	@Expose({name : "coupon_id"})
+	@Expose({ name: "coupon_id" })
 	@ApiField('coupon_id')
 	id!: string;
 
 	/**
 	 * 单个代金券支付金额
 	 */
-	@Expose({name : "coupon_fee"})
+	@Expose({ name: "coupon_fee" })
 	@ApiField('coupon_fee')
 	fee!: number;
 
@@ -167,25 +191,28 @@ export class TradeCouponInfo {
 	 * 
 	 * @see CouponTypeEnum
 	 */
-	@Expose({name : "coupon_type"})
+	@Expose({ name: "coupon_type" })
 	@ApiField('coupon_type')
-    type!: CouponTypeEnum;
-    
+	type!: CouponTypeEnum;
+
 }
 
+/**
+ * 退款优惠券
+ */
 export class TradeRefundCouponInfo {
 
 	/**
 	 * 代金券ID
 	 */
-	@Expose({name : "coupon_refund_id"})
+	@Expose({ name: "coupon_refund_id" })
 	@ApiField('coupon_refund_id')
 	id!: string;
 
 	/**
 	 * 单个代金券支付金额
 	 */
-	@Expose({name : "coupon_refund_fee"})
+	@Expose({ name: "coupon_refund_fee" })
 	@ApiField('coupon_refund_fee')
 	fee!: number;
 
@@ -194,8 +221,8 @@ export class TradeRefundCouponInfo {
 	 * 
 	 * @see CouponTypeEnum
 	 */
-	@Expose({name : "coupon_type"})
+	@Expose({ name: "coupon_type" })
 	@ApiField('coupon_type')
-    type!: CouponTypeEnum;
-    
+	type!: CouponTypeEnum;
+
 }

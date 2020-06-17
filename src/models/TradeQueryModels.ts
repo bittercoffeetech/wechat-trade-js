@@ -3,6 +3,9 @@ import { Expose } from 'class-transformer';
 import { TradeStatusEnum } from '../enums/TradeStatusEnum';
 import { TradeCreateNotifyModel } from './TradeCreateModels';
 
+/**
+ * 查询结果返回
+ */
 export class TradeQueryResponseModel extends TradeCreateNotifyModel {
 	/**
 	 * 设备号 自定义参数，可以为请求支付的终端设备号等

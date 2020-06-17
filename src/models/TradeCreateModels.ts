@@ -6,8 +6,11 @@ import moment from 'moment';
 import { ApiField } from '../decorators';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { TradeAppModel } from './TradeCommons';
+import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo } from './TradeCommons';
 
+/**
+ * 商品信息
+ */
 export class TradeGoodInfo {
     /**
      * 商品编码 由半角的大小写字母、数字、中划线、下划线中的一种或几种组成
@@ -41,6 +44,9 @@ export class TradeGoodInfo {
 	price!: number;
 }
 
+/**
+ * 商品详情
+ */
 export class TradeGoodsDetailInfo {
     /**
 	 * 订单原价
@@ -70,6 +76,9 @@ export class TradeGoodsDetailInfo {
 	goods?: TradeGoodInfo[];
 }
 
+/**
+ * 门店信息
+ */
 export class TradeSceneInfo {
 
 	/**
@@ -94,6 +103,9 @@ export class TradeSceneInfo {
 	address?: string;
 }
 
+/**
+ * 统一下单
+ */
 export class TradeCreateModel {
 
 	constructor(tradeType: TradeTypeEnum, totalFee: number, body: string) {
@@ -226,6 +238,9 @@ export class TradeCreateModel {
 	detail?: TradeGoodsDetailInfo;
 }
 
+/**
+ * 统一下单返回
+ */
 export class TradeCreateResponseModel extends TradeAppModel {
 	/**
 	 * 二维码链接
@@ -254,6 +269,9 @@ export class TradeCreateResponseModel extends TradeAppModel {
 	deviceInfo?: string;
 }
 
+/**
+ * 付款结果通知
+ */
 export class TradeCreateNotifyModel extends TradeCashFeeModel {
 
 	/**

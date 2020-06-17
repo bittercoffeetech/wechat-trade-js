@@ -10,6 +10,9 @@ import { RefundStatusEnum } from '../enums/RefundStatusEnum';
 import { TradeStatusEnum } from '../enums/TradeStatusEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
 
+/**
+ * 账单请求
+ */
 export class TradeCsvlModel {
 
 	/**
@@ -17,54 +20,69 @@ export class TradeCsvlModel {
 	 */
 	@Expose({ name: "bill_date" })
 	@Transform(value => (value != undefined) ? moment(value).utcOffset('+08:00').format('YYYYMMDD') : undefined)
-    billDate!: Moment;
+	billDate!: Moment;
 
 	/**
 	 * 压缩账单
 	 */
-    @Expose({ name: "tar_type" })
-    @Transform(value => (value as boolean) ? 'GZIP' : undefined)
-    tarType?: boolean = false;
+	@Expose({ name: "tar_type" })
+	@Transform(value => (value as boolean) ? 'GZIP' : undefined)
+	tarType?: boolean = false;
 }
 
+/**
+ * 下载所有交易
+ */
 export class TradeBillAllModel extends TradeCsvlModel {
 
 	/**
 	 * 账单类型
 	 */
-    @Expose({ name: "bill_type" })
-    billType: BillTypeEnum = BillTypeEnum.ALL;
+	@Expose({ name: "bill_type" })
+	billType: BillTypeEnum = BillTypeEnum.ALL;
 }
 
+/**
+ * 下载付款成功交易
+ */
 export class TradeBillSuccessModel extends TradeCsvlModel {
 
 	/**
 	 * 账单类型
 	 */
-    @Expose({ name: "bill_type" })
-    billType: BillTypeEnum = BillTypeEnum.SUCCESS;
+	@Expose({ name: "bill_type" })
+	billType: BillTypeEnum = BillTypeEnum.SUCCESS;
 }
 
+/**
+ * 下载退款交易
+ */
 export class TradeBillRefundModel extends TradeCsvlModel {
 
 	/**
 	 * 账单类型
 	 */
-    @Expose({ name: "bill_type" })
-    billType: BillTypeEnum = BillTypeEnum.REFUND;
+	@Expose({ name: "bill_type" })
+	billType: BillTypeEnum = BillTypeEnum.REFUND;
 }
 
+/**
+ * 资金账单请求
+ */
 export class TradeFundflowModel extends TradeCsvlModel {
 
 	/**
 	 * 资金账户类型
 	 */
-    @Expose({ name: "account_type" })
-    accountType!: AccountTypeEnum;
+	@Expose({ name: "account_type" })
+	accountType!: AccountTypeEnum;
 }
 
+/**
+ * 交易概要信息
+ */
 @CsvModel(['total_trades', 'settlement_total_fee', 'total_refunded_fee', 'total_coupon_fee',
-'total_service_fee', 'total_fee', 'total_refund_fee'])
+	'total_service_fee', 'total_fee', 'total_refund_fee'])
 export class TradeBillSummaryInfo {
 
 	/**
@@ -111,9 +129,12 @@ export class TradeBillSummaryInfo {
 
 }
 
+/**
+ * 成功交易信息
+ */
 @CsvModel(['trade_time', 'app_id', 'mch_id', 'sub_mch_id', 'device_info', 'transaction_id', 'trade_no',
-'open_id', 'trade_type', 'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee', 'body',
-'attach', 'service_fee', 'rate', 'total_fee', 'rate_desc'])
+	'open_id', 'trade_type', 'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee', 'body',
+	'attach', 'service_fee', 'rate', 'total_fee', 'rate_desc'])
 export class TradeBillSuccessInfo {
 
 	/**
@@ -238,10 +259,13 @@ export class TradeBillSuccessInfo {
 	rateDesc?: string;
 }
 
+/**
+ * 所有交易信息
+ */
 @CsvModel(['trade_time', 'app_id', 'mch_id', 'sub_mch_id', 'device_info', 'transaction_id', 'trade_no',
-'open_id', 'trade_type', 'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee',
-'refund_id', 'refund_no', 'refunded_fee', 'refund_coupon_fee', 'refund_channel', 'refund_status', 'body',
-'attach', 'service_fee', 'rate', 'total_fee', 'refund_fee', 'rate_desc'])
+	'open_id', 'trade_type', 'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee',
+	'refund_id', 'refund_no', 'refunded_fee', 'refund_coupon_fee', 'refund_channel', 'refund_status', 'body',
+	'attach', 'service_fee', 'rate', 'total_fee', 'refund_fee', 'rate_desc'])
 export class TradeBillAllInfo extends TradeBillSuccessInfo {
 
 	/**
@@ -287,10 +311,13 @@ export class TradeBillAllInfo extends TradeBillSuccessInfo {
 	refundFee!: number;
 }
 
+/**
+ * 退款交易信息
+ */
 @CsvModel(['trade_time', 'app_id', 'mch_id', 'sub_mch_id', 'device_info', 'transaction_id', 'trade_no', 'open_id', 'trade_type',
-'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee', 'refund_time', 'refund_success_time', 'refund_id',
-'refund_no', 'refunded_fee', 'refund_coupon_fee', 'refund_channel', 'refund_status', 'body', 'attach', 'service_fee', 'rate',
-'total_fee', 'refund_fee', 'rate_desc'])
+	'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee', 'refund_time', 'refund_success_time', 'refund_id',
+	'refund_no', 'refunded_fee', 'refund_coupon_fee', 'refund_channel', 'refund_status', 'body', 'attach', 'service_fee', 'rate',
+	'total_fee', 'refund_fee', 'rate_desc'])
 export class TradeBillRefundInfo extends TradeBillAllInfo {
 
 	/**
@@ -308,6 +335,9 @@ export class TradeBillRefundInfo extends TradeBillAllInfo {
 	refundSuccessTime!: Moment;
 }
 
+/**
+ * 资金账单概要
+ */
 @CsvModel(['total_flows', 'total_incomes', 'total_income_fee', 'total_expenses', 'total_expenses_fee'])
 export class TradeFundflowSummaryInfo {
 
@@ -342,8 +372,11 @@ export class TradeFundflowSummaryInfo {
 	totalExpensesFee!: number;
 }
 
+/**
+ * 资金账单详情
+ */
 @CsvModel(['account_time', 'transaction_id', 'trade_no', 'biz_name', 'biz_type', 'trade_type', 'fee',
-'balance', 'proposer', 'note', 'voucher_no'])
+	'balance', 'proposer', 'note', 'voucher_no'])
 export class TradeFundflowInfo {
 
 	/**
@@ -414,11 +447,26 @@ export class TradeFundflowInfo {
 }
 
 export class CsvResponse<ST, RT> {
-    summary!: ST;
+	summary!: ST;
 	records: RT[] = [];
 }
 
-export class TradeBillAllResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillAllInfo> {}
-export class TradeBillRefundResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillRefundInfo> {}
-export class TradeBillSuccessResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillSuccessInfo> {}
-export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> {}
+/**
+ * 所有交易账单返回
+ */
+export class TradeBillAllResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillAllInfo> { }
+
+/**
+ * 退款交易返回
+ */
+export class TradeBillRefundResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillRefundInfo> { }
+
+/**
+ * 成功交易返回
+ */
+export class TradeBillSuccessResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillSuccessInfo> { }
+
+/**
+ * 资金账单返回
+ */
+export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> { }

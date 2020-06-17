@@ -7,28 +7,34 @@ import { ApiField } from '../decorators';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundChannelEnum } from '../enums/RefundChannelEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo } from './TradeCommonResponse';
+import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo } from './TradeCommons';
 
+/**
+ * 退款查询
+ */
 export class TradeRefundQueryModel extends TradeNoModel {
     /**
 	 * 商户退款单号 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
 	 */
 	@Expose({ name: "out_refund_no" })
-    refundNo!: string;
+	refundNo!: string;
 
 	/**
 	 * 微信退款单号 微信生成的退款单号，在申请退款接口有返回
 	 */
-    @Expose({ name: "refund_id" })
-    refundId?: string;
+	@Expose({ name: "refund_id" })
+	refundId?: string;
 
 	/**
 	 * 偏移量 偏移量，当部分退款次数超过10次时可使用，表示返回的查询结果从这个偏移量开始取记录
 	 */
-    @Expose({ name: "offset" })
-    offset?: number;
+	@Expose({ name: "offset" })
+	offset?: number;
 }
 
+/**
+ * 退款详情
+ */
 export class TradeRefundInfo {
 	/**
 	 * 商户退款单号 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
@@ -120,24 +126,27 @@ export class TradeRefundInfo {
 	coupons?: TradeRefundCouponInfo[];
 }
 
+/**
+ * 退款请求返回
+ */
 export class TradeRefundQueryResponseModel extends TradeCashFeeModel {
 	/**
 	 * 退款笔数
 	 */
-	@Expose({name: "refund_count"})
-	refundCount!:number;
+	@Expose({ name: "refund_count" })
+	refundCount!: number;
 
 	/**
 	 * 退款笔数
 	 */
-	@Expose({name: "refund_fee" })
-	refundFee!:number;
+	@Expose({ name: "refund_fee" })
+	refundFee!: number;
 
 	/**
 	 * 退款详情
 	 */
-	@Expose({name:  "refunds"})
-	@Type(() => TradeRefundInfo)	
+	@Expose({ name: "refunds" })
+	@Type(() => TradeRefundInfo)
 	@ApiField('refunds', TradeRefundInfo, "refund_count")
 	refunds?: TradeRefundInfo[];
 }
