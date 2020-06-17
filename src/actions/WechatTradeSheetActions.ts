@@ -1,10 +1,8 @@
 import { SignTypeEnum } from '../enums/SignTypeEnum';
 import {
-    TradeBillAllModel, TradeBillRefundModel, TradeBillSuccessModel, TradeFundflowModel
-} from '../models/TradeSheetModels';
-import {
-    TradeBillAllResponseModel, TradeBillRefundResponseModel, TradeBillSuccessResponseModel,
-    TradeFundflowResponseModel
+    TradeBillAllModel, TradeBillAllResponseModel, TradeBillRefundModel,
+    TradeBillRefundResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel,
+    TradeFundflowModel, TradeFundflowResponseModel
 } from '../models/TradeSheetModels';
 import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
 

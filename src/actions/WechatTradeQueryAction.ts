@@ -1,4 +1,4 @@
-import { TradeNoModel } from '../models/TradeCommonResponse';
+import { TradeNoModel } from '../models/TradeCommons';
 import { TradeQueryResponseModel } from '../models/TradeQueryModels';
 import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
 

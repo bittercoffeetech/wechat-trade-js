@@ -6,7 +6,6 @@ import moment from 'moment';
 import { ApiField } from '../decorators';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { TradeCashFeeModel, TradeCouponInfo } from './TradeCommonResponse';
 import { TradeAppModel } from './TradeCommons';
 
 export class TradeGoodInfo {

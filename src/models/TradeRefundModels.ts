@@ -8,7 +8,7 @@ import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
 import {
     TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo
-} from './TradeCommonResponse';
+} from './TradeCommons';
 
 export class TradeRefundModel extends TradeNoModel {
     /**

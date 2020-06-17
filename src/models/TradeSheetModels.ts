@@ -418,31 +418,7 @@ export class CsvResponse<ST, RT> {
 	records: RT[] = [];
 }
 
-// export class TradeBillAllResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillAllInfo> {
-// 	summaryType = TradeBillSummaryInfo;
-// 	recordType = TradeBillAllInfo;
-// }
-
-
-// export class TradeBillRefundResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillRefundInfo> {
-// 	summaryType = TradeBillSummaryInfo;
-// 	recordType = TradeBillRefundInfo;
-// }
-
-// export class TradeBillSuccessResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillSuccessInfo> {
-// 	summaryType(): new (...args: any[]) => any {
-// 		return TradeBillSummaryInfo;
-// 	}
-// 	recordType(): new (...args: any[]) => any {
-// 		return TradeBillSuccessInfo;
-// 	}	
-// }
-
-// export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> {
-// 	summaryType(): new (...args: any[]) => any {
-// 		return TradeFundflowSummaryInfo;
-// 	}
-// 	recordType(): new (...args: any[]) => any {
-// 		return TradeFundflowInfo;
-// 	}	
-// }
+export class TradeBillAllResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillAllInfo> {}
+export class TradeBillRefundResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillRefundInfo> {}
+export class TradeBillSuccessResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillSuccessInfo> {}
+export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> {}
