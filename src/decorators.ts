@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
 export interface ApiField {
     name: string;
@@ -8,9 +8,17 @@ export interface ApiField {
 }
 
 export function ApiField(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
-    return (target, _propertyName) => {
-        Reflect.defineMetadata(_propertyName.toString(), 
+    return (target, propertyName) => {
+        Reflect.defineMetadata(propertyName.toString(), 
             {name: name, subType: subType, countName: countName}, 
             target.constructor); 
+    }
+};
+
+export function CsvModel(columns: string[]): ClassDecorator {
+    return (target) => {
+        Reflect.defineMetadata("columns", 
+            columns, 
+            target); 
     }
 };
