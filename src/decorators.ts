@@ -1,13 +1,11 @@
-import 'reflect-metadata';
-
-export interface ApiField {
+export interface XmlModel {
     name: string;
     subType: new(...args: any[]) => any;
     subName: string;
     countName: string
 }
 
-export function ApiField(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
+export function XmlModel(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
     return (target, propertyName) => {
         Reflect.defineMetadata(propertyName.toString(), 
             {name: name, subType: subType, countName: countName}, 

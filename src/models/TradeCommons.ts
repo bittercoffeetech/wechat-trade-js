@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { ApiField } from '../decorators';
+import { XmlModel } from '../decorators';
 import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { ResultStatusEnum } from '../enums/ResultStatusEnum';
@@ -176,14 +176,14 @@ export class TradeCouponInfo {
 	 * 代金券ID
 	 */
 	@Expose({ name: "coupon_id" })
-	@ApiField('coupon_id')
+	@XmlModel('coupon_id')
 	id!: string;
 
 	/**
 	 * 单个代金券支付金额
 	 */
 	@Expose({ name: "coupon_fee" })
-	@ApiField('coupon_fee')
+	@XmlModel('coupon_fee')
 	fee!: number;
 
 	/**
@@ -192,7 +192,7 @@ export class TradeCouponInfo {
 	 * @see CouponTypeEnum
 	 */
 	@Expose({ name: "coupon_type" })
-	@ApiField('coupon_type')
+	@XmlModel('coupon_type')
 	type!: CouponTypeEnum;
 
 }
@@ -206,14 +206,14 @@ export class TradeRefundCouponInfo {
 	 * 代金券ID
 	 */
 	@Expose({ name: "coupon_refund_id" })
-	@ApiField('coupon_refund_id')
+	@XmlModel('coupon_refund_id')
 	id!: string;
 
 	/**
 	 * 单个代金券支付金额
 	 */
 	@Expose({ name: "coupon_refund_fee" })
-	@ApiField('coupon_refund_fee')
+	@XmlModel('coupon_refund_fee')
 	fee!: number;
 
 	/**
@@ -222,7 +222,7 @@ export class TradeRefundCouponInfo {
 	 * @see CouponTypeEnum
 	 */
 	@Expose({ name: "coupon_type" })
-	@ApiField('coupon_type')
+	@XmlModel('coupon_type')
 	type!: CouponTypeEnum;
 
 }

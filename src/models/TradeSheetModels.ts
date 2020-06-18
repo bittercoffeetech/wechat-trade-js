@@ -453,21 +453,25 @@ export abstract class CsvResponse<ST, RT> {
 	abstract recordType(): new(...args: any[]) => RT;
 }
 
-export type SummaryType<T> = T extends CsvResponse<infer ST, infer _RT> ? ST : never;
-export type RecordType<T> = T extends CsvResponse<infer _ST, infer RT> ? RT : never;
+abstract class TradeBillCsvResponse<RT> extends CsvResponse<TradeBillSummaryInfo, RT> {
+	summaryType(): new (...args: any[]) => TradeBillSummaryInfo {
+		return TradeBillSummaryInfo;
+	}
+}
 
 /**
  * 所有交易账单返回
  */
-// export class TradeBillAllResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillAllInfo> {}
+export class TradeBillAllResponseModel extends TradeBillCsvResponse<TradeBillAllInfo> {
+	recordType(): new (...args: any[]) => TradeBillAllInfo {
+		return TradeBillAllInfo;
+	}
+}
 
 /**
  * 退款交易返回
  */
-export class TradeBillRefundResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillRefundInfo> {
-	summaryType(): new (...args: any[]) => TradeBillSummaryInfo {
-		return TradeBillSummaryInfo;
-	}
+export class TradeBillRefundResponseModel extends TradeBillCsvResponse<TradeBillRefundInfo> {
 	recordType(): new (...args: any[]) => TradeBillRefundInfo {
 		return TradeBillRefundInfo;
 	}
@@ -476,9 +480,20 @@ export class TradeBillRefundResponseModel extends CsvResponse<TradeBillSummaryIn
 /**
  * 成功交易返回
  */
-// export class TradeBillSuccessResponseModel extends CsvResponse<TradeBillSummaryInfo, TradeBillSuccessInfo> {}
+export class TradeBillSuccessResponseModel extends TradeBillCsvResponse<TradeBillSuccessInfo> {
+	recordType(): new (...args: any[]) => TradeBillSuccessInfo {
+		return TradeBillSuccessInfo;
+	}
+}
 
 /**
  * 资金账单返回
  */
-// export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> {}
+export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> {
+	summaryType(): new (...args: any[]) => TradeFundflowSummaryInfo {
+		return TradeFundflowSummaryInfo;
+	}
+	recordType(): new (...args: any[]) => TradeFundflowInfo {
+		return TradeFundflowInfo;
+	}
+}

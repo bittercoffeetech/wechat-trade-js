@@ -1,9 +1,7 @@
-import 'reflect-metadata';
-
 import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 
-import { ApiField } from '../decorators';
+import { XmlModel } from '../decorators';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
 import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo } from './TradeCommons';
@@ -331,6 +329,6 @@ export class TradeCreateNotifyModel extends TradeCashFeeModel {
 	 */
 	@Expose({ name: "coupons" })
 	@Type(() => TradeCouponInfo)
-	@ApiField('coupons', TradeCouponInfo, "coupon_count")
+	@XmlModel('coupons', TradeCouponInfo, "coupon_count")
 	coupons?: TradeCouponInfo[];
 }

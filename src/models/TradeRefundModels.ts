@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { Moment } from 'moment';
 
-import { ApiField } from '../decorators';
+import { XmlModel } from '../decorators';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
@@ -113,7 +113,7 @@ export class TradeRefundResponseModel extends TradeCashFeeModel {
 	 */
 	@Expose({ name: "coupons" })
 	@Type(() => TradeRefundCouponInfo)
-	@ApiField('coupons', TradeRefundCouponInfo, "coupon_refund_count")
+	@XmlModel('coupons', TradeRefundCouponInfo, "coupon_refund_count")
 	coupons?: TradeRefundCouponInfo[];
 
 }
