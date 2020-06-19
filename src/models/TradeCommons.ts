@@ -1,10 +1,10 @@
 import { Expose } from 'class-transformer';
 
-import { XmlModel } from '../decorators';
 import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { ResultStatusEnum } from '../enums/ResultStatusEnum';
 import { SignTypeEnum } from '../enums/SignTypeEnum';
+import { XmlModel } from '../response';
 
 /**
  * 应用标识
@@ -39,7 +39,7 @@ export class TradeSignatureModel extends TradeAppModel {
 	 * 签名算法
 	 */
 	@Expose({ name: 'sign_type' })
-	signType: SignTypeEnum = SignTypeEnum.MD5;
+	signType?: SignTypeEnum;
 
 	/**
 	 * 签名

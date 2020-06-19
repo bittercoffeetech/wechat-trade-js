@@ -1,12 +1,34 @@
+import "reflect-metadata";
 import { plainToClass } from 'class-transformer';
 import * as crypto from 'crypto';
 import csv from 'csvtojson';
 import { CSVParseParam } from 'csvtojson/v2/Parameters';
 import { parse as toJson } from 'fast-xml-parser';
-import internal from 'stream';
-
-import { XmlModel } from './decorators';
+import { Readable } from 'stream';
 import { CsvResponse } from './models/TradeSheetModels';
+
+export interface XmlModel {
+    name: string;
+    subType: new(...args: any[]) => any;
+    subName: string;
+    countName: string
+}
+
+export function XmlModel(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
+    return (target, propertyName) => {
+        Reflect.defineMetadata(propertyName.toString(), 
+            {name: name, subType: subType, countName: countName}, 
+            target.constructor); 
+    }
+};
+
+export function CsvModel(columns: string[]): ClassDecorator {
+    return (target) => {
+        Reflect.defineMetadata("columns", 
+            columns, 
+            target); 
+    }
+};
 
 export function decrypt(content: string, key: string): object {
     let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
@@ -65,7 +87,7 @@ function morphValues(model: new (...args: any[]) => any, source: object, result:
     });
 }
 
-export async function parseCsvResponse<ST, RT>(readStream: internal.Readable,
+export async function parseCsvResponse<ST, RT>(readStream: Readable,
     resultType: { new(...args: any[]): CsvResponse<ST, RT>; }): Promise<CsvResponse<ST, RT>> {
 
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);

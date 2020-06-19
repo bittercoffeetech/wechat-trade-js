@@ -1,18 +1,66 @@
 import moment from "moment";
 import { TradeCreateModel, TradeSceneInfo } from "../src/models/TradeCreateModels";
-import {TradeBillRefundInfo} from '../src/models/TradeSheetResponseModels'
+// import { TradeBillRefundInfo, TradeBillSummaryInfo } from '../src/models/TradeSheetResponseModels'
 import { TradeTypeEnum } from "../src/enums/TradeTypeEnum";
-import { classToPlain } from 'class-transformer';
-import 'jest';
+// import { classToPlain } from 'class-transformer';
+// import 'jest';
 import { parse as toJson } from 'fast-xml-parser';
-import { classToPlain, plainToClass } from 'class-transformer';
-import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from "../src/models/TradeRefundQueryModel";
-import "reflect-metadata";
-import { ApiField } from "../src/decorators";
-import { RefundStatusEnum } from '../src/enums/RefundStatusEnum';
-import { isObject } from "util";
-import {hierarchy, decrypt} from '../src/response';
-// import * as csv from 'csvtojson';
+// import { classToPlain, plainToClass } from 'class-transformer';
+// import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from "../src/models/TradeRefundQueryModel";
+// import "reflect-metadata";
+// import { ApiField } from "../src/decorators";
+// import { RefundStatusEnum } from '../src/enums/RefundStatusEnum';
+// import { isObject } from "util";
+// import { hierarchy, decrypt } from '../src/response';
+// import csv from 'csvtojson';
+import {toRequestXml} from '../src/request';
+// import md5 from 'crypto-js/md5';
+import { TradeRefundModel } from '../src/models/TradeRefundModels';
+import nconf from "nconf";
+/*
+<xml>
+  <appid><![CDATA[wx8949c222019862f5]]></appid>
+  <mch_id><![CDATA[1234539902]]></mch_id>
+  <nonce_str><![CDATA[05381462014616644751868586145240]]></nonce_str>
+  <sign><![CDATA[0188F350D33A56AF1160AE69F4AAC3E7]]></sign>
+  <out_trade_no><![CDATA[59082615869476245890799813201417]]></out_trade_no>
+  <total_fee><![CDATA[30000]]></total_fee>
+  <notify_url><![CDATA[https://bike.yxbhlt.cn:9999/api/v1/wechat/refund/notify]]></notify_url>
+  <refund_fee><![CDATA[23000]]></refund_fee>
+  <out_refund_no><![CDATA[17899357909836346900870462540973]]></out_refund_no>
+</xml>
+*/
+
+test('Test Request Sign', () => {
+
+    let tr = new TradeRefundModel();
+    tr.tradeNo = '59082615869476245890799813201417';
+    tr.refundNo = '17899357909836346900870462540973';
+    tr.totalFee = 30000;
+    tr.refundFee = 23000;
+    tr.notifyUrl = 'https://bike.yxbhlt.cn:9999/api/v1/wechat/refund/notify';
+
+    expect(toJson(toRequestXml(tr))['xml']['sign']).toBe('0188F350D33A56AF1160AE69F4AAC3E7');
+    
+console.log(nconf.get('body'));
+});
+
+// test('Test Request to Xml String', () => {
+
+//     let cm = new TradeCreateModel(TradeTypeEnum.JSAPI, 10000, 'pay');
+//     cm.attach = 'haha';
+//     let si = new TradeSceneInfo();;
+//     si.id = '1';
+//     si.name = 'xiao';
+//     si.areaCode = '100040';
+//     si.address = 'BYJY';
+//     cm.sceneInfo = si; 
+//     cm.timeStart = moment().utcOffset('+08:00').add(1, 'year');
+//     cm.timeExpire = moment().utc();
+
+//     console.log(toRequestXml(cm));
+
+// });
 
 // test('Plain to Wechat Request Xml', () => {
 
@@ -81,25 +129,3 @@ import {hierarchy, decrypt} from '../src/response';
 //     console.log(out.refunds[1].coupons);
 
 // });
-
-it('csv response', async () => {
-    const csv=require('csvtojson')
-    let a = Date.now();
-    await csv({
-        noheader:false,
-        output: "json",
-        delimiter: ','
-    })
-    .fromString('trade_time,app_id, mch_id, sub_mch_id, device_info,transaction_id, trade_no,open_id, trade_type, trade_status, bank_type, fee_type, settlement_total_fee,coupon_fee,refund_time, refund_success_time, refund_id, refund_no, refunded_fee, refund_coupon_fee,refund_channel, refund_status, body, attach, service_fee, rate, total_fee, refund_fee,rate_desc\n'+
-    '`2020-04-01 13:44:57,`wx8949c222019862f5,`1234539902,`0,`,`4200000472202004011622497871,`70379370416862011154184363335444,`oenOB4hv4gbMsjln8390tD3rEN5k,`JSAPI,`REFUND,`ICBC_DEBIT,`CNY,`0.00,`0.00,`2020-04-01 14:16:13,`2020-04-01 14:16:17,`50300704112020040115372577017,`46643757494149190670976216892493,`260.00,`0.00,`ORIGINAL,`SUCCESS,`押金支付,`,`-1.56000,`0.60%,`0.00,`260.00,`'
-    .replace(/`/g, "")) 
-    .then((csvRow)=>{ 
-        console.log(csvRow)
-        let v = plainToClass(TradeBillRefundInfo, csvRow[0]);
-        console.log(v.refundSuccessTime);
-        console.log(v.refundTime);
-    })
-
-    console.log(Date.now() - a);
-
-});

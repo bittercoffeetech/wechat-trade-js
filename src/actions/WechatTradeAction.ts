@@ -97,36 +97,3 @@ export const DefaultRequest: Omit<WechatTradeRequest<any>, "requestType" | "url"
 export interface WechatTradeAction<R, S> extends WechatTradeRequest<R>, WechatTradeResponse<S> {
 	// no other things	
 }
-
-/**
- * 支付客户端参数配置
- */
-export class WechatTradeClientInfo {
-
-    @Expose({name: "app_id"})
-    appId!: string;
-
-    @Expose({name: "app_secret"})
-    appSecret! :string;
-
-    @Expose({name: "api_cert"})
-    apiCert!: Readable;
-
-    @Expose({name: "mch_id"})
-    mchId!: string;
-
-    @Expose({name: "mch_key"})
-    mchKey!: string;
-
-    @Expose({name: "body"})
-    body?: string;
-
-    @Expose({name: "pay_notify_url"})
-    payNotifyUrl?: string;
-
-    @Expose({name: "refund_notify_url"})
-    refundNotifyUrl?: string;
-    
-    @Expose({name: "term_ip"})
-    termIp!: string;
-}

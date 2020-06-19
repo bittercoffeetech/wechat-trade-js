@@ -36,7 +36,7 @@ export class TradeRefundModel extends TradeNoModel {
 	 * 符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 */
 	@Expose({ name: "refund_fee_type" })
-	refundFeeType?: FeeTypeEnum = FeeTypeEnum.CNY;
+	refundFeeType?: FeeTypeEnum;
 
 	/**
 	 * 退款资金来源 仅针对老资金流商户使用
