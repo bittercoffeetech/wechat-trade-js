@@ -1,7 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { CsvModel } from '../decorators';
 import { AccountTypeEnum } from '../enums/AccountTypeEnum';
 import { BillTypeEnum } from '../enums/BillTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';

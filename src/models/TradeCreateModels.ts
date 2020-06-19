@@ -1,9 +1,9 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 
-import { XmlModel } from '../decorators';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
+import { XmlModel } from '../response';
 import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo } from './TradeCommons';
 
 /**

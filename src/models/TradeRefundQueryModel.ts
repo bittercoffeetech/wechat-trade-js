@@ -1,10 +1,10 @@
 import { Expose, Type } from 'class-transformer';
 import { Moment } from 'moment';
 
-import { XmlModel } from '../decorators';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundChannelEnum } from '../enums/RefundChannelEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
+import { XmlModel } from '../response';
 import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo } from './TradeCommons';
 
 /**
