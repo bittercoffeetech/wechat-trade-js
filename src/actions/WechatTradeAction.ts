@@ -1,6 +1,7 @@
-import { SignTypeEnum } from '../enums/SignTypeEnum';
 import { Expose } from 'class-transformer';
 import { Readable } from 'stream';
+
+import { SignTypeEnum } from '../enums/SignTypeEnum';
 
 /**
  * 通用返回内容定义
