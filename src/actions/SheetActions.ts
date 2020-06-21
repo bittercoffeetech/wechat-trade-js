@@ -4,7 +4,7 @@ import {
     TradeBillRefundResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel,
     TradeFundflowModel, TradeFundflowResponseModel
 } from '../models/TradeSheetModels';
-import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './base';
+import { TradeAction, DefaultTradeRequest, DefaultTradeResponse } from './TradeAction';
 
 /**
  * 下载所有交易账单
@@ -12,7 +12,7 @@ import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './base';
  * @author BitterCoffee
  *
  */
-export const BillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResponseModel> = {
+export const TradeBillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -31,7 +31,7 @@ export const BillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResponseM
  * @author BitterCoffee
  *
  */
-export const BillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBillSuccessResponseModel> = {
+export const TradeBillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBillSuccessResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -50,7 +50,7 @@ export const BillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBillSucc
  * @author BitterCoffee
  *
  */
-export const BillRefundAction: TradeAction<TradeBillRefundModel, TradeBillRefundResponseModel> = {
+export const TradeBillRefundAction: TradeAction<TradeBillRefundModel, TradeBillRefundResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -69,7 +69,7 @@ export const BillRefundAction: TradeAction<TradeBillRefundModel, TradeBillRefund
  * @author BitterCoffee
  *
  */
-export const FundflowAction: TradeAction<TradeFundflowModel, TradeFundflowResponseModel> = {
+export const TradeFundflowAction: TradeAction<TradeFundflowModel, TradeFundflowResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{

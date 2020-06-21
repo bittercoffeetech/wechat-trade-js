@@ -1,23 +1,21 @@
 import 'reflect-metadata';
 import { plainToClass, classToPlain } from 'class-transformer';
-import * as crypto from 'crypto';
-import csv from 'csvtojson';
 import { CSVParseParam } from 'csvtojson/v2/Parameters';
 import { parse as toJson, j2xParser as toXml } from 'fast-xml-parser';
 import { Readable } from 'stream';
 import { resolve } from 'path';
-import he from "he";
-import hmacSha256 from 'crypto-js/hmac-sha256';
-import md5 from 'crypto-js/md5';
-
 import { CsvResponse } from './models/TradeSheetModels';
 import { TradeReturnModel, TradeResultModel, ERRORS, XmlModel } from './models/TradeCommons';
-import { TradeResponse } from './actions/base';
 import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
-import nconf from 'nconf';
 import { customAlphabet } from 'nanoid';
 import { SignTypeEnum } from './enums/SignTypeEnum';
 import { TreeMap, Collections } from 'typescriptcollectionsframework';
+import nconf from 'nconf';
+import crypto from 'crypto';
+import csv from 'csvtojson';
+import he from "he";
+import hmacSha256 from 'crypto-js/hmac-sha256';
+import md5 from 'crypto-js/md5';
 
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
@@ -37,6 +35,78 @@ function toRequestXml(request: any,): string {
         format: true,
         tagValueProcessor: (value: string) => '<![CDATA[' + he.escape(value.toString()) + ']]>'
     }).parse({ xml: forSign }).toString();
+}
+
+
+function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>) {
+    let values = toJson(xml, { parseTrueNumberOnly: true })["xml"];
+
+    let returnModel = plainToClass(TradeReturnModel, values);
+    if (!returnModel.isSuccess) {
+        throw new WechatApiError(returnModel.returnCode, returnModel.returnMessage);
+    }
+
+    let resultModel = plainToClass(TradeResultModel, values);
+    if (!resultModel.isSuccess) {
+        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
+    }
+
+    if (resultType.hasSigned && sign(values, resultType.responseSignType) != values['sign']) {
+        throw new WechatApiError(ErrorCodeEnum.SIGNERROR, ERRORS[ErrorCodeEnum.SIGNERROR]);
+    }
+
+    if (resultType.encrypted != undefined) {
+        values = { ...values, ...decrypt(values[resultType.encrypted], nconf.get('mch_key')) };
+        delete values[resultType.encrypted];
+    }
+
+    if (resultType.hasHierarchy && resultType.responseType != undefined) {
+        values = hierarchy(resultType.responseType, values);
+    }
+
+    if (resultType.responseType != undefined) {
+        return plainToClass(resultType.responseType, values);
+    } else {
+        return undefined;
+    }
+
+}
+
+async function parseCsvResponse<ST, RT>(readStream: Readable,
+    resultType: { new(...args: any[]): CsvResponse<ST, RT>; }): Promise<CsvResponse<ST, RT>> {
+
+    let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
+    let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
+    let summary: string = '';
+    let isSummary: boolean = false;
+    let result = new resultType();
+
+    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.recordType()) })
+        .fromStream(readStream)
+        .preFileLine((line, index) => {
+            if (isSummary) { summary = line; return ','; }
+            let traw = line.replace(/`/g, "");
+
+            if (hasChineseWord(traw.substr(0, 1))) {
+                traw = ',';
+                if (index > 0 && !isSummary) { isSummary = true; }
+            }
+            return traw;
+        })
+        .then((csvRow: any[]) => {
+            for (var i = 0; i < csvRow.length; i++) {
+                result.records.push(plainToClass(result.recordType(), csvRow[i]))
+            }
+        });
+
+    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.summaryType()) })
+        .fromString(summary)
+        .preFileLine((line, _index) => line.replace(/`/g, ""))
+        .then((csvRow: any[]) => {
+            result.summary = plainToClass(result.summaryType(), csvRow[0]);
+        });
+
+    return result;
 }
 
 function sign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
@@ -127,75 +197,4 @@ export class WechatApiError extends Error {
         super(message);
         this.code = code;
     }
-}
-
-function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>) {
-    let values = toJson(xml, { parseTrueNumberOnly: true })["xml"];
-
-    let returnModel = plainToClass(TradeReturnModel, values);
-    if (!returnModel.isSuccess) {
-        throw new WechatApiError(returnModel.returnCode, returnModel.returnMessage);
-    }
-
-    let resultModel = plainToClass(TradeResultModel, values);
-    if (!resultModel.isSuccess) {
-        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
-    }
-
-    if (resultType.hasSigned && sign(values, resultType.responseSignType) != values['sign']) {
-        throw new WechatApiError(ErrorCodeEnum.SIGNERROR, ERRORS[ErrorCodeEnum.SIGNERROR]);
-    }
-
-    if (resultType.encrypted != undefined) {
-        values = { ...values, ...decrypt(values[resultType.encrypted], nconf.get('mch_key')) };
-        delete values[resultType.encrypted];
-    }
-
-    if (resultType.hasHierarchy && resultType.responseType != undefined) {
-        values = hierarchy(resultType.responseType, values);
-    }
-
-    if (resultType.responseType != undefined) {
-        return plainToClass(resultType.responseType, values);
-    } else {
-        return undefined;
-    }
-
-}
-
-async function parseCsvResponse<ST, RT>(readStream: Readable,
-    resultType: { new(...args: any[]): CsvResponse<ST, RT>; }): Promise<CsvResponse<ST, RT>> {
-
-    let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
-    let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
-    let summary: string = '';
-    let isSummary: boolean = false;
-    let result = new resultType();
-
-    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.recordType()) })
-        .fromStream(readStream)
-        .preFileLine((line, index) => {
-            if (isSummary) { summary = line; return ','; }
-            let traw = line.replace(/`/g, "");
-
-            if (hasChineseWord(traw.substr(0, 1))) {
-                traw = ',';
-                if (index > 0 && !isSummary) { isSummary = true; }
-            }
-            return traw;
-        })
-        .then((csvRow: any[]) => {
-            for (var i = 0; i < csvRow.length; i++) {
-                result.records.push(plainToClass(result.recordType(), csvRow[i]))
-            }
-        });
-
-    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.summaryType()) })
-        .fromString(summary)
-        .preFileLine((line, _index) => line.replace(/`/g, ""))
-        .then((csvRow: any[]) => {
-            result.summary = plainToClass(result.summaryType(), csvRow[0]);
-        });
-
-    return result;
 }

@@ -1,5 +1,5 @@
 import { TradeCreateModel, TradeCreateResponseModel } from '../models/TradeCreateModels';
-import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './base';
+import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeAction';
 import { TradeNoModel } from '../models/TradeCommons';
 import { TradeQueryResponseModel } from '../models/TradeQueryModels';
 import { TradeRefundModel, TradeRefundResponseModel } from '../models/TradeRefundModels';
@@ -11,7 +11,7 @@ import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from '../models/
  * @author BitterCoffee
  *
  */
-export const CreateOrderAction: TradeAction<TradeCreateModel, TradeCreateResponseModel> = {
+export const TradeCreateAction: TradeAction<TradeCreateModel, TradeCreateResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -28,7 +28,7 @@ export const CreateOrderAction: TradeAction<TradeCreateModel, TradeCreateRespons
  * @author BitterCoffee
  *
  */
-export const CloseAction: TradeAction<TradeNoModel, undefined> = {
+export const TradeCloseAction: TradeAction<TradeNoModel, undefined> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -44,7 +44,7 @@ export const CloseAction: TradeAction<TradeNoModel, undefined> = {
  * @author BitterCoffee
  *
  */
-export const WechatTradeQueryAction: TradeAction<TradeNoModel, TradeQueryResponseModel> = {
+export const TradeQueryAction: TradeAction<TradeNoModel, TradeQueryResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -60,7 +60,7 @@ export const WechatTradeQueryAction: TradeAction<TradeNoModel, TradeQueryRespons
  * @author BitterCoffee
  *
  */
-export const WechatTradeRefundAction: TradeAction<TradeRefundModel, TradeRefundResponseModel> = {
+export const TradeRefundAction: TradeAction<TradeRefundModel, TradeRefundResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -78,7 +78,7 @@ export const WechatTradeRefundAction: TradeAction<TradeRefundModel, TradeRefundR
  * @author BitterCoffee
  *
  */
-export const WechatTradeRefundQueryAction: TradeAction<TradeRefundQueryModel, TradeRefundQueryResponseModel> = {
+export const TradeRefundQueryAction: TradeAction<TradeRefundQueryModel, TradeRefundQueryResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
