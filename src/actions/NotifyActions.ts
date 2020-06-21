@@ -1,6 +1,6 @@
 import { TradeCreateNotifyModel } from '../models/TradeCreateModels';
 import { TradeRefundNotifyModel } from '../models/TradeRefundModels';
-import { DefaultResponse, WechatTradeResponse } from './WechatTradeAction';
+import { DefaultTradeResponse, TradeResponse } from './base';
 
 /**
  * 支付结果通知
@@ -8,8 +8,8 @@ import { DefaultResponse, WechatTradeResponse } from './WechatTradeAction';
  * @author BitterCoffee
  *
  */
-export const WechatTradeCreateNotify: WechatTradeResponse<TradeCreateNotifyModel> = {
-	...DefaultResponse,
+export const WechatTradeCreateNotify: TradeResponse<TradeCreateNotifyModel> = {
+	...DefaultTradeResponse,
 	...{
 		hasHierarchy: true,
 		responseType: TradeCreateNotifyModel
@@ -22,8 +22,8 @@ export const WechatTradeCreateNotify: WechatTradeResponse<TradeCreateNotifyModel
  * @author BitterCoffee
  *
  */
-export const WechatTradeRefundNotify: WechatTradeResponse<TradeRefundNotifyModel> = {
-	...DefaultResponse,
+export const WechatTradeRefundNotify: TradeResponse<TradeRefundNotifyModel> = {
+	...DefaultTradeResponse,
 	...{
 		encrypted: 'req_info',
 		responseType: TradeRefundNotifyModel

@@ -19,9 +19,9 @@ test('Test Sign Algorithm', () => {
     };
 
     const clientModule = rewire("../dist/WechatTradeClient.js");
-    const getSign = clientModule.__get__("getSign");
+    const sign = clientModule.__get__("sign");
 
-    expect(getSign(toSign, SignTypeEnum.MD5)).toBe('0188F350D33A56AF1160AE69F4AAC3E7');
+    expect(sign(toSign, SignTypeEnum.MD5)).toBe('0188F350D33A56AF1160AE69F4AAC3E7');
 });
 
 test('Test REQ_INFO of Refund Notify Decrypt', () => {

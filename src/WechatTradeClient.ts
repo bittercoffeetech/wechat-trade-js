@@ -12,7 +12,7 @@ import md5 from 'crypto-js/md5';
 
 import { CsvResponse } from './models/TradeSheetModels';
 import { TradeReturnModel, TradeResultModel, ERRORS, XmlModel } from './models/TradeCommons';
-import { WechatTradeResponse } from './actions/WechatTradeAction';
+import { TradeResponse } from './actions/base';
 import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
 import nconf from 'nconf';
 import { customAlphabet } from 'nanoid';
@@ -22,16 +22,16 @@ import { TreeMap, Collections } from 'typescriptcollectionsframework';
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
 
-export function toRequestXml(request: any, ): string {
+function toRequestXml(request: any,): string {
     let forSign = {
-        ...classToPlain(request), 
+        ...classToPlain(request),
         ...{
             'appid': nconf.get('appid'),
             'mch_id': nconf.get('mch_id'),
             'nonce_str': nanoid()
         }
     };
-    forSign["sign"] = getSign(forSign);
+    forSign["sign"] = sign(forSign);
 
     return new toXml({
         format: true,
@@ -39,7 +39,7 @@ export function toRequestXml(request: any, ): string {
     }).parse({ xml: forSign }).toString();
 }
 
-function getSign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
+function sign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
     var sorted = new TreeMap<string, any>(Collections.getStringComparator());
     for (let prop in forSign) {
         if (forSign[prop] != undefined && prop != 'sign') {
@@ -63,7 +63,6 @@ function getSign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum
         return undefined;
     }
 }
-
 
 function decrypt(content: string, key: string): object {
     let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
@@ -95,7 +94,7 @@ function hierarchy(model: new (...args: any[]) => any, source: object): object {
     function morphValues(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
 
-        Reflect.getMetadataKeys(model).forEach((key : string) => {
+        Reflect.getMetadataKeys(model).forEach((key: string) => {
             let xmlModel = Reflect.getMetadata(key, model) as XmlModel;
             let propName = xmlModel.name + suffix;
 
@@ -122,7 +121,7 @@ function hierarchy(model: new (...args: any[]) => any, source: object): object {
     }
 }
 
-class WechatApiError extends Error {
+export class WechatApiError extends Error {
     code: string;
     constructor(code: string, message?: string) {
         super(message);
@@ -130,50 +129,50 @@ class WechatApiError extends Error {
     }
 }
 
-export function parseXmlResponse<T>(xml: string, resultType: WechatTradeResponse<T>) {
+function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>) {
     let values = toJson(xml, { parseTrueNumberOnly: true })["xml"];
 
     let returnModel = plainToClass(TradeReturnModel, values);
-    if(!returnModel.isSuccess) {
+    if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.returnCode, returnModel.returnMessage);
     }
 
     let resultModel = plainToClass(TradeResultModel, values);
-    if(!resultModel.isSuccess) {
+    if (!resultModel.isSuccess) {
         throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
     }
 
-    if(resultType.hasSigned && getSign(values, resultType.responseSignType) != values['sign']) {
+    if (resultType.hasSigned && sign(values, resultType.responseSignType) != values['sign']) {
         throw new WechatApiError(ErrorCodeEnum.SIGNERROR, ERRORS[ErrorCodeEnum.SIGNERROR]);
     }
 
-    if(resultType.encrypted != undefined) {
-        values = {...values, ...decrypt(values[resultType.encrypted], nconf.get('mch_key')) };
+    if (resultType.encrypted != undefined) {
+        values = { ...values, ...decrypt(values[resultType.encrypted], nconf.get('mch_key')) };
         delete values[resultType.encrypted];
     }
 
-    if(resultType.hasHierarchy && resultType.responseType != undefined) {
+    if (resultType.hasHierarchy && resultType.responseType != undefined) {
         values = hierarchy(resultType.responseType, values);
     }
 
-    if(resultType.responseType != undefined) {
+    if (resultType.responseType != undefined) {
         return plainToClass(resultType.responseType, values);
     } else {
         return undefined;
     }
-    
+
 }
 
-export async function parseCsvResponse<ST, RT>(readStream: Readable,
+async function parseCsvResponse<ST, RT>(readStream: Readable,
     resultType: { new(...args: any[]): CsvResponse<ST, RT>; }): Promise<CsvResponse<ST, RT>> {
 
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
-    let csvParam : Partial<CSVParseParam> = {noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true};
+    let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
     let summary: string = '';
     let isSummary: boolean = false;
     let result = new resultType();
 
-    await csv({...csvParam, headers: Reflect.getMetadata('columns', result.recordType())})
+    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.recordType()) })
         .fromStream(readStream)
         .preFileLine((line, index) => {
             if (isSummary) { summary = line; return ','; }
@@ -191,7 +190,7 @@ export async function parseCsvResponse<ST, RT>(readStream: Readable,
             }
         });
 
-    await csv({...csvParam, headers: Reflect.getMetadata('columns', result.summaryType())})
+    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.summaryType()) })
         .fromString(summary)
         .preFileLine((line, _index) => line.replace(/`/g, ""))
         .then((csvRow: any[]) => {

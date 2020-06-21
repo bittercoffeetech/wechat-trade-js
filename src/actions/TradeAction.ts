@@ -3,7 +3,7 @@ import { SignTypeEnum } from '../enums/SignTypeEnum';
 /**
  * 通用返回内容定义
  */
-export interface WechatTradeResponse<S> {
+export interface TradeResponse<S> {
 
 	/**
 	 * 获取返回对象的类型信息
@@ -45,7 +45,7 @@ export interface WechatTradeResponse<S> {
 /**
  * 通用请求内容定义
  */
-export interface WechatTradeRequest<R> {
+export interface TradeRequest<R> {
 
 	/**
 	 * 获取请求对象类型
@@ -72,7 +72,7 @@ export interface WechatTradeRequest<R> {
 /**
  * 默认返回属性定义
  */
-export const DefaultResponse: Omit<WechatTradeResponse<any>, "responseType"> = {
+export const DefaultTradeResponse: Omit<TradeResponse<any>, "responseType"> = {
 	hasSigned: true,
 	hasResult: true,
 	hasHierarchy: false,
@@ -84,7 +84,7 @@ export const DefaultResponse: Omit<WechatTradeResponse<any>, "responseType"> = {
 /**
  * 默认请求属性定义
  */
-export const DefaultRequest: Omit<WechatTradeRequest<any>, "requestType" | "url"> = {
+export const DefaultTradeRequest: Omit<TradeRequest<any>, "requestType" | "url"> = {
 	certificated: false,
 	requestSignType: SignTypeEnum.MD5,
 }
@@ -92,6 +92,6 @@ export const DefaultRequest: Omit<WechatTradeRequest<any>, "requestType" | "url"
 /**
  * 接口完整定义
  */
-export interface WechatTradeAction<R, S> extends WechatTradeRequest<R>, WechatTradeResponse<S> {
+export interface TradeAction<R, S> extends TradeRequest<R>, TradeResponse<S> {
 	// no other things	
 }

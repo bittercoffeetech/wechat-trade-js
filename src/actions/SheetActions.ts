@@ -4,7 +4,7 @@ import {
     TradeBillRefundResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel,
     TradeFundflowModel, TradeFundflowResponseModel
 } from '../models/TradeSheetModels';
-import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTradeAction';
+import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './base';
 
 /**
  * 下载所有交易账单
@@ -12,9 +12,9 @@ import { DefaultRequest, DefaultResponse, WechatTradeAction } from './WechatTrad
  * @author BitterCoffee
  *
  */
-export const WechatTradeBillAllAction: WechatTradeAction<TradeBillAllModel, TradeBillAllResponseModel> = {
-	...DefaultRequest,
-	...DefaultResponse,
+export const BillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResponseModel> = {
+	...DefaultTradeRequest,
+	...DefaultTradeResponse,
 	...{
 		url: "https://api.mch.weixin.qq.com/pay/downloadbill",
 		hasSigned: false,
@@ -31,9 +31,9 @@ export const WechatTradeBillAllAction: WechatTradeAction<TradeBillAllModel, Trad
  * @author BitterCoffee
  *
  */
-export const WechatTradeBillSuccessAction: WechatTradeAction<TradeBillSuccessModel, TradeBillSuccessResponseModel> = {
-	...DefaultRequest,
-	...DefaultResponse,
+export const BillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBillSuccessResponseModel> = {
+	...DefaultTradeRequest,
+	...DefaultTradeResponse,
 	...{
 		url: "https://api.mch.weixin.qq.com/pay/downloadbill",
 		hasSigned: false,
@@ -50,9 +50,9 @@ export const WechatTradeBillSuccessAction: WechatTradeAction<TradeBillSuccessMod
  * @author BitterCoffee
  *
  */
-export const WechatTradeBillRefundAction: WechatTradeAction<TradeBillRefundModel, TradeBillRefundResponseModel> = {
-	...DefaultRequest,
-	...DefaultResponse,
+export const BillRefundAction: TradeAction<TradeBillRefundModel, TradeBillRefundResponseModel> = {
+	...DefaultTradeRequest,
+	...DefaultTradeResponse,
 	...{
 		url: "https://api.mch.weixin.qq.com/pay/downloadbill",
 		hasSigned: false,
@@ -69,9 +69,9 @@ export const WechatTradeBillRefundAction: WechatTradeAction<TradeBillRefundModel
  * @author BitterCoffee
  *
  */
-export const WechatTradeFundflowAction: WechatTradeAction<TradeFundflowModel, TradeFundflowResponseModel> = {
-	...DefaultRequest,
-	...DefaultResponse,
+export const FundflowAction: TradeAction<TradeFundflowModel, TradeFundflowResponseModel> = {
+	...DefaultTradeRequest,
+	...DefaultTradeResponse,
 	...{
 		url: "https://api.mch.weixin.qq.com/pay/downloadfundflow",
 		certificated: true,

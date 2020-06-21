@@ -546,9 +546,9 @@
         "signature": "b4f1299ca46809a0628b33fe219f8a64955c48eecc2d635b861f240ba7c49fd7",
         "affectsGlobalScope": false
       },
-      "./src/actions/wechattradeaction.ts": {
-        "version": "a447ebdc96727f6179b3315c7607183781051c6920506d31a4f394d9ac0406c6",
-        "signature": "d09499576cc8e10f633d4d1dfddd4292db12ef98acec636f8a3ec33d3885c228",
+      "./src/actions/base.ts": {
+        "version": "0e2a1f7ee06c1cc92c1a23eafe08f6f6724cdd943f92d7348f28192aa4efcda6",
+        "signature": "23fb288825d9795d1ec364e75290a3a36a87e635bd9887b23245d1036e2d4d73",
         "affectsGlobalScope": false
       },
       "./src/enums/errorcodeenum.ts": {
@@ -767,8 +767,8 @@
         "affectsGlobalScope": false
       },
       "./src/wechattradeclient.ts": {
-        "version": "fbae95e5ccea4dab0b0bb0c33fcde56c115263cce3d08fb6ce34cefdedd392e4",
-        "signature": "493113297fe990382af81809c64a08a0eb2ab19ce5abaa591d3045f45ecf86f7",
+        "version": "78db235248d12b64bcf0a99642b8201aeff492c62681d5b447a67024339d426b",
+        "signature": "647bafce966a9a433605985e370ebe07a3aa04ff0a04f2915331355bf9276ee0",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
@@ -776,19 +776,14 @@
         "signature": "396a3607ca8288c7dd02dff9b04e6ffb057b3c6f3d12965421373c3da78b65cc",
         "affectsGlobalScope": false
       },
-      "./src/actions/wechattradecloseaction.ts": {
-        "version": "efe4f6d73ce2078253139b6400e2b7b0a919b79e2dedf7b9d3be83fd4c8c85d5",
-        "signature": "9bcdf21a75366eb542ddcd63aecf20df2794ff3134a737eb46fcf863def06c19",
-        "affectsGlobalScope": false
-      },
       "./src/models/tradecreatemodels.ts": {
         "version": "3cc76d9eccbd8d53f589a8e5fb74d201ed0ab55ac703467471ac4033883a2c53",
         "signature": "85e5d7a9ae69b4bbf31ca3839276a933c8d0397bc6a518f01a1f8b688a4ffedd",
         "affectsGlobalScope": false
       },
-      "./src/actions/wechattradecreateaction.ts": {
-        "version": "bd8f60a83326ad8f1754000023249f92321d8673c56578ee1a7a438cffddf95c",
-        "signature": "d1ba78667752ef93658c3259d9f78bd95da02ce66385827413ac7833e4dad021",
+      "./src/models/tradequerymodels.ts": {
+        "version": "d0f43c09350c93029dd75bc2cc2f85361a2bcb09d255a64ed5cf98b0dc9a26ea",
+        "signature": "110d883052f77f10f81d87d5c1fc0967788107affabf9702dacdf6d97214f055",
         "affectsGlobalScope": false
       },
       "./src/enums/refundaccountenum.ts": {
@@ -806,39 +801,24 @@
         "signature": "f828dda367d00c2917d9c8a0e69c7e1378d007e5ce95beb426fd5a973dbc33dd",
         "affectsGlobalScope": false
       },
-      "./src/actions/wechattradenotifies.ts": {
-        "version": "0ae5979540079313eb5d21667952eabf9914468f3933f72e560b3fd0566b2438",
-        "signature": "26722ae4f5da9cfcb5289ef80e59d259033339e2f80205684a32f1e2d69639ac",
-        "affectsGlobalScope": false
-      },
-      "./src/models/tradequerymodels.ts": {
-        "version": "d0f43c09350c93029dd75bc2cc2f85361a2bcb09d255a64ed5cf98b0dc9a26ea",
-        "signature": "110d883052f77f10f81d87d5c1fc0967788107affabf9702dacdf6d97214f055",
-        "affectsGlobalScope": false
-      },
-      "./src/actions/wechattradequeryaction.ts": {
-        "version": "601868da499077f0a5eb1c3f979f401b3d211745f529c549c9aefa4038257bd2",
-        "signature": "f794d677f580c6acc50b1a57e949dd38eb5b40545b629482cfda4c1a74db469b",
-        "affectsGlobalScope": false
-      },
-      "./src/actions/wechattraderefundaction.ts": {
-        "version": "c6eb78db3a4dd8f68bcc08a410af96654451d92a3e0f6285ec4ac95ecd84328d",
-        "signature": "6af87c1b4c638a7b0eb7cceb25b6a23e6f9338aa82dc1949f3448fbee30d068e",
-        "affectsGlobalScope": false
-      },
       "./src/models/traderefundquerymodel.ts": {
         "version": "1b5be6e3e8dcd372a6f5544e331467a9a78a795d4dc86fc4bc62ed9b071d036b",
         "signature": "6efb9e9e343e914a0240e1ea5c2ea1d041e4161f0d20354665aedd048b8d8f21",
         "affectsGlobalScope": false
       },
-      "./src/actions/wechattraderefundqueryaction.ts": {
-        "version": "4882a46ac4a61ac0700134171330a883b4008e1587d6afc5ed0dc9a4956d2982",
-        "signature": "5756cf72297badaace3381c3332f41f47607f62dcf7b5e1ba6967b3ff717e25d",
+      "./src/actions/actions.ts": {
+        "version": "7abdbdebe9e562e26409174c8d7d47be6dda74d96e65f32366acd32671756dda",
+        "signature": "26763f900649b7670a866bf4a22c18c3fdcc4fd8be37dcef7834edd7d4f68197",
         "affectsGlobalScope": false
       },
-      "./src/actions/wechattradesheetactions.ts": {
-        "version": "32433df02066dbd6c661986d5c5f1cf7b5b10a606547d821fb1162f676030c12",
-        "signature": "23d3ffb9b23880ff42ad060ab8f992b1e362553080dcc7c8c7d14405a03ac5e8",
+      "./src/actions/notifies.ts": {
+        "version": "8399e07062f7a5d1998db112b79823b9273a2c7bc3c95061a6dd4bc3b849a9b1",
+        "signature": "45611f71a2fb6c0bd20c78a74cb7147e70e06a02100d8112542259ccb8842d41",
+        "affectsGlobalScope": false
+      },
+      "./src/actions/sheets.ts": {
+        "version": "ae0f19d666449e032d4e46fa43f4080190b3830ae37fab258d2378f7b11bec72",
+        "signature": "30c84f6cbde30439d1328c674f002fa5cb408db3947c10c94108a0d9e3eb2c43",
         "affectsGlobalScope": false
       },
       "./src/enums/tartypeenum.ts": {
@@ -2016,69 +1996,40 @@
         "./node_modules/typescriptcollectionsframework/definitions/src/jiterator.d.ts",
         "./node_modules/typescriptcollectionsframework/definitions/src/navigableset.d.ts"
       ],
-      "./src/actions/wechattradeaction.ts": [
+      "./src/actions/actions.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./src/actions/base.ts",
+        "./src/models/tradecommons.ts",
+        "./src/models/tradecreatemodels.ts",
+        "./src/models/tradequerymodels.ts",
+        "./src/models/traderefundmodels.ts",
+        "./src/models/traderefundquerymodel.ts"
+      ],
+      "./src/actions/base.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./src/enums/signtypeenum.ts"
       ],
-      "./src/actions/wechattradecloseaction.ts": [
+      "./src/actions/notifies.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradecommons.ts"
-      ],
-      "./src/actions/wechattradecreateaction.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradecreatemodels.ts"
-      ],
-      "./src/actions/wechattradenotifies.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
+        "./src/actions/base.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/traderefundmodels.ts"
       ],
-      "./src/actions/wechattradequeryaction.ts": [
+      "./src/actions/sheets.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradecommons.ts",
-        "./src/models/tradequerymodels.ts"
-      ],
-      "./src/actions/wechattraderefundaction.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/traderefundmodels.ts"
-      ],
-      "./src/actions/wechattraderefundqueryaction.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/traderefundquerymodel.ts"
-      ],
-      "./src/actions/wechattradesheetactions.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./src/actions/wechattradeaction.ts",
+        "./src/actions/base.ts",
         "./src/enums/signtypeenum.ts",
         "./src/models/tradesheetmodels.ts"
       ],
@@ -2267,7 +2218,7 @@
         "./node_modules/nanoid/index.d.ts",
         "./node_modules/reflect-metadata/index.d.ts",
         "./node_modules/typescriptcollectionsframework/definitions/index.d.ts",
-        "./src/actions/wechattradeaction.ts",
+        "./src/actions/base.ts",
         "./src/enums/errorcodeenum.ts",
         "./src/enums/signtypeenum.ts",
         "./src/models/tradecommons.ts",
@@ -3407,37 +3358,24 @@
         "./node_modules/typescriptcollectionsframework/definitions/src/jiterator.d.ts",
         "./node_modules/typescriptcollectionsframework/definitions/src/navigableset.d.ts"
       ],
-      "./src/actions/wechattradeaction.ts": [
+      "./src/actions/actions.ts": [
+        "./src/actions/base.ts",
+        "./src/models/tradecommons.ts",
+        "./src/models/tradecreatemodels.ts",
+        "./src/models/tradequerymodels.ts",
+        "./src/models/traderefundmodels.ts",
+        "./src/models/traderefundquerymodel.ts"
+      ],
+      "./src/actions/base.ts": [
         "./src/enums/signtypeenum.ts"
       ],
-      "./src/actions/wechattradecloseaction.ts": [
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradecommons.ts"
-      ],
-      "./src/actions/wechattradecreateaction.ts": [
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradecreatemodels.ts"
-      ],
-      "./src/actions/wechattradenotifies.ts": [
-        "./src/actions/wechattradeaction.ts",
+      "./src/actions/notifies.ts": [
+        "./src/actions/base.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/traderefundmodels.ts"
       ],
-      "./src/actions/wechattradequeryaction.ts": [
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradecommons.ts",
-        "./src/models/tradequerymodels.ts"
-      ],
-      "./src/actions/wechattraderefundaction.ts": [
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/traderefundmodels.ts"
-      ],
-      "./src/actions/wechattraderefundqueryaction.ts": [
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/traderefundquerymodel.ts"
-      ],
-      "./src/actions/wechattradesheetactions.ts": [
-        "./src/actions/wechattradeaction.ts",
+      "./src/actions/sheets.ts": [
+        "./src/actions/base.ts",
         "./src/models/tradesheetmodels.ts"
       ],
       "./src/index.ts": [
@@ -3486,10 +3424,7 @@
         "./src/enums/tradetypeenum.ts"
       ],
       "./src/wechattradeclient.ts": [
-        "./node_modules/@types/node/stream.d.ts",
-        "./node_modules/reflect-metadata/index.d.ts",
-        "./src/actions/wechattradeaction.ts",
-        "./src/models/tradesheetmodels.ts"
+        "./node_modules/reflect-metadata/index.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -3632,14 +3567,10 @@
       "./node_modules/typescriptcollectionsframework/definitions/src/skiplist.d.ts",
       "./node_modules/typescriptcollectionsframework/definitions/src/treemap.d.ts",
       "./node_modules/typescriptcollectionsframework/definitions/src/treeset.d.ts",
-      "./src/actions/wechattradeaction.ts",
-      "./src/actions/wechattradecloseaction.ts",
-      "./src/actions/wechattradecreateaction.ts",
-      "./src/actions/wechattradenotifies.ts",
-      "./src/actions/wechattradequeryaction.ts",
-      "./src/actions/wechattraderefundaction.ts",
-      "./src/actions/wechattraderefundqueryaction.ts",
-      "./src/actions/wechattradesheetactions.ts",
+      "./src/actions/actions.ts",
+      "./src/actions/base.ts",
+      "./src/actions/notifies.ts",
+      "./src/actions/sheets.ts",
       "./src/enums/accounttypeenum.ts",
       "./src/enums/billtypeenum.ts",
       "./src/enums/coupontypeenum.ts",
@@ -3661,7 +3592,38 @@
       "./src/models/traderefundmodels.ts",
       "./src/models/traderefundquerymodel.ts",
       "./src/models/tradesheetmodels.ts",
-      "./src/wechattradeclient.ts"
+      [
+        "./src/wechattradeclient.ts",
+        [
+          {
+            "file": "./src/wechattradeclient.ts",
+            "start": 1009,
+            "length": 12,
+            "messageText": "'toRequestXml' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          },
+          {
+            "file": "./src/wechattradeclient.ts",
+            "start": 4620,
+            "length": 16,
+            "messageText": "'parseXmlResponse' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          },
+          {
+            "file": "./src/wechattradeclient.ts",
+            "start": 5832,
+            "length": 16,
+            "messageText": "'parseCsvResponse' is declared but its value is never read.",
+            "category": 1,
+            "code": 6133,
+            "reportsUnnecessary": true
+          }
+        ]
+      ]
     ]
   },
   "version": "3.9.5"
