@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import 'reflect-metadata';
 
 import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
