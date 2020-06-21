@@ -4,7 +4,6 @@ import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { ResultStatusEnum } from '../enums/ResultStatusEnum';
 import { SignTypeEnum } from '../enums/SignTypeEnum';
-import { ErrorCodeEnum } from '../enums/ErrorCodeEnum';
 
 /**
  * Xml级联标签定义
