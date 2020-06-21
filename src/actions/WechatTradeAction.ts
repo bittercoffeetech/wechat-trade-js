@@ -1,6 +1,3 @@
-import { Expose } from 'class-transformer';
-import { Readable } from 'stream';
-
 import { SignTypeEnum } from '../enums/SignTypeEnum';
 
 /**

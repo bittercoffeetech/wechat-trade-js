@@ -4,8 +4,7 @@ import { Moment } from 'moment';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundChannelEnum } from '../enums/RefundChannelEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import { XmlModel } from '../response';
-import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo } from './TradeCommons';
+import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel } from './TradeCommons';
 
 /**
  * 退款查询

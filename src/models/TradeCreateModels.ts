@@ -3,8 +3,7 @@ import moment from 'moment';
 
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { XmlModel } from '../response';
-import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo } from './TradeCommons';
+import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo, XmlModel } from './TradeCommons';
 
 /**
  * 商品信息

@@ -4,7 +4,45 @@ import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { ResultStatusEnum } from '../enums/ResultStatusEnum';
 import { SignTypeEnum } from '../enums/SignTypeEnum';
-import { XmlModel } from '../response';
+import { ErrorCodeEnum } from '../enums/ErrorCodeEnum';
+
+/**
+ * Xml级联标签定义
+ */
+export interface XmlModel {
+    name: string;
+    subType: new(...args: any[]) => any;
+    subName: string;
+    countName: string
+}
+
+/**
+ * Xml级联标签注解
+ * 
+ * @param name 当前属性名
+ * @param subType 对应集合中的子类型
+ * @param countName 表示数量的字段名
+ */
+export function XmlModel(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
+    return (target, propertyName) => {
+        Reflect.defineMetadata(propertyName.toString(), 
+            {name: name, subType: subType, countName: countName}, 
+            target.constructor); 
+    }
+};
+
+/**
+ * 定义CSV返回结果的列信息
+ * 
+ * @param columns 列属性id数组
+ */
+export function CsvModel(columns: string[]): ClassDecorator {
+    return (target) => {
+        Reflect.defineMetadata("columns", 
+            columns, 
+            target); 
+    }
+};
 
 /**
  * 应用标识
@@ -226,3 +264,34 @@ export class TradeRefundCouponInfo {
 	type!: CouponTypeEnum;
 
 }
+
+export const ERRORS = {
+	'SYSTEMERROR' : "系统错误",
+	'XML_FORMAT_ERROR' : "XML格式错误",
+	'APPID_NOT_EXIST' : "APPID不存在",
+	'MCHID_NOT_EXIST' : "MCHID不存在",
+	'APPID_MCHID_NOT_MATCH' : "appid和mch_id不匹配",
+	'SIGNERROR' : "签名错误",
+	'REQUIRE_POST_METHOD' : "请使用post方法",
+	'NOAUTH' : "商户无此接口权限",
+	'INVALID_REQUEST' : "参数错误",
+	'LACK_PARAMS' : "缺少参数",
+	'POST_DATA_EMPTY' : "post数据为空",
+	'NOT_UTF8' : "编码格式错误",
+	'NOTENOUGH' : "余额不足",
+	'ORDERPAID' : "商户订单已支付",
+	'ORDERCLOSED' : "订单已关闭",
+	'OUT_TRADE_NO_USED' : "商户订单号重复",
+	'PARAM_ERROR' : "参数错误",
+	'INVALID_REQ_TOO_MUCH' : "无效请求过多",
+	'FREQUENCY_LIMITED' : "频率限制",
+	'CERT_ERROR' : "证书校验错误",
+	'INVALID_TRANSACTIONID' : "无效transaction_id",
+	'BIZERR_NEED_RETRY' : "退款业务流程错误，需要商户触发重试来解决",
+	'TRADE_OVERDUE' : "订单已经超过退款期限",
+	'ERROR' : "业务错误",
+	'USER_ACCOUNT_ABNORMAL' : "退款请求失败",
+	'REFUND_FEE_MISMATCH' : "订单金额或退款金额与之前请求不一致，请核实后再试",
+	'ORDER_NOT_READY' : "订单处理中，暂时无法退款，请稍后再试",
+	'REFUNDNOTEXIST' : "退款订单查询失败"
+};

@@ -8,7 +8,7 @@ import { RefundChannelEnum } from '../enums/RefundChannelEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
 import { TradeStatusEnum } from '../enums/TradeStatusEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { CsvModel } from '../response';
+import { CsvModel } from './TradeCommons';
 
 /**
  * 账单请求

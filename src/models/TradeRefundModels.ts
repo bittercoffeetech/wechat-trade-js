@@ -5,9 +5,8 @@ import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import { XmlModel } from '../response';
 import {
-    TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo
+    TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel
 } from './TradeCommons';
 
 /**
