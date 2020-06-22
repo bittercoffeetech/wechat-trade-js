@@ -4,11 +4,7 @@ import { CSVParseParam } from 'csvtojson/v2/Parameters';
 import { parse as toJson, j2xParser as toXml } from 'fast-xml-parser';
 import { Readable } from 'stream';
 import { resolve } from 'path';
-import { CsvResponse } from './models/TradeSheetModels';
-import { TradeReturnModel, TradeResultModel, ERRORS, XmlModel } from './models/TradeCommons';
-import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
 import { customAlphabet } from 'nanoid';
-import { SignTypeEnum } from './enums/SignTypeEnum';
 import { TreeMap, Collections } from 'typescriptcollectionsframework';
 import nconf from 'nconf';
 import crypto from 'crypto';
@@ -16,11 +12,96 @@ import csv from 'csvtojson';
 import he from "he";
 import hmacSha256 from 'crypto-js/hmac-sha256';
 import md5 from 'crypto-js/md5';
+import https from 'https';
+import { TradeResponse, TradeAction } from './actions/TradeAction';
+import { TradeCreateModel, TradeCreateResponseModel, TradeCreateNotifyModel } from './models/TradeCreateModels';
+import { TradeCreateAction, TradeQueryAction, TradeCloseAction, TradeRefundAction, TradeRefundQueryAction } from './actions/TradeActions';
+import { TradeQueryResponseModel } from './models/TradeQueryModels';
+import { TradeCloseResponseModel } from './models/TradeCloseModels';
+import { TradeRefundModel, TradeRefundResponseModel, TradeRefundNotifyModel } from './models/TradeRefundModels';
+import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from './models/TradeRefundQueryModels';
+import { TradeCreateNotify, TradeRefundNotify } from './actions/NotifyActions';
+import { TradeBillAllAction, TradeBillSuccessAction, TradeBillRefundAction, TradeFundflowAction } from './actions/SheetActions';
+import { CsvResponse, TradeBillAllModel, TradeBillAllResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel, TradeBillRefundModel, TradeBillRefundResponseModel, TradeFundflowModel, TradeFundflowResponseModel } from './models/TradeSheetModels';
+import { TradeReturnModel, TradeResultModel, API_ERROR_MESSAGES, XmlModel, TradeNoModel } from './models/TradeCommons';
+import { SignTypeEnum } from './enums/SignTypeEnum';
+import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
 
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
 
-function toRequestXml(request: any,): string {
+class Executor<R, S> {
+    private action: TradeAction<R, S>;
+    private model?: R;
+    constructor(action: TradeAction<R, S>) {
+        this.action = action;
+    }
+
+    public withModel(model: R): Executor<R, S> {
+        this.model = model;
+        return this;
+    }
+
+    public execute(): S {
+        if (this.model == undefined) {
+            throw Error("Model Object must not be null");
+        }
+
+        // const httsAgent = new https.Agent({ rejectUnauthorized: false });
+
+        let forPost = toRequestXml(this.model);
+        console.log(forPost);
+        console.log(this.action);
+
+        return parseXmlResponse('xml', this.action);
+    }
+}
+
+export function newCreateAction(): Executor<TradeCreateModel, TradeCreateResponseModel> {
+    return new Executor(TradeCreateAction);
+}
+
+export function newQueryAction(): Executor<TradeNoModel, TradeQueryResponseModel> {
+    return new Executor(TradeQueryAction);
+}
+
+export function newCloseAction(): Executor<TradeNoModel, TradeCloseResponseModel> {
+    return new Executor(TradeCloseAction);
+}
+
+export function newRefundAction(): Executor<TradeRefundModel, TradeRefundResponseModel> {
+    return new Executor(TradeRefundAction);
+}
+
+export function newRefundQueryAction(): Executor<TradeRefundQueryModel, TradeRefundQueryResponseModel> {
+    return new Executor(TradeRefundQueryAction);
+}
+
+export function newBillAllAction(): Executor<TradeBillAllModel, TradeBillAllResponseModel> {
+    return new Executor(TradeBillAllAction);
+}
+
+export function newBillSuccessAction(): Executor<TradeBillSuccessModel, TradeBillSuccessResponseModel> {
+    return new Executor(TradeBillSuccessAction);
+}
+
+export function newBillRefundAction(): Executor<TradeBillRefundModel, TradeBillRefundResponseModel> {
+    return new Executor(TradeBillRefundAction);
+}
+
+export function newFundflowAction(): Executor<TradeFundflowModel, TradeFundflowResponseModel> {
+    return new Executor(TradeFundflowAction);
+}
+
+export function onCreateNotifier(xml: string): TradeCreateNotifyModel {
+    return parseXmlResponse(xml, TradeCreateNotify);
+}
+
+export function onRefundNotifier(xml: string): TradeRefundNotifyModel {
+    return parseXmlResponse(xml, TradeRefundNotify);
+}
+
+function toRequestXml(request: any): string {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -38,21 +119,23 @@ function toRequestXml(request: any,): string {
 }
 
 
-function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>) {
+function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>): T {
     let values = toJson(xml, { parseTrueNumberOnly: true })["xml"];
 
-    let returnModel = plainToClass(TradeReturnModel, values);
+    let returnModel = plainToClass(TradeReturnModel, values,
+        { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.returnCode, returnModel.returnMessage);
     }
 
-    let resultModel = plainToClass(TradeResultModel, values);
+    let resultModel = plainToClass(TradeResultModel, values,
+        { excludeExtraneousValues: true });
     if (!resultModel.isSuccess) {
         throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
     }
 
     if (resultType.hasSigned && sign(values, resultType.responseSignType) != values['sign']) {
-        throw new WechatApiError(ErrorCodeEnum.SIGNERROR, ERRORS[ErrorCodeEnum.SIGNERROR]);
+        throw new WechatApiError(ErrorCodeEnum.SIGNERROR, API_ERROR_MESSAGES[ErrorCodeEnum.SIGNERROR]);
     }
 
     if (resultType.encrypted != undefined) {
@@ -64,12 +147,7 @@ function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>) {
         values = hierarchy(resultType.responseType, values);
     }
 
-    if (resultType.responseType != undefined) {
-        return plainToClass(resultType.responseType, values);
-    } else {
-        return undefined;
-    }
-
+    return plainToClass(resultType.responseType, values);
 }
 
 async function parseCsvResponse<ST, RT>(readStream: Readable,

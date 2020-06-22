@@ -3,6 +3,7 @@ import { parse as toJson } from 'fast-xml-parser';
 import { plainToClass } from "class-transformer";
 import rewire from 'rewire';
 import { SignTypeEnum } from '../src/enums/SignTypeEnum';
+import { TradeReturnModel, TradeResultModel } from '../src/models/TradeCommons';
 
 test('Test Sign Algorithm', () => {
 
@@ -78,4 +79,29 @@ test('Test Hierarchy Plain', () => {
 
     expect(result["refunds"].length).toBe(2);
     expect(result['refund_fee']).toBe(23000);
+});
+
+test("Return failed.", () => {
+
+    let xml = "<xml>" +
+        "    <appid>wx8949c222019862f5</appid>" +
+        "    <cash_fee>30000</cash_fee>" +
+        "    <mch_id>1234539902</mch_id>" +
+        "    <nonce_str>DpTKaiQ72EoESdTQ</nonce_str>" +
+        "    <out_refund_no_0>75167150755995423145699611039343</out_refund_no_0>" +
+        "    <out_trade_no>88120539723913062068499338375453</out_trade_no>" +
+        "    <result_code>FAIL</result_code>" +
+        "    <return_msg>签名错误</return_msg>" +
+        "    <return_code>FAIL</return_code>" +
+        "    <err_code>INVALID_REQUEST</err_code>" +
+        "    <err_code_des>参数错误</err_code_des> " +
+        "</xml>";
+
+    let values = toJson(xml, { parseTrueNumberOnly: true }).xml;
+    let returnModel = plainToClass(TradeReturnModel, values, {excludeExtraneousValues: true});
+    console.log(returnModel);
+
+    let resultModel = plainToClass(TradeResultModel, values, {excludeExtraneousValues: true});
+    console.log(resultModel);
+
 });

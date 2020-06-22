@@ -266,7 +266,7 @@ export class TradeRefundCouponInfo {
 
 }
 
-export const ERRORS = {
+export const API_ERROR_MESSAGES = {
 	'SYSTEMERROR' : "系统错误",
 	'XML_FORMAT_ERROR' : "XML格式错误",
 	'APPID_NOT_EXIST' : "APPID不存在",

@@ -1,9 +1,12 @@
-import { TradeCreateModel, TradeCreateResponseModel } from '../models/TradeCreateModels';
-import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeAction';
+import { TradeCloseResponseModel } from '../models/TradeCloseModels';
 import { TradeNoModel } from '../models/TradeCommons';
+import { TradeCreateModel, TradeCreateResponseModel } from '../models/TradeCreateModels';
 import { TradeQueryResponseModel } from '../models/TradeQueryModels';
 import { TradeRefundModel, TradeRefundResponseModel } from '../models/TradeRefundModels';
-import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from '../models/TradeRefundQueryModel';
+import {
+    TradeRefundQueryModel, TradeRefundQueryResponseModel
+} from '../models/TradeRefundQueryModels';
+import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeAction';
 
 /**
  * 统一下单
@@ -28,13 +31,13 @@ export const TradeCreateAction: TradeAction<TradeCreateModel, TradeCreateRespons
  * @author BitterCoffee
  *
  */
-export const TradeCloseAction: TradeAction<TradeNoModel, undefined> = {
+export const TradeCloseAction: TradeAction<TradeNoModel, TradeCloseResponseModel> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
 		url: "https://api.mch.weixin.qq.com/pay/closeorder",
 		requestType: TradeNoModel,
-		responseType: undefined
+		responseType: TradeCloseResponseModel
 	}
 };
 

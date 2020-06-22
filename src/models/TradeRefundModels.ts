@@ -1,5 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { Moment } from 'moment';
+import { customAlphabet } from 'nanoid';
 
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
@@ -9,10 +10,17 @@ import {
     TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel
 } from './TradeCommons';
 
+const nanoid = customAlphabet('1234567890', 32);
 /**
  * 退款请求
  */
 export class TradeRefundModel extends TradeNoModel {
+
+	constructor() {
+		super();
+		this.refundNo = nanoid();
+	}
+
     /**
 	 * 标价金额 订单总金额，单位为分
 	 */

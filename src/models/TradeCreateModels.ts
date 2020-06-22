@@ -1,10 +1,12 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
+import { customAlphabet } from 'nanoid';
 
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
 import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo, XmlModel } from './TradeCommons';
 
+const nanoid = customAlphabet('1234567890', 32);
 /**
  * 商品信息
  */
@@ -109,6 +111,7 @@ export class TradeCreateModel {
 		this.tradeType = tradeType;
 		this.totalFee = totalFee;
 		this.body = body;
+		this.tradeNo = nanoid();
 	}
 
 	/**

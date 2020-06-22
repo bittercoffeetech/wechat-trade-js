@@ -761,19 +761,19 @@
         "signature": "395778c7f605a594c411294fca4e9e90500b2f7ececa84f26559ae40c607a593",
         "affectsGlobalScope": false
       },
-      "./src/wechattradeclient.ts": {
-        "version": "7f8b4e1590d578d05d134996c8a159fb53b14a9377c49aa09a6bd58aacec2c48",
-        "signature": "647bafce966a9a433605985e370ebe07a3aa04ff0a04f2915331355bf9276ee0",
-        "affectsGlobalScope": false
-      },
-      "./src/index.ts": {
-        "version": "8740447b879813f42400a1d09c5b159794962690162001848dd0c2353f46fb0b",
-        "signature": "396a3607ca8288c7dd02dff9b04e6ffb057b3c6f3d12965421373c3da78b65cc",
+      "./src/actions/tradeaction.ts": {
+        "version": "c94b2f36773c2fcb7e444f45d2fea0c798c1215212e703ed24a2f9259ce4e06a",
+        "signature": "6d0a6456cc3f43dcd0846f62040e860b116eb0d7142c22b7cdb3fd6a22f4d31f",
         "affectsGlobalScope": false
       },
       "./src/models/tradecreatemodels.ts": {
         "version": "3cc76d9eccbd8d53f589a8e5fb74d201ed0ab55ac703467471ac4033883a2c53",
         "signature": "85e5d7a9ae69b4bbf31ca3839276a933c8d0397bc6a518f01a1f8b688a4ffedd",
+        "affectsGlobalScope": false
+      },
+      "./src/models/tradequerymodels.ts": {
+        "version": "d0f43c09350c93029dd75bc2cc2f85361a2bcb09d255a64ed5cf98b0dc9a26ea",
+        "signature": "110d883052f77f10f81d87d5c1fc0967788107affabf9702dacdf6d97214f055",
         "affectsGlobalScope": false
       },
       "./src/enums/refundaccountenum.ts": {
@@ -791,34 +791,39 @@
         "signature": "f828dda367d00c2917d9c8a0e69c7e1378d007e5ce95beb426fd5a973dbc33dd",
         "affectsGlobalScope": false
       },
-      "./src/actions/tradeaction.ts": {
-        "version": "0e2a1f7ee06c1cc92c1a23eafe08f6f6724cdd943f92d7348f28192aa4efcda6",
-        "signature": "23fb288825d9795d1ec364e75290a3a36a87e635bd9887b23245d1036e2d4d73",
-        "affectsGlobalScope": false
-      },
-      "./src/actions/notifyactions.ts": {
-        "version": "8d13d028fba4e2fd66d9c9c6f906cda7e4f4fd56082a7e262dd4ee3350b82196",
-        "signature": "6e0a842f1834a6c6722976313b4d2a29a10fb2565ec83d36bc1aa3259a7a3fe6",
-        "affectsGlobalScope": false
-      },
-      "./src/actions/sheetactions.ts": {
-        "version": "9ba7b59b181cd1acdb5c4dc7816c3275f2ffe0f3a00c8cc08c25aa584ef499a8",
-        "signature": "382bcd181a6045bca7586301e479c73418c2ff4be881edb2e926eb002b97807b",
-        "affectsGlobalScope": false
-      },
-      "./src/models/tradequerymodels.ts": {
-        "version": "d0f43c09350c93029dd75bc2cc2f85361a2bcb09d255a64ed5cf98b0dc9a26ea",
-        "signature": "110d883052f77f10f81d87d5c1fc0967788107affabf9702dacdf6d97214f055",
-        "affectsGlobalScope": false
-      },
       "./src/models/traderefundquerymodel.ts": {
         "version": "1b5be6e3e8dcd372a6f5544e331467a9a78a795d4dc86fc4bc62ed9b071d036b",
         "signature": "6efb9e9e343e914a0240e1ea5c2ea1d041e4161f0d20354665aedd048b8d8f21",
         "affectsGlobalScope": false
       },
+      "./src/models/tradeclosemodels.ts": {
+        "version": "9b4a21dd59a31aa39d7f74b784ec13b87cfa98e601f131e20ecdf18b3a5c0912",
+        "signature": "867a095904f64c3714fea4c56660f5d901464ebcb5db21910c084f7c4062b89a",
+        "affectsGlobalScope": false
+      },
       "./src/actions/tradeactions.ts": {
-        "version": "06f1d0e65cd2ec3d0ea15929e7266b42ed6b917a3a8f873657137e1da1b8fec1",
-        "signature": "a7939c98663ff525ef26dafd7f7d0a3124744e1fedbc485ed1252cc2e55a923a",
+        "version": "1c0a648ac1455b9a0b45abcf8264cbc308a27280ca8eb0a3b9610b6a0f5b652a",
+        "signature": "aea9b60f9650b639d36b7922efa2c525c767ce7da027c151a323f3504fcc1cf1",
+        "affectsGlobalScope": false
+      },
+      "./src/wechattradeclient.ts": {
+        "version": "da303b538dd3e111c57ed750f4d2e0be325fb7a1b8bdde838d7a16b02e3eab7e",
+        "signature": "11db36d49693ac8d34d929f2be33cc30c7af9cabab5679754b55d452374833b4",
+        "affectsGlobalScope": false
+      },
+      "./src/index.ts": {
+        "version": "8740447b879813f42400a1d09c5b159794962690162001848dd0c2353f46fb0b",
+        "signature": "396a3607ca8288c7dd02dff9b04e6ffb057b3c6f3d12965421373c3da78b65cc",
+        "affectsGlobalScope": false
+      },
+      "./src/actions/notifyactions.ts": {
+        "version": "bff544ded24a9a4077c0c9524e9d841a2755bbe564c6bfe571bb180ab68fd629",
+        "signature": "b5ba2efbb6fc47674811da702ae1043b949dafbf906969850605ac2d9d7d36d1",
+        "affectsGlobalScope": false
+      },
+      "./src/actions/sheetactions.ts": {
+        "version": "bf555239750c8638d337069d6d606917ae6c52c6f373e1074b25976bf1242d34",
+        "signature": "dd85f641ec10ec7e98888ad62cb88e7a4e1aa0449ab09ab89f0993d00ce57e0c",
         "affectsGlobalScope": false
       },
       "./src/enums/tartypeenum.ts": {
@@ -2027,6 +2032,7 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./src/actions/tradeaction.ts",
+        "./src/models/tradeclosemodels.ts",
         "./src/models/tradecommons.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/tradequerymodels.ts",
@@ -2126,6 +2132,12 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/reflect-metadata/index.d.ts"
       ],
+      "./src/models/tradeclosemodels.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts",
+        "./node_modules/@types/node/util.d.ts"
+      ],
       "./src/models/tradecommons.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2218,9 +2230,12 @@
         "./node_modules/nanoid/index.d.ts",
         "./node_modules/reflect-metadata/index.d.ts",
         "./node_modules/typescriptcollectionsframework/definitions/index.d.ts",
+        "./src/actions/tradeaction.ts",
+        "./src/actions/tradeactions.ts",
         "./src/enums/errorcodeenum.ts",
         "./src/enums/signtypeenum.ts",
         "./src/models/tradecommons.ts",
+        "./src/models/tradecreatemodels.ts",
         "./src/models/tradesheetmodels.ts"
       ]
     },
@@ -3371,6 +3386,7 @@
       ],
       "./src/actions/tradeactions.ts": [
         "./src/actions/tradeaction.ts",
+        "./src/models/tradeclosemodels.ts",
         "./src/models/tradecommons.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/tradequerymodels.ts",
@@ -3423,7 +3439,9 @@
         "./src/enums/tradetypeenum.ts"
       ],
       "./src/wechattradeclient.ts": [
-        "./node_modules/reflect-metadata/index.d.ts"
+        "./node_modules/reflect-metadata/index.d.ts",
+        "./src/actions/tradeaction.ts",
+        "./src/models/tradecreatemodels.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -3585,6 +3603,7 @@
       "./src/enums/tradestatusenum.ts",
       "./src/enums/tradetypeenum.ts",
       "./src/index.ts",
+      "./src/models/tradeclosemodels.ts",
       "./src/models/tradecommons.ts",
       "./src/models/tradecreatemodels.ts",
       "./src/models/tradequerymodels.ts",
@@ -3596,33 +3615,26 @@
         [
           {
             "file": "./src/wechattradeclient.ts",
-            "start": 955,
-            "length": 12,
-            "messageText": "'toRequestXml' is declared but its value is never read.",
+            "start": 3622,
+            "length": 17,
+            "code": 2322,
             "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
+            "messageText": {
+              "messageText": "Type 'undefined' is not assignable to type 'T'.",
+              "category": 1,
+              "code": 2322,
+              "next": [
+                {
+                  "messageText": "'T' could be instantiated with an arbitrary type which could be unrelated to 'undefined'.",
+                  "category": 1,
+                  "code": 5082
+                }
+              ]
+            }
           },
           {
             "file": "./src/wechattradeclient.ts",
-            "start": 1430,
-            "length": 16,
-            "messageText": "'parseXmlResponse' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          },
-          {
-            "file": "./src/wechattradeclient.ts",
-            "start": 1475,
-            "length": 13,
-            "messageText": "Cannot find name 'TradeResponse'.",
-            "category": 1,
-            "code": 2304
-          },
-          {
-            "file": "./src/wechattradeclient.ts",
-            "start": 2642,
+            "start": 3665,
             "length": 16,
             "messageText": "'parseCsvResponse' is declared but its value is never read.",
             "category": 1,

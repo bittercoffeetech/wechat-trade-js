@@ -39,7 +39,7 @@ export class TradeBillAllModel extends TradeCsvlModel {
 	 * 账单类型
 	 */
     @Expose({ name: "bill_type" })
-    billType: BillTypeEnum = BillTypeEnum.ALL;
+    readonly billType: BillTypeEnum = BillTypeEnum.ALL;
 }
 
 /**
@@ -51,7 +51,7 @@ export class TradeBillSuccessModel extends TradeCsvlModel {
 	 * 账单类型
 	 */
     @Expose({ name: "bill_type" })
-    billType: BillTypeEnum = BillTypeEnum.SUCCESS;
+    readonly billType: BillTypeEnum = BillTypeEnum.SUCCESS;
 }
 
 /**
@@ -63,7 +63,7 @@ export class TradeBillRefundModel extends TradeCsvlModel {
 	 * 账单类型
 	 */
     @Expose({ name: "bill_type" })
-    billType: BillTypeEnum = BillTypeEnum.REFUND;
+    readonly billType: BillTypeEnum = BillTypeEnum.REFUND;
 }
 
 /**

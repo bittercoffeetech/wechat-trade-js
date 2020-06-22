@@ -4,7 +4,7 @@ import {
     TradeBillRefundResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel,
     TradeFundflowModel, TradeFundflowResponseModel
 } from '../models/TradeSheetModels';
-import { TradeAction, DefaultTradeRequest, DefaultTradeResponse } from './TradeAction';
+import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeAction';
 
 /**
  * 下载所有交易账单

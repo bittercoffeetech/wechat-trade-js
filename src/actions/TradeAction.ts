@@ -8,7 +8,7 @@ export interface TradeResponse<S> {
 	/**
 	 * 获取返回对象的类型信息
 	 */
-	responseType: { new(...args: any[]): S; } | undefined;
+	responseType: { new(...args: any[]): S; };
 
 	/**
 	 * 返回值中是否包括签名字段
