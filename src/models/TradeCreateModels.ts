@@ -310,7 +310,8 @@ export class TradeCreateNotifyModel extends TradeCashFeeModel {
 	 * 支付完成时间 订单支付时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。
 	 */
 	@Expose({ name: "time_end" })
-	timeEnd?: Date;
+	@Transform(value => (value != undefined) ? moment(value, 'YYYYMMDDhhmmss') : undefined)
+	timeEnd?: moment.Moment;
 
 	/**
 	 * 代金券使用数量

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { plainToClass, classToPlain } from 'class-transformer';
 import { CSVParseParam } from 'csvtojson/v2/Parameters';
 import { parse as toJson, j2xParser as toXml } from 'fast-xml-parser';
-import { Readable } from 'stream';
+import { Readable, Duplex } from 'stream';
 import { resolve } from 'path';
 import { customAlphabet } from 'nanoid';
 import { TreeMap, Collections } from 'typescriptcollectionsframework';
@@ -12,17 +12,19 @@ import csv from 'csvtojson';
 import he from "he";
 import hmacSha256 from 'crypto-js/hmac-sha256';
 import md5 from 'crypto-js/md5';
-import https from 'https';
-import { TradeResponse, TradeAction } from './actions/TradeAction';
+import zlib from 'zlib';
+// import https from 'https';
+import axios from 'axios';
+import { TradeResponse, TradeAction, TradeCsvResponse, TradeCsvAction } from './actions/TradeAction';
 import { TradeCreateModel, TradeCreateResponseModel, TradeCreateNotifyModel } from './models/TradeCreateModels';
 import { TradeCreateAction, TradeQueryAction, TradeCloseAction, TradeRefundAction, TradeRefundQueryAction } from './actions/TradeActions';
 import { TradeQueryResponseModel } from './models/TradeQueryModels';
-import { TradeCloseResponseModel } from './models/TradeCloseModels';
+import { TradeEmptyResponseModel } from './models/TradeCloseModels';
 import { TradeRefundModel, TradeRefundResponseModel, TradeRefundNotifyModel } from './models/TradeRefundModels';
 import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from './models/TradeRefundQueryModels';
 import { TradeCreateNotify, TradeRefundNotify } from './actions/NotifyActions';
 import { TradeBillAllAction, TradeBillSuccessAction, TradeBillRefundAction, TradeFundflowAction } from './actions/SheetActions';
-import { CsvResponse, TradeBillAllModel, TradeBillAllResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel, TradeBillRefundModel, TradeBillRefundResponseModel, TradeFundflowModel, TradeFundflowResponseModel } from './models/TradeSheetModels';
+import { TradeBillAllModel, TradeBillSuccessModel, TradeBillRefundModel, TradeFundflowModel, TradeCsvResponseModel, TradeBillSummaryInfo, TradeBillAllInfo } from './models/TradeSheetModels';
 import { TradeReturnModel, TradeResultModel, API_ERROR_MESSAGES, XmlModel, TradeNoModel } from './models/TradeCommons';
 import { SignTypeEnum } from './enums/SignTypeEnum';
 import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
@@ -32,17 +34,14 @@ const nanoid = customAlphabet('1234567890abcdef', 32);
 
 class Executor<R, S> {
     private action: TradeAction<R, S>;
-    private model?: R;
-    constructor(action: TradeAction<R, S>) {
+    private model: R;
+    constructor(action: TradeAction<R, S>, model: R) {
+        this.model = model;
         this.action = action;
     }
 
-    public withModel(model: R): Executor<R, S> {
-        this.model = model;
-        return this;
-    }
-
-    public execute(): S {
+    public async execute(): Promise<S | undefined> {
+        
         if (this.model == undefined) {
             throw Error("Model Object must not be null");
         }
@@ -51,55 +50,39 @@ class Executor<R, S> {
 
         let forPost = toRequestXml(this.model);
         console.log(forPost);
-        console.log(this.action);
+        let forResult: S | undefined = undefined;
 
-        return parseXmlResponse('xml', this.action);
+        await axios.post(this.action.url, forPost, {
+            responseType: 'arraybuffer'
+        }).then((resp) => {
+
+            if(!this.action.isStreaming) {
+                return parseXmlResponse(resp.data, this.action);
+            }
+            // } else {
+            //     let stream = new Duplex();
+            //     stream.push(zlib.unzipSync(resp.data));
+            //     stream.push(null);
+
+ 
+            //     parseCsvResponse(stream, this.action as TradeCsvAction<R, ?, ?>).then((r) => {
+            //             console.log(r);
+            //     });
+
+            // }
+
+            return undefined;
+            
+        }).catch((e) => {
+            throw e;
+        });
+        
+        return forResult;
+        //parseCsvResponse(require('fs').createReadStream(resolve('./__tests__/data/refund.txt')), TradeBillAllResponseModel);
+      
     }
 }
 
-export function newCreateAction(): Executor<TradeCreateModel, TradeCreateResponseModel> {
-    return new Executor(TradeCreateAction);
-}
-
-export function newQueryAction(): Executor<TradeNoModel, TradeQueryResponseModel> {
-    return new Executor(TradeQueryAction);
-}
-
-export function newCloseAction(): Executor<TradeNoModel, TradeCloseResponseModel> {
-    return new Executor(TradeCloseAction);
-}
-
-export function newRefundAction(): Executor<TradeRefundModel, TradeRefundResponseModel> {
-    return new Executor(TradeRefundAction);
-}
-
-export function newRefundQueryAction(): Executor<TradeRefundQueryModel, TradeRefundQueryResponseModel> {
-    return new Executor(TradeRefundQueryAction);
-}
-
-export function newBillAllAction(): Executor<TradeBillAllModel, TradeBillAllResponseModel> {
-    return new Executor(TradeBillAllAction);
-}
-
-export function newBillSuccessAction(): Executor<TradeBillSuccessModel, TradeBillSuccessResponseModel> {
-    return new Executor(TradeBillSuccessAction);
-}
-
-export function newBillRefundAction(): Executor<TradeBillRefundModel, TradeBillRefundResponseModel> {
-    return new Executor(TradeBillRefundAction);
-}
-
-export function newFundflowAction(): Executor<TradeFundflowModel, TradeFundflowResponseModel> {
-    return new Executor(TradeFundflowAction);
-}
-
-export function onCreateNotifier(xml: string): TradeCreateNotifyModel {
-    return parseXmlResponse(xml, TradeCreateNotify);
-}
-
-export function onRefundNotifier(xml: string): TradeRefundNotifyModel {
-    return parseXmlResponse(xml, TradeRefundNotify);
-}
 
 function toRequestXml(request: any): string {
     let forSign = {
@@ -119,7 +102,7 @@ function toRequestXml(request: any): string {
 }
 
 
-function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>): T {
+function parseXmlResponse<T>(xml: string, response: TradeResponse<T>): T | undefined{
     let values = toJson(xml, { parseTrueNumberOnly: true })["xml"];
 
     let returnModel = plainToClass(TradeReturnModel, values,
@@ -127,42 +110,42 @@ function parseXmlResponse<T>(xml: string, resultType: TradeResponse<T>): T {
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.returnCode, returnModel.returnMessage);
     }
-
     let resultModel = plainToClass(TradeResultModel, values,
         { excludeExtraneousValues: true });
     if (!resultModel.isSuccess) {
         throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
     }
-
-    if (resultType.hasSigned && sign(values, resultType.responseSignType) != values['sign']) {
-        throw new WechatApiError(ErrorCodeEnum.SIGNERROR, API_ERROR_MESSAGES[ErrorCodeEnum.SIGNERROR]);
+    
+    if(response.responseType != undefined) {
+        if (response.hasSigned && sign(values, response.responseSignType) != values['sign']) {
+            throw new WechatApiError(ErrorCodeEnum.SIGNERROR, API_ERROR_MESSAGES[ErrorCodeEnum.SIGNERROR]);
+        }
+        if (response.encrypted != undefined) {
+            values = { ...values, ...decrypt(values[response.encrypted], nconf.get('mch_key')) };
+            delete values[response.encrypted];
+        }
+        if (response.hasHierarchy && response.responseType != undefined) {
+            values = hierarchy(response.responseType, values);
+        }   
+        return plainToClass(response.responseType, values, { enableImplicitConversion: true, excludeExtraneousValues: true });
+    } else {
+        return undefined;
     }
-
-    if (resultType.encrypted != undefined) {
-        values = { ...values, ...decrypt(values[resultType.encrypted], nconf.get('mch_key')) };
-        delete values[resultType.encrypted];
-    }
-
-    if (resultType.hasHierarchy && resultType.responseType != undefined) {
-        values = hierarchy(resultType.responseType, values);
-    }
-
-    return plainToClass(resultType.responseType, values);
+    
 }
 
-async function parseCsvResponse<ST, RT>(readStream: Readable,
-    resultType: { new(...args: any[]): CsvResponse<ST, RT>; }): Promise<CsvResponse<ST, RT>> {
+async function parseCsvResponse<ST, RT>(readStream: Readable, responseType: TradeCsvResponse<ST, RT>): Promise<TradeCsvResponseModel<ST, RT>> {
 
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
     let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
-    let summary: string = '';
+    let summaryLine: string = '';
     let isSummary: boolean = false;
-    let result = new resultType();
+    let result = new TradeCsvResponseModel<ST, RT>();
 
-    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.recordType()) })
+    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', responseType.recordType() ) })
         .fromStream(readStream)
         .preFileLine((line, index) => {
-            if (isSummary) { summary = line; return ','; }
+            if (isSummary) { summaryLine = line; return ','; }
             let traw = line.replace(/`/g, "");
 
             if (hasChineseWord(traw.substr(0, 1))) {
@@ -173,15 +156,15 @@ async function parseCsvResponse<ST, RT>(readStream: Readable,
         })
         .then((csvRow: any[]) => {
             for (var i = 0; i < csvRow.length; i++) {
-                result.records.push(plainToClass(result.recordType(), csvRow[i]))
+                result.records.push(plainToClass(responseType.recordType(), csvRow[i], {enableImplicitConversion: true}))
             }
         });
 
-    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', result.summaryType()) })
-        .fromString(summary)
+    await csv({ ...csvParam, headers: Reflect.getMetadata('columns', responseType.summaryType()) })
+        .fromString(summaryLine)
         .preFileLine((line, _index) => line.replace(/`/g, ""))
         .then((csvRow: any[]) => {
-            result.summary = plainToClass(result.summaryType(), csvRow[0]);
+            result.summary = plainToClass(responseType.summaryType(), csvRow[0], {enableImplicitConversion: true});
         });
 
     return result;
@@ -190,7 +173,7 @@ async function parseCsvResponse<ST, RT>(readStream: Readable,
 function sign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
     var sorted = new TreeMap<string, any>(Collections.getStringComparator());
     for (let prop in forSign) {
-        if (forSign[prop] != undefined && prop != 'sign') {
+        if (forSign[prop] != undefined && forSign[prop] != '' && prop != 'sign') {
             sorted.put(prop, forSign[prop]);
         }
     }
@@ -275,4 +258,49 @@ export class WechatApiError extends Error {
         super(message);
         this.code = code;
     }
+}
+
+
+export function newCreateAction(model: TradeCreateModel): Executor<TradeCreateModel, TradeCreateResponseModel> {
+    return new Executor(TradeCreateAction, model);
+}
+
+export function newQueryAction(model: TradeNoModel): Executor<TradeNoModel, TradeQueryResponseModel> {
+    return new Executor(TradeQueryAction, model);
+}
+
+export function newCloseAction(model: TradeNoModel): Executor<TradeNoModel, TradeEmptyResponseModel> {
+    return new Executor(TradeCloseAction, model);
+}
+
+export function newRefundAction(model: TradeRefundModel): Executor<TradeRefundModel, TradeRefundResponseModel> {
+    return new Executor(TradeRefundAction, model);
+}
+
+export function newRefundQueryAction(model: TradeRefundQueryModel): Executor<TradeRefundQueryModel, TradeRefundQueryResponseModel> {
+    return new Executor(TradeRefundQueryAction, model);
+}
+
+export function newBillAllAction(model: TradeBillAllModel): Executor<TradeBillAllModel, TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
+    return new Executor(TradeBillAllAction, model);
+}
+
+export function newBillSuccessAction(model: TradeBillSuccessModel): Executor<TradeBillSuccessModel, TradeBillSuccessResponseModel> {
+    return new Executor(TradeBillSuccessAction, model);
+}
+
+export function newBillRefundAction(model: TradeBillRefundModel): Executor<TradeBillRefundModel, TradeBillRefundResponseModel> {
+    return new Executor(TradeBillRefundAction, model);
+}
+
+export function newFundflowAction(model: TradeFundflowModel): Executor<TradeFundflowModel, TradeFundflowResponseModel> {
+    return new Executor(TradeFundflowAction, model);
+}
+
+export function onCreateNotifier(xml: string): TradeCreateNotifyModel {
+    return parseXmlResponse(xml, TradeCreateNotify);
+}
+
+export function onRefundNotifier(xml: string): TradeRefundNotifyModel {
+    return parseXmlResponse(xml, TradeRefundNotify);
 }

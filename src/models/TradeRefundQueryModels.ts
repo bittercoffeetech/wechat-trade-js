@@ -1,16 +1,28 @@
-import { Expose, Type } from 'class-transformer';
-import { Moment } from 'moment';
+import { Expose, Type, Transform } from 'class-transformer';
+import moment from 'moment';
 
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundChannelEnum } from '../enums/RefundChannelEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel } from './TradeCommons';
+import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel, TradeId } from './TradeCommons';
+
+export type RefundId = TradeId | 'rno' | 'rid';
 
 /**
  * 退款查询
  */
 export class TradeRefundQueryModel extends TradeNoModel {
-    /**
+
+	constructor(idType: RefundId, id: string) {
+		super(idType as TradeId, id)
+		if(idType == 'rno') {
+			this.refundNo = id;
+		} else if (idType == 'rid') {
+			this.refundId = id;
+		}
+	}
+
+     /**
 	 * 商户退款单号 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
 	 */
 	@Expose({ name: "out_refund_no" })
@@ -28,6 +40,10 @@ export class TradeRefundQueryModel extends TradeNoModel {
 	@Expose({ name: "offset" })
 	offset?: number;
 }
+
+export const withRefundNo = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rno", id);
+export const withRefundId = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rid", id);
+
 
 /**
  * 退款详情
@@ -96,7 +112,8 @@ export class TradeRefundInfo {
 	 */
 	@Expose({ name: "refund_success_time" })
 	@XmlModel('refund_success_time')
-	successTime!: Moment;
+	@Transform(value => (value != undefined) ? moment(value, 'YYYY-MM-DD hh:mm:ss') : undefined)
+	successTime!: moment.Moment;
 
 	/**
 	 * 代金券使用数量

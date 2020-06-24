@@ -3,7 +3,8 @@ import { parse as toJson } from 'fast-xml-parser';
 import { plainToClass } from "class-transformer";
 import rewire from 'rewire';
 import { SignTypeEnum } from '../src/enums/SignTypeEnum';
-import { TradeReturnModel, TradeResultModel } from '../src/models/TradeCommons';
+import { TradeReturnModel, TradeResultModel, TradeNoModel } from '../src/models/TradeCommons';
+import { resolve } from 'path';
 
 test('Test Sign Algorithm', () => {
 
@@ -23,6 +24,39 @@ test('Test Sign Algorithm', () => {
     const sign = clientModule.__get__("sign");
 
     expect(sign(toSign, SignTypeEnum.MD5)).toBe('0188F350D33A56AF1160AE69F4AAC3E7');
+});
+
+test('Test Response Sign', () => {
+
+    let xml = "<xml><return_code><![CDATA[SUCCESS]]></return_code>" + 
+    "<return_msg><![CDATA[OK]]></return_msg>" + 
+    "<appid><![CDATA[wx8949c222019862f5]]></appid>" + 
+    "<mch_id><![CDATA[1234539902]]></mch_id>" + 
+    "<nonce_str><![CDATA[85UCoqTOxXhlzgVd]]></nonce_str>" + 
+    "<sign><![CDATA[20FE468851E4B1F2193B9DAAEBE824DF]]></sign>" + 
+    "<result_code><![CDATA[SUCCESS]]></result_code>" + 
+    "<openid><![CDATA[oenOB4tQ2pKtKuWSp6eGwf9XNjsY]]></openid>" + 
+    "<is_subscribe><![CDATA[N]]></is_subscribe>" + 
+    "<trade_type><![CDATA[JSAPI]]></trade_type>" + 
+    "<bank_type><![CDATA[COMM_DEBIT]]></bank_type>" + 
+    "<total_fee>30000</total_fee>" + 
+    "<fee_type><![CDATA[CNY]]></fee_type>" + 
+    "<transaction_id><![CDATA[4200000536202005163811292828]]></transaction_id>" + 
+    "<out_trade_no><![CDATA[90013580520959892632499715588959]]></out_trade_no>" + 
+    "<attach><![CDATA[]]></attach>" + 
+    "<time_end><![CDATA[20200516095807]]></time_end>" + 
+    "<trade_state><![CDATA[REFUND]]></trade_state>" + 
+    "<cash_fee>30000</cash_fee>" + 
+    "<trade_state_desc><![CDATA[订单发生过退款，退款详情请查询退款单]]></trade_state_desc>" + 
+    "<cash_fee_type><![CDATA[CNY]]></cash_fee_type>" + 
+    "</xml>";
+
+    let j = toJson(xml);
+    const clientModule = rewire("../dist/WechatTradeClient.js");
+    const sign = clientModule.__get__("sign");
+
+    expect(sign(j.xml, SignTypeEnum.MD5)).toBe('20FE468851E4B1F2193B9DAAEBE824DF');
+
 });
 
 test('Test REQ_INFO of Refund Notify Decrypt', () => {
@@ -81,6 +115,23 @@ test('Test Hierarchy Plain', () => {
     expect(result['refund_fee']).toBe(23000);
 });
 
+it('Test CSV Response Parse', async () => {
+
+    const rootModule = rewire("../dist/WechatTradeClient.js");
+    let parseCsvResponse = rootModule.__get__('parseCsvResponse');
+
+    const csvModule = rewire("../dist/models/TradeSheetModels.js");
+    let TradeBillRefundResponseModel = csvModule.__get__('TradeBillRefundResponseModel');
+
+    await parseCsvResponse(require('fs').createReadStream(resolve('./__tests__/data/refund.txt')),
+        TradeBillRefundResponseModel )
+        .then((v: any) => {
+            expect(v.summary.totalTrades).toBe(72);
+            expect(v.records.length).toBe(2);
+        });
+
+});
+
 test("Return failed.", () => {
 
     let xml = "<xml>" +
@@ -99,9 +150,10 @@ test("Return failed.", () => {
 
     let values = toJson(xml, { parseTrueNumberOnly: true }).xml;
     let returnModel = plainToClass(TradeReturnModel, values, {excludeExtraneousValues: true});
-    console.log(returnModel);
+    expect(returnModel.isSuccess).toBeFalsy();
 
     let resultModel = plainToClass(TradeResultModel, values, {excludeExtraneousValues: true});
-    console.log(resultModel);
+    expect(resultModel.isSuccess).toBeFalsy();
+    expect(resultModel.errorCode).toBe('INVALID_REQUEST');
 
 });

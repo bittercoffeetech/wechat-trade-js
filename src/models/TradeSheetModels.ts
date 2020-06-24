@@ -15,6 +15,11 @@ import { CsvModel } from './TradeCommons';
  */
 export class TradeCsvlModel {
 
+	constructor(year: number, month: number, day: number, tar?: boolean) {
+		this.billDate = moment([year, month - 1, day]);
+		this.tarType = tar;
+	}
+
 	/**
 	 * 下载对账单的日期，格式：20140603
 	 */
@@ -31,15 +36,11 @@ export class TradeCsvlModel {
 }
 
 /**
- * 下载所有交易
+ * 表格数据返回对象模型
  */
-export class TradeBillAllModel extends TradeCsvlModel {
-
-	/**
-	 * 账单类型
-	 */
-    @Expose({ name: "bill_type" })
-    readonly billType: BillTypeEnum = BillTypeEnum.ALL;
+export class TradeCsvResponseModel<ST, RT> { 
+	summary!: ST; 
+	records!: RT[];
 }
 
 /**
@@ -55,6 +56,18 @@ export class TradeBillSuccessModel extends TradeCsvlModel {
 }
 
 /**
+ * 下载所有交易
+ */
+export class TradeBillAllModel extends TradeCsvlModel {
+
+	/**
+	 * 账单类型
+	 */
+    @Expose({ name: "bill_type" })
+    readonly billType: BillTypeEnum = BillTypeEnum.ALL;
+}
+
+/**
  * 下载退款交易
  */
 export class TradeBillRefundModel extends TradeCsvlModel {
@@ -64,18 +77,6 @@ export class TradeBillRefundModel extends TradeCsvlModel {
 	 */
     @Expose({ name: "bill_type" })
     readonly billType: BillTypeEnum = BillTypeEnum.REFUND;
-}
-
-/**
- * 资金账单请求
- */
-export class TradeFundflowModel extends TradeCsvlModel {
-
-	/**
-	 * 资金账户类型
-	 */
-    @Expose({ name: "account_type" })
-    accountType!: AccountTypeEnum;
 }
 
 /**
@@ -336,6 +337,18 @@ export class TradeBillRefundInfo extends TradeBillAllInfo {
 }
 
 /**
+ * 资金账单请求
+ */
+export class TradeFundflowModel extends TradeCsvlModel {
+
+	/**
+	 * 资金账户类型
+	 */
+    @Expose({ name: "account_type" })
+    accountType!: AccountTypeEnum;
+}
+
+/**
  * 资金账单概要
  */
 @CsvModel(['total_flows', 'total_incomes', 'total_income_fee', 'total_expenses', 'total_expenses_fee'])
@@ -444,56 +457,4 @@ export class TradeFundflowInfo {
 	 */
 	@Expose({ name: "voucher_no" })
 	voucherNo!: string;
-}
-
-export abstract class CsvResponse<ST, RT> {
-    summary!: ST;
-	records: RT[] = [];
-	abstract summaryType(): new(...args: any[]) => ST;
-	abstract recordType(): new(...args: any[]) => RT;
-}
-
-abstract class TradeBillCsvResponse<RT> extends CsvResponse<TradeBillSummaryInfo, RT> {
-	summaryType(): new (...args: any[]) => TradeBillSummaryInfo {
-		return TradeBillSummaryInfo;
-	}
-}
-
-/**
- * 所有交易账单返回
- */
-export class TradeBillAllResponseModel extends TradeBillCsvResponse<TradeBillAllInfo> {
-	recordType(): new (...args: any[]) => TradeBillAllInfo {
-		return TradeBillAllInfo;
-	}
-}
-
-/**
- * 退款交易返回
- */
-export class TradeBillRefundResponseModel extends TradeBillCsvResponse<TradeBillRefundInfo> {
-	recordType(): new (...args: any[]) => TradeBillRefundInfo {
-		return TradeBillRefundInfo;
-	}
-}
-
-/**
- * 成功交易返回
- */
-export class TradeBillSuccessResponseModel extends TradeBillCsvResponse<TradeBillSuccessInfo> {
-	recordType(): new (...args: any[]) => TradeBillSuccessInfo {
-		return TradeBillSuccessInfo;
-	}
-}
-
-/**
- * 资金账单返回
- */
-export class TradeFundflowResponseModel extends CsvResponse<TradeFundflowSummaryInfo, TradeFundflowInfo> {
-	summaryType(): new (...args: any[]) => TradeFundflowSummaryInfo {
-		return TradeFundflowSummaryInfo;
-	}
-	recordType(): new (...args: any[]) => TradeFundflowInfo {
-		return TradeFundflowInfo;
-	}
 }

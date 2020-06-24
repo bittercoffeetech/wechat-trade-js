@@ -25,7 +25,8 @@
     "nanoid": "^3.1.9",
     "nconf": "^0.10.0",
     "reflect-metadata": "^0.1.13",
-    "typescriptcollectionsframework": "^4.4.13"
+    "typescriptcollectionsframework": "^4.4.13",
+    "utf8": "^3.0.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -37,12 +38,14 @@
     "@types/node": "^14.0.4",
     "@types/reflect-metadata": "^0.1.0",
     "@types/rewire": "^2.5.28",
+    "@types/utf8": "^2.1.6",
     "jest": "^26.0.1",
     "rewire": "^5.0.0",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
   },
   "jest": {
+    "verbose": true,
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [

@@ -1,4 +1,5 @@
 import { SignTypeEnum } from '../enums/SignTypeEnum';
+import { TradeCsvResponseModel } from '../models/TradeSheetModels';
 
 /**
  * 通用返回内容定义
@@ -8,7 +9,7 @@ export interface TradeResponse<S> {
 	/**
 	 * 获取返回对象的类型信息
 	 */
-	responseType: { new(...args: any[]): S; };
+	responseType: undefined | { new(...args: any[]): S; };
 
 	/**
 	 * 返回值中是否包括签名字段
@@ -40,6 +41,21 @@ export interface TradeResponse<S> {
      */
 	isStreaming: boolean;
 
+}
+
+/**
+ * 账单类型返回对象
+ */
+export interface TradeCsvResponse<ST, RT> extends TradeResponse<TradeCsvResponseModel<ST, RT> | undefined> {
+	/**
+	 * 概要信息对应的模型类
+	 */
+	summaryType(): new(...args: any[]) => ST;
+
+	/**
+	 * 详细信息对应的模型类
+	 */
+	recordType(): new(...args: any[]) => RT;
 }
 
 /**
@@ -94,4 +110,8 @@ export const DefaultTradeRequest: Omit<TradeRequest<any>, "requestType" | "url">
  */
 export interface TradeAction<R, S> extends TradeRequest<R>, TradeResponse<S> {
 	// no other things	
+}
+
+export interface TradeCsvAction<R, ST, RT> extends TradeRequest<R>, TradeCsvResponse<ST, RT> {
+	// no other things.
 }

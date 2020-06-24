@@ -1,10 +1,10 @@
 import { SignTypeEnum } from '../enums/SignTypeEnum';
 import {
-    TradeBillAllModel, TradeBillAllResponseModel, TradeBillRefundModel,
-    TradeBillRefundResponseModel, TradeBillSuccessModel, TradeBillSuccessResponseModel,
-    TradeFundflowModel, TradeFundflowResponseModel
+    TradeBillAllModel, TradeBillRefundModel,
+    TradeBillSuccessModel, 
+    TradeFundflowModel, TradeBillSummaryInfo, TradeBillAllInfo, TradeBillSuccessInfo, TradeBillRefundInfo, TradeFundflowSummaryInfo, TradeFundflowInfo
 } from '../models/TradeSheetModels';
-import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeAction';
+import { DefaultTradeRequest, DefaultTradeResponse, TradeCsvAction } from './TradeAction';
 
 /**
  * 下载所有交易账单
@@ -12,7 +12,7 @@ import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeA
  * @author BitterCoffee
  *
  */
-export const TradeBillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResponseModel> = {
+export const TradeBillAllAction: TradeCsvAction<TradeBillAllModel, TradeBillSummaryInfo, TradeBillAllInfo> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -21,7 +21,13 @@ export const TradeBillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResp
 		hasHierarchy: false,
 		isStreaming: true,
 		requestType: TradeBillAllModel,
-		responseType: TradeBillAllResponseModel
+		responseType: undefined,
+		summaryType(): new(...args: any[]) => TradeBillSummaryInfo {
+			return TradeBillSummaryInfo;
+		},
+		recordType(): new(...args: any[]) => TradeBillAllInfo {
+			return TradeBillAllInfo;
+		}
 	}
 };
 
@@ -31,7 +37,7 @@ export const TradeBillAllAction: TradeAction<TradeBillAllModel, TradeBillAllResp
  * @author BitterCoffee
  *
  */
-export const TradeBillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBillSuccessResponseModel> = {
+export const TradeBillSuccessAction: TradeCsvAction<TradeBillSuccessModel, TradeBillSummaryInfo, TradeBillSuccessInfo> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -40,7 +46,13 @@ export const TradeBillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBil
 		hasHierarchy: false,
 		isStreaming: true,
 		requestType: TradeBillSuccessModel,
-		responseType: TradeBillSuccessResponseModel
+		responseType: undefined,
+		summaryType(): new(...args: any[]) => TradeBillSummaryInfo {
+			return TradeBillSummaryInfo;
+		},
+		recordType(): new(...args: any[]) => TradeBillSuccessInfo {
+			return TradeBillSuccessInfo;
+		}
 	}
 };
 
@@ -50,7 +62,7 @@ export const TradeBillSuccessAction: TradeAction<TradeBillSuccessModel, TradeBil
  * @author BitterCoffee
  *
  */
-export const TradeBillRefundAction: TradeAction<TradeBillRefundModel, TradeBillRefundResponseModel> = {
+export const TradeBillRefundAction: TradeCsvAction<TradeBillRefundModel, TradeBillSummaryInfo, TradeBillRefundInfo> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -59,7 +71,13 @@ export const TradeBillRefundAction: TradeAction<TradeBillRefundModel, TradeBillR
 		hasHierarchy: false,
 		isStreaming: true,
 		requestType: TradeBillRefundModel,
-		responseType: TradeBillRefundResponseModel
+		responseType: undefined,
+		summaryType(): new(...args: any[]) => TradeBillSummaryInfo {
+			return TradeBillSummaryInfo;
+		},
+		recordType(): new(...args: any[]) => TradeBillRefundInfo {
+			return TradeBillRefundInfo;
+		}
 	}
 };
 
@@ -69,7 +87,7 @@ export const TradeBillRefundAction: TradeAction<TradeBillRefundModel, TradeBillR
  * @author BitterCoffee
  *
  */
-export const TradeFundflowAction: TradeAction<TradeFundflowModel, TradeFundflowResponseModel> = {
+export const TradeFundflowAction: TradeCsvAction<TradeFundflowModel, TradeFundflowSummaryInfo, TradeFundflowInfo> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
@@ -80,6 +98,12 @@ export const TradeFundflowAction: TradeAction<TradeFundflowModel, TradeFundflowR
 		hasHierarchy: false,
 		isStreaming: true,
 		requestType: TradeFundflowModel,
-		responseType: TradeFundflowResponseModel
+		responseType: undefined,
+		summaryType(): new(...args: any[]) => TradeFundflowSummaryInfo {
+			return TradeFundflowSummaryInfo;
+		},
+		recordType(): new(...args: any[]) => TradeFundflowInfo {
+			return TradeFundflowInfo;
+		}
 	}
 };

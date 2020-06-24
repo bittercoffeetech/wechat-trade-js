@@ -104,21 +104,25 @@ export class TradeReturnModel {
 	@Expose({ name: 'return_msg' })
 	returnMessage?: string;
 
-	get isSuccess(): boolean {
-		return ResultStatusEnum.SUCCESS == this.returnCode;
-	}
-}
-
-/**
- * 错误返回
- */
-export class TradeErrorReturnModel extends TradeReturnModel {
-
-    /**
-     * 错误代码
+	/**
+     * 下载交易账单返回的错误代码
      */
 	@Expose({ name: 'error_code' })
 	errorCode?: string;
+
+	get isSuccess(): boolean {
+		return ResultStatusEnum.SUCCESS == this.returnCode;
+	}
+
+	get errorMessage(): string | undefined{
+		if(this.returnMessage != undefined && SHEET_ERROR_CODES[this.returnMessage] != undefined) {
+			return SHEET_ERROR_CODES[this.returnMessage];
+		} else if(this.errorCode != undefined && SHEET_ERROR_CODES[this.errorCode] != undefined) {
+			return SHEET_ERROR_CODES[this.errorCode];
+		} else {
+			return this.returnMessage;
+		}
+	}
 }
 
 /**
@@ -148,22 +152,36 @@ export class TradeResultModel {
 	}
 }
 
+export type TradeId = 'tno' | 'tid';
+
 /**
  * 交易标识
  */
 export class TradeNoModel {
-    /**
+
+	constructor(idType: TradeId, id: string) {
+		if(idType == 'tno') {
+			this.tradeNo = id;
+		} else {
+			this.transactionId = id;
+		}
+	}
+
+	/**
 	 * <p>商户订单号 商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。</p>
 	 */
 	@Expose({ name: "out_trade_no" })
-	tradeNo!: string;
+	tradeNo?: string;
 
 	/**
 	 * 微信订单号 微信的订单号，优先使用
 	 */
 	@Expose({ name: "transaction_id" })
-	transactionId!: string;
+	transactionId?: string;
 }
+
+export const withTradeNo = (tradeNo: string) : TradeNoModel => new TradeNoModel('tno', tradeNo);
+export const withTransactionId = (transId: string) : TradeNoModel => new TradeNoModel('tid', transId);
 
 /**
  * 金额相关
@@ -266,6 +284,16 @@ export class TradeRefundCouponInfo {
 
 }
 
+/**
+ * 关闭订单返回
+ */
+export class TradeEmptyResponseModel {
+
+}
+
+/**
+ * 接口返回的错误信息代码
+ */
 export const API_ERROR_MESSAGES = {
 	'SYSTEMERROR' : "系统错误",
 	'XML_FORMAT_ERROR' : "XML格式错误",
@@ -296,3 +324,27 @@ export const API_ERROR_MESSAGES = {
 	'ORDER_NOT_READY' : "订单处理中，暂时无法退款，请稍后再试",
 	'REFUNDNOTEXIST' : "退款订单查询失败"
 };
+
+/**
+ * 下载账单返回的错误信息
+ */
+
+ export const SHEET_ERROR_CODES = {
+	"sign error":"签名错误",
+	"nonce_str too long":"参数nonce_str错误",
+	"invalid tar_type: Only GZIP supported":"参数tar_type错误",
+	"invalid bill_type":"参数bill_type错误",
+	"invalid bill_date":"参数bill_date错误",
+	"require POST method":"请求方式错误",
+	"empty post data":"请求报文错误",
+	"data format error":"参数格式错误",
+	"missing parameter":"缺少参数",
+	"invalid appid":"appid错误",
+	"invalid parameter":"参数错误",
+	"No Bill Exist":"账单不存在",
+	"Bill Creating":"账单未生成",
+	"system error":"下载失败",
+	"100":"下载失败",
+	"20003":"下载失败",
+	"20007":"当前商户号账单API权限已经关闭"
+ };

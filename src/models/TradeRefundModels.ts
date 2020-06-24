@@ -1,5 +1,5 @@
-import { Expose, Type } from 'class-transformer';
-import { Moment } from 'moment';
+import moment from 'moment';
+import { Expose, Type, Transform } from 'class-transformer';
 import { customAlphabet } from 'nanoid';
 
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
@@ -7,7 +7,7 @@ import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
 import {
-    TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel
+    TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel, TradeId
 } from './TradeCommons';
 
 const nanoid = customAlphabet('1234567890', 32);
@@ -16,8 +16,8 @@ const nanoid = customAlphabet('1234567890', 32);
  */
 export class TradeRefundModel extends TradeNoModel {
 
-	constructor() {
-		super();
+	constructor(idType: TradeId, id: string) {
+		super(idType, id);
 		this.refundNo = nanoid();
 	}
 
@@ -184,5 +184,6 @@ export class TradeRefundNotifyModel extends TradeFeeModel {
 	 * 退款成功时间 资金退款至用户帐号的时间，格式2017-12-15 09:46:01
 	 */
 	@Expose({ name: "success_time" })
-	successTime!: Moment;
+	@Transform(value => (value != undefined) ? moment(value, 'YYYY-MM-DD hh:mm:ss') : undefined)
+	successTime!: moment.Moment;
 }
