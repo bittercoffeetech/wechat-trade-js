@@ -6,7 +6,22 @@ import { RefundChannelEnum } from '../enums/RefundChannelEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
 import { TradeCashFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel, TradeId } from './TradeCommons';
 
+/**
+ * 退款ID类型
+ */
 export type RefundId = TradeId | 'rno' | 'rid';
+
+/**
+ * 
+ * @param id 商户退款单号
+ */
+export const withRefundNo = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rno", id);
+
+/**
+ * 
+ * @param id 微信退款交易号
+ */
+export const withRefundId = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rid", id);
 
 /**
  * 退款查询
@@ -40,10 +55,6 @@ export class TradeRefundQueryModel extends TradeNoModel {
 	@Expose({ name: "offset" })
 	offset?: number;
 }
-
-export const withRefundNo = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rno", id);
-export const withRefundId = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rid", id);
-
 
 /**
  * 退款详情

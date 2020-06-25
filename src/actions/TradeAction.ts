@@ -1,10 +1,36 @@
 import { SignTypeEnum } from '../enums/SignTypeEnum';
-import { TradeCsvResponseModel } from '../models/TradeSheetModels';
+
+/**
+ * 通用请求内容定义
+ */
+export interface TradeRequest<R> {
+
+	/**
+	 * 获取请求对象类型
+	 */
+	requestType: { new(...args: any[]): R; };
+
+	/**
+	 * 返回接口地址
+	 */
+	url: string;
+
+	/**
+	 * 是否需要安全证书
+	 */
+	certificated: boolean;
+
+	/**
+	 * 签名算法
+	 */
+	requestSignType: SignTypeEnum;
+
+}
 
 /**
  * 通用返回内容定义
  */
-export interface TradeResponse<S> {
+export interface TradeXmlResponse<S> {
 
 	/**
 	 * 获取返回对象的类型信息
@@ -35,64 +61,30 @@ export interface TradeResponse<S> {
 	 * 签名算法
 	 */
 	responseSignType: SignTypeEnum;
-
-	/**
-     * 是否返回流数据
-     */
-	isStreaming: boolean;
-
 }
 
 /**
  * 账单类型返回对象
  */
-export interface TradeCsvResponse<ST, RT> extends TradeResponse<TradeCsvResponseModel<ST, RT> | undefined> {
+export interface TradeCsvResponse<ST, RT> {
 	/**
 	 * 概要信息对应的模型类
 	 */
-	summaryType(): new(...args: any[]) => ST;
+	summaryType: { new(...args: any[]) : ST };
 
 	/**
 	 * 详细信息对应的模型类
 	 */
-	recordType(): new(...args: any[]) => RT;
-}
-
-/**
- * 通用请求内容定义
- */
-export interface TradeRequest<R> {
-
-	/**
-	 * 获取请求对象类型
-	 */
-	requestType: { new(...args: any[]): R; };
-
-	/**
-	 * 返回接口地址
-	 */
-	url: string;
-
-	/**
-	 * 是否需要安全证书
-	 */
-	certificated: boolean;
-
-	/**
-	 * 签名算法
-	 */
-	requestSignType: SignTypeEnum;
-
+	recordType: { new(...args: any[]) : RT };
 }
 
 /**
  * 默认返回属性定义
  */
-export const DefaultTradeResponse: Omit<TradeResponse<any>, "responseType"> = {
+export const DefaultTradeResponse: Omit<TradeXmlResponse<any>, "responseType"> = {
 	hasSigned: true,
 	hasResult: true,
 	hasHierarchy: false,
-	isStreaming: false,
 	responseSignType: SignTypeEnum.MD5,
 	encrypted: undefined
 }
@@ -108,7 +100,7 @@ export const DefaultTradeRequest: Omit<TradeRequest<any>, "requestType" | "url">
 /**
  * 接口完整定义
  */
-export interface TradeAction<R, S> extends TradeRequest<R>, TradeResponse<S> {
+export interface TradeAction<R, S> extends TradeRequest<R>, TradeXmlResponse<S> {
 	// no other things	
 }
 

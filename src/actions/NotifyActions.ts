@@ -1,6 +1,6 @@
 import { TradeCreateNotifyModel } from '../models/TradeCreateModels';
 import { TradeRefundNotifyModel } from '../models/TradeRefundModels';
-import { DefaultTradeResponse, TradeResponse } from './TradeAction';
+import { DefaultTradeResponse, TradeXmlResponse } from './TradeAction';
 
 /**
  * 支付结果通知
@@ -8,7 +8,7 @@ import { DefaultTradeResponse, TradeResponse } from './TradeAction';
  * @author BitterCoffee
  *
  */
-export const TradeCreateNotify: TradeResponse<TradeCreateNotifyModel> = {
+export const TradeCreateNotify: TradeXmlResponse<TradeCreateNotifyModel> = {
 	...DefaultTradeResponse,
 	...{
 		hasHierarchy: true,
@@ -22,7 +22,7 @@ export const TradeCreateNotify: TradeResponse<TradeCreateNotifyModel> = {
  * @author BitterCoffee
  *
  */
-export const TradeRefundNotify: TradeResponse<TradeRefundNotifyModel> = {
+export const TradeRefundNotify: TradeXmlResponse<TradeRefundNotifyModel> = {
 	...DefaultTradeResponse,
 	...{
 		encrypted: 'req_info',

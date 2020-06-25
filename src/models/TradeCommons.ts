@@ -1,11 +1,20 @@
-import 'reflect-metadata';
-
 import { Expose } from 'class-transformer';
 
 import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { ResultStatusEnum } from '../enums/ResultStatusEnum';
 import { SignTypeEnum } from '../enums/SignTypeEnum';
+
+/**
+ * 接口调用返回的错误信息封装的异常类
+ */
+export class WechatApiError extends Error {
+    code: string;
+    constructor(code: string, message?: string) {
+        super(message);
+        this.code = code;
+    }
+}
 
 /**
  * Xml级联标签定义
@@ -152,7 +161,22 @@ export class TradeResultModel {
 	}
 }
 
+/**
+ * ID类型
+ */
 export type TradeId = 'tno' | 'tid';
+
+/**
+ * 
+ * @param tradeNo 商户流水号
+ */
+export const withTradeNo = (tradeNo: string) : TradeNoModel => new TradeNoModel('tno', tradeNo);
+
+/**
+ * 
+ * @param transId 微信交易号
+ */
+export const withTransactionId = (transId: string) : TradeNoModel => new TradeNoModel('tid', transId);
 
 /**
  * 交易标识
@@ -179,9 +203,6 @@ export class TradeNoModel {
 	@Expose({ name: "transaction_id" })
 	transactionId?: string;
 }
-
-export const withTradeNo = (tradeNo: string) : TradeNoModel => new TradeNoModel('tno', tradeNo);
-export const withTransactionId = (transId: string) : TradeNoModel => new TradeNoModel('tid', transId);
 
 /**
  * 金额相关
@@ -285,7 +306,7 @@ export class TradeRefundCouponInfo {
 }
 
 /**
- * 关闭订单返回
+ * 无需返回内容的请求
  */
 export class TradeEmptyResponseModel {
 
