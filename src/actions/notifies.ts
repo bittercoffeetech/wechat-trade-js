@@ -1,6 +1,6 @@
-import { TradeCreateNotifyModel } from '../models/TradeCreateModels';
-import { TradeRefundNotifyModel } from '../models/TradeRefundModels';
-import { DefaultTradeResponse, TradeXmlResponse } from './TradeAction';
+import { TradeCreateNotifyModel } from '../models/create_models';
+import { TradeRefundNotifyModel } from '../models/refund_models';
+import { DefaultTradeResponse, TradeXmlResponse } from './base';
 
 /**
  * 支付结果通知

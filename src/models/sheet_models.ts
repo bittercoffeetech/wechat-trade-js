@@ -1,14 +1,14 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { AccountTypeEnum } from '../enums/AccountTypeEnum';
-import { BillTypeEnum } from '../enums/BillTypeEnum';
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { RefundChannelEnum } from '../enums/RefundChannelEnum';
-import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import { TradeStatusEnum } from '../enums/TradeStatusEnum';
-import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { CsvModel } from './TradeCommons';
+import { AccountTypeEnum } from '../enums/account_type';
+import { BillTypeEnum } from '../enums/bill_type';
+import { FeeTypeEnum } from '../enums/fee_type';
+import { RefundChannelEnum } from '../enums/refund_channel';
+import { RefundStatusEnum } from '../enums/refund_status';
+import { TradeStatusEnum } from '../enums/trade_status';
+import { TradeTypeEnum } from '../enums/trade_type';
+import { CsvModel } from './base';
 
 /**
  * 账单请求
@@ -40,7 +40,7 @@ export class TradeCsvlModel {
  */
 export class TradeCsvResponseModel<ST, RT> { 
 	summary!: ST; 
-	records!: RT[];
+	records: RT[] = new Array<RT>();
 }
 
 /**

@@ -1,9 +1,11 @@
+import 'reflect-metadata';
+
 import { Expose } from 'class-transformer';
 
-import { CouponTypeEnum } from '../enums/CouponTypeEnum';
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { ResultStatusEnum } from '../enums/ResultStatusEnum';
-import { SignTypeEnum } from '../enums/SignTypeEnum';
+import { CouponTypeEnum } from '../enums/coupon_type';
+import { FeeTypeEnum } from '../enums/fee_type';
+import { ResultStatusEnum } from '../enums/result_status';
+import { SignTypeEnum } from '../enums/sign_type';
 
 /**
  * 接口调用返回的错误信息封装的异常类
@@ -105,31 +107,35 @@ export class TradeReturnModel {
 	 * 返回状态码 SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
 	 */
 	@Expose({ name: 'return_code' })
-	returnCode!: ResultStatusEnum;
+	private _returnCode!: ResultStatusEnum;
 
 	/**
 	 * 返回信息，如非空，未知错误原因,签名失败,参数格式校验错误
 	 */
 	@Expose({ name: 'return_msg' })
-	returnMessage?: string;
+	private _returnMessage?: string;
 
 	/**
      * 下载交易账单返回的错误代码
      */
 	@Expose({ name: 'error_code' })
-	errorCode?: string;
+	private _errorCode?: string;
 
 	get isSuccess(): boolean {
-		return ResultStatusEnum.SUCCESS == this.returnCode;
+		return ResultStatusEnum.SUCCESS == this._returnCode;
+	}
+
+	get errorCode(): string {
+		return this._errorCode == undefined ? this._returnCode : this._errorCode;
 	}
 
 	get errorMessage(): string | undefined{
-		if(this.returnMessage != undefined && SHEET_ERROR_CODES[this.returnMessage] != undefined) {
-			return SHEET_ERROR_CODES[this.returnMessage];
+		if(this._returnMessage != undefined && SHEET_ERROR_CODES[this._returnMessage] != undefined) {
+			return SHEET_ERROR_CODES[this._returnMessage];
 		} else if(this.errorCode != undefined && SHEET_ERROR_CODES[this.errorCode] != undefined) {
 			return SHEET_ERROR_CODES[this.errorCode];
 		} else {
-			return this.returnMessage;
+			return this._returnMessage;
 		}
 	}
 }
@@ -142,7 +148,7 @@ export class TradeResultModel {
 	 * 返回状态码 SUCCESS/FAIL
 	 */
 	@Expose({ name: "result_code" })
-	resultCode!: ResultStatusEnum;
+	private resultCode!: ResultStatusEnum;
 
 	/**
 	 * 错误代码

@@ -1,11 +1,9 @@
-import { TradeNoModel } from '../models/TradeCommons';
-import { TradeCreateModel, TradeCreateResponseModel } from '../models/TradeCreateModels';
-import { TradeQueryResponseModel } from '../models/TradeQueryModels';
-import { TradeRefundModel, TradeRefundResponseModel } from '../models/TradeRefundModels';
-import {
-    TradeRefundQueryModel, TradeRefundQueryResponseModel
-} from '../models/TradeRefundQueryModels';
-import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './TradeAction';
+import { TradeNoModel } from '../models/base';
+import { TradeCreateModel, TradeCreateResponseModel } from '../models/create_models';
+import { TradeQueryResponseModel } from '../models/query_models';
+import { TradeRefundModel, TradeRefundResponseModel } from '../models/refund_models';
+import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from '../models/refund_query_models';
+import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './base';
 
 /**
  * 统一下单

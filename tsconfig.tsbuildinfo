@@ -702,8 +702,8 @@
         "affectsGlobalScope": false
       },
       "./src/actions/tradeaction.ts": {
-        "version": "c94b2f36773c2fcb7e444f45d2fea0c798c1215212e703ed24a2f9259ce4e06a",
-        "signature": "6d0a6456cc3f43dcd0846f62040e860b116eb0d7142c22b7cdb3fd6a22f4d31f",
+        "version": "f3f2c0ce8823c5bdd7de3a789f8855f893e61e405c76a4f004393df3cdd31ca1",
+        "signature": "f7cf143790e80181b4b559926f87be588550a58c402a0a8bed355a2961519c26",
         "affectsGlobalScope": false
       },
       "./node_modules/moment/ts3.1-typings/moment.d.ts": {
@@ -732,18 +732,13 @@
         "affectsGlobalScope": false
       },
       "./src/models/tradecommons.ts": {
-        "version": "540ac34080360d20399c874606d2adac41fe1b5617fb9e283c1ecdd8438c39e0",
-        "signature": "b217c426306524b38da28fe080d87f03477ef6a31701760db8c56e03e4fa9403",
+        "version": "ce1ac08d4cfde425070cf56af0f2b561af58e7d192628b08de02ff4606ae6788",
+        "signature": "68ab88d0d10507a037fd3e0fd54b21ec0e2d6fa27a954cb2e6de1946890fdd33",
         "affectsGlobalScope": false
       },
       "./src/models/tradecreatemodels.ts": {
         "version": "1b77e2d57f46167f0374ed250cd2ac87de4441b6671452b65dd982c07539dc60",
         "signature": "d37520511b1b61e630786d858e00401546b6691f02335c1ec385644ba4df7880",
-        "affectsGlobalScope": false
-      },
-      "./src/models/tradeclosemodels.ts": {
-        "version": "9b4a21dd59a31aa39d7f74b784ec13b87cfa98e601f131e20ecdf18b3a5c0912",
-        "signature": "867a095904f64c3714fea4c56660f5d901464ebcb5db21910c084f7c4062b89a",
         "affectsGlobalScope": false
       },
       "./src/enums/tradestatusenum.ts": {
@@ -782,18 +777,18 @@
         "affectsGlobalScope": false
       },
       "./src/models/traderefundquerymodels.ts": {
-        "version": "1908710da9bad13ea340709fb1179427b7fec7f7378bafedf93b36e33f0e5195",
-        "signature": "f0639e5e92df505c441abc6be8b644457ce8f0bec2d4083098b31f6eb8d9b184",
+        "version": "bce88b3d29d4996e0ca9577820cc4d1b9ff7e89c52a4d707afde59a78c8d8320",
+        "signature": "c48dc4c5bbc8285eb7637bbdc83db4998b476dc580a634627a9be6ff8cb6149e",
         "affectsGlobalScope": false
       },
       "./src/actions/tradeactions.ts": {
-        "version": "77df2a66b7353b180d77d92b9b85354eaca7e3ca716776348d94d53e5fb2ee53",
-        "signature": "9a4ba8b4a36bf69606977196b2b00a8170eb216653ac22c4ce5a0c7643f76722",
+        "version": "111d627045c1771b0c69e932e8a0ba419c30ecf090198778538df2fc4f4c4ad7",
+        "signature": "5c92e8c6124c3973f3611d03df393ec17fda103f40b4e0f1ec0c89872196d729",
         "affectsGlobalScope": false
       },
       "./src/actions/notifyactions.ts": {
-        "version": "bff544ded24a9a4077c0c9524e9d841a2755bbe564c6bfe571bb180ab68fd629",
-        "signature": "b5ba2efbb6fc47674811da702ae1043b949dafbf906969850605ac2d9d7d36d1",
+        "version": "9e2768d48ab986b0a30e42501be80561b23d95757f503fb7a29c5fe77dfa8533",
+        "signature": "ea264abfd96efce9ad79ce7bd332b8e1e6a8a405be6d848fd2a0e7508fe959d1",
         "affectsGlobalScope": false
       },
       "./src/enums/accounttypeenum.ts": {
@@ -807,13 +802,13 @@
         "affectsGlobalScope": false
       },
       "./src/models/tradesheetmodels.ts": {
-        "version": "78fe06b9a539b4eb1bdc16cdbe0a0c6e3d44d679a4f2ecbc52707196a83542c9",
-        "signature": "53d28d12022b4a8af2246ee976f1f1be33b981294f8826014acd3a23e2e01dd3",
+        "version": "8d139c15da5d7ba508d67f9de8f1931ab1bf332d3d213e90251efda9b227a0d3",
+        "signature": "5f11a3d273f1ecc50099665b35744182dd8cba6f8932a9ce5296f4d1d2d15255",
         "affectsGlobalScope": false
       },
       "./src/actions/sheetactions.ts": {
-        "version": "8be98d16f4412ad5c6644c5f616ebbd5bac3ee769bffdef5c500482a3b48694d",
-        "signature": "dd85f641ec10ec7e98888ad62cb88e7a4e1aa0449ab09ab89f0993d00ce57e0c",
+        "version": "ecb761a5fca1ed06668af8006c17ba129b742cc76d8c9c9f6666b34750c278d6",
+        "signature": "8f307adae890320aa1b0c503c637c915fa76015130fa0473e63dde5e476eca44",
         "affectsGlobalScope": false
       },
       "./src/enums/errorcodeenum.ts": {
@@ -822,18 +817,13 @@
         "affectsGlobalScope": false
       },
       "./src/wechattradeclient.ts": {
-        "version": "32f65a7c4f5ab90892391dbf34cab4b1575eb9c5abfd3f65f478e31e13f7c032",
-        "signature": "309535a48f1f327554d5de80703b2c64881082d5d807c05b9496378f8d83bb55",
+        "version": "16069d5ec61c341d782de9a4fc520b17a41c10812d15e92d16c804bab865e13b",
+        "signature": "67070f1ae33ff8bffb86ce0f3f461d3136ba3bf9c895f0a2f87ba7f2db6079e3",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
         "version": "8740447b879813f42400a1d09c5b159794962690162001848dd0c2353f46fb0b",
         "signature": "396a3607ca8288c7dd02dff9b04e6ffb057b3c6f3d12965421373c3da78b65cc",
-        "affectsGlobalScope": false
-      },
-      "./src/enums/tartypeenum.ts": {
-        "version": "af55f6842daf569a6154bfd808d3c3d750be3507c8862be4988dede486475ad2",
-        "signature": "37166ba74351a925bfabaca4ca7d22d886a65a6bed5a27c98f501cf013217d99",
         "affectsGlobalScope": false
       }
     },
@@ -2043,7 +2033,6 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./src/actions/tradeaction.ts",
-        "./src/models/tradeclosemodels.ts",
         "./src/models/tradecommons.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/tradequerymodels.ts",
@@ -2116,12 +2105,6 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts"
       ],
-      "./src/enums/tartypeenum.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts"
-      ],
       "./src/enums/tradestatusenum.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2142,12 +2125,6 @@
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/reflect-metadata/index.d.ts"
-      ],
-      "./src/models/tradeclosemodels.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts",
-        "./node_modules/@types/node/util.d.ts"
       ],
       "./src/models/tradecommons.ts": [
         "./node_modules/@types/node/fs.d.ts",
@@ -2232,7 +2209,6 @@
         "./node_modules/@types/node/crypto.d.ts",
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/path.d.ts",
-        "./node_modules/@types/node/stream.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts",
         "./node_modules/@types/node/util.d.ts",
@@ -2251,7 +2227,6 @@
         "./src/actions/tradeactions.ts",
         "./src/enums/errorcodeenum.ts",
         "./src/enums/signtypeenum.ts",
-        "./src/models/tradeclosemodels.ts",
         "./src/models/tradecommons.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/tradequerymodels.ts",
@@ -3413,7 +3388,6 @@
       ],
       "./src/actions/tradeactions.ts": [
         "./src/actions/tradeaction.ts",
-        "./src/models/tradeclosemodels.ts",
         "./src/models/tradecommons.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/tradequerymodels.ts",
@@ -3427,7 +3401,6 @@
         "./node_modules/reflect-metadata/index.d.ts",
         "./src/enums/coupontypeenum.ts",
         "./src/enums/feetypeenum.ts",
-        "./src/enums/resultstatusenum.ts",
         "./src/enums/signtypeenum.ts"
       ],
       "./src/models/tradecreatemodels.ts": [
@@ -3467,8 +3440,6 @@
       ],
       "./src/wechattradeclient.ts": [
         "./node_modules/reflect-metadata/index.d.ts",
-        "./src/actions/tradeaction.ts",
-        "./src/models/tradeclosemodels.ts",
         "./src/models/tradecommons.ts",
         "./src/models/tradecreatemodels.ts",
         "./src/models/tradequerymodels.ts",
@@ -3633,83 +3604,16 @@
       "./src/enums/refundstatusenum.ts",
       "./src/enums/resultstatusenum.ts",
       "./src/enums/signtypeenum.ts",
-      "./src/enums/tartypeenum.ts",
       "./src/enums/tradestatusenum.ts",
       "./src/enums/tradetypeenum.ts",
       "./src/index.ts",
-      "./src/models/tradeclosemodels.ts",
       "./src/models/tradecommons.ts",
       "./src/models/tradecreatemodels.ts",
       "./src/models/tradequerymodels.ts",
       "./src/models/traderefundmodels.ts",
       "./src/models/traderefundquerymodels.ts",
       "./src/models/tradesheetmodels.ts",
-      [
-        "./src/wechattradeclient.ts",
-        [
-          {
-            "file": "./src/wechattradeclient.ts",
-            "start": 238,
-            "length": 6,
-            "messageText": "'Stream' is declared but its value is never read.",
-            "category": 1,
-            "code": 6133,
-            "reportsUnnecessary": true
-          },
-          {
-            "file": "./src/wechattradeclient.ts",
-            "start": 2844,
-            "length": 11,
-            "code": 2345,
-            "category": 1,
-            "messageText": {
-              "messageText": "Argument of type '(resp: AxiosResponse<any>) => S | Promise<CsvResponse<unknown, unknown>>' is not assignable to parameter of type '(value: AxiosResponse<any>) => CsvResponse<unknown, unknown> | PromiseLike<CsvResponse<unknown, unknown>>'.",
-              "category": 1,
-              "code": 2345,
-              "next": [
-                {
-                  "messageText": "Type 'S | Promise<CsvResponse<unknown, unknown>>' is not assignable to type 'CsvResponse<unknown, unknown> | PromiseLike<CsvResponse<unknown, unknown>>'.",
-                  "category": 1,
-                  "code": 2322,
-                  "next": [
-                    {
-                      "messageText": "Type 'S' is not assignable to type 'CsvResponse<unknown, unknown> | PromiseLike<CsvResponse<unknown, unknown>>'.",
-                      "category": 1,
-                      "code": 2322,
-                      "next": [
-                        {
-                          "messageText": "Type 'S' is not assignable to type 'CsvResponse<unknown, unknown>'.",
-                          "category": 1,
-                          "code": 2322
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "file": "./src/wechattradeclient.ts",
-            "start": 3170,
-            "length": 24,
-            "code": 2345,
-            "category": 1,
-            "messageText": {
-              "messageText": "Argument of type 'new (...args: any[]) => S' is not assignable to parameter of type 'new (...args: any[]) => CsvResponse<unknown, unknown>'.",
-              "category": 1,
-              "code": 2345,
-              "next": [
-                {
-                  "messageText": "Type 'S' is not assignable to type 'CsvResponse<unknown, unknown>'.",
-                  "category": 1,
-                  "code": 2322
-                }
-              ]
-            }
-          }
-        ]
-      ]
+      "./src/wechattradeclient.ts"
     ]
   },
   "version": "3.9.5"

@@ -1,10 +1,9 @@
-import { SignTypeEnum } from '../enums/SignTypeEnum';
+import { SignTypeEnum } from '../enums/sign_type';
 import {
-    TradeBillAllInfo, TradeBillAllModel, TradeBillRefundInfo, TradeBillRefundModel,
-    TradeBillSuccessInfo, TradeBillSuccessModel, TradeBillSummaryInfo, TradeFundflowInfo,
-    TradeFundflowModel, TradeFundflowSummaryInfo
-} from '../models/TradeSheetModels';
-import { DefaultTradeRequest, TradeCsvAction } from './TradeAction';
+    TradeBillAllInfo, TradeBillAllModel, TradeBillRefundInfo, TradeBillRefundModel, TradeBillSuccessInfo, TradeBillSuccessModel, TradeBillSummaryInfo,
+    TradeFundflowInfo, TradeFundflowModel, TradeFundflowSummaryInfo
+} from '../models/sheet_models';
+import { DefaultTradeRequest, TradeCsvAction } from './base';
 
 /**
  * 下载所有交易账单
@@ -69,6 +68,5 @@ export const TradeFundflowAction: TradeCsvAction<TradeFundflowModel, TradeFundfl
 		requestType: TradeFundflowModel,
 		summaryType: TradeFundflowSummaryInfo,
 		recordType: TradeFundflowInfo,
-		}
 	}
 };

@@ -3,8 +3,10 @@ import { parse as toJson } from 'fast-xml-parser';
 import { plainToClass } from "class-transformer";
 import rewire from 'rewire';
 import { SignTypeEnum } from '../src/enums/SignTypeEnum';
-import { TradeReturnModel, TradeResultModel, TradeNoModel } from '../src/models/TradeCommons';
+import { TradeReturnModel, TradeResultModel } from '../src/models/TradeCommons';
 import { resolve } from 'path';
+import fs from 'fs';
+import { TradeBillRefundAction } from '../src/actions/SheetActions';
 
 test('Test Sign Algorithm', () => {
 
@@ -105,7 +107,7 @@ test('Test Hierarchy Plain', () => {
     const clientModule = rewire("../dist/WechatTradeClient.js");
     const hierarchy = clientModule.__get__("hierarchy");
 
-    const modelModule = rewire("../dist/models/TradeRefundQueryModel.js");
+    const modelModule = rewire("../dist/models/TradeRefundQueryModels.js");
     let model = modelModule.__get__('TradeRefundQueryResponseModel');
 
     let hvalues = hierarchy(model, values);
@@ -121,18 +123,19 @@ it('Test CSV Response Parse', async () => {
     let parseCsvResponse = rootModule.__get__('parseCsvResponse');
 
     const csvModule = rewire("../dist/models/TradeSheetModels.js");
-    let TradeBillRefundResponseModel = csvModule.__get__('TradeBillRefundResponseModel');
+    csvModule.__get__('TradeBillSummaryInfo');
+    csvModule.__get__('TradeBillRefundInfo');
 
-    await parseCsvResponse(require('fs').createReadStream(resolve('./__tests__/data/refund.txt')),
-        TradeBillRefundResponseModel )
+    await parseCsvResponse(fs.readFileSync(resolve('./__tests__/data/refund.txt')).toString(),  TradeBillRefundAction)
         .then((v: any) => {
+            console.log(v);
             expect(v.summary.totalTrades).toBe(72);
             expect(v.records.length).toBe(2);
         });
 
 });
 
-test("Return failed.", () => {
+test("Test Return failed.", () => {
 
     let xml = "<xml>" +
         "    <appid>wx8949c222019862f5</appid>" +

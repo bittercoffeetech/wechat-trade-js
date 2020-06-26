@@ -2,9 +2,9 @@ import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 import { customAlphabet } from 'nanoid';
 
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo, XmlModel } from './TradeCommons';
+import { FeeTypeEnum } from '../enums/fee_type';
+import { TradeTypeEnum } from '../enums/trade_type';
+import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo, XmlModel } from './base';
 
 const nanoid = customAlphabet('1234567890', 32);
 /**
@@ -118,7 +118,7 @@ export class TradeCreateModel {
 	 * 商户订单号 商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*且在同一个商户号下唯一。
 	 */
 	@Expose({ name: "out_trade_no" })
-	tradeNo!: string;
+	readonly tradeNo!: string;
 
 	/**
 	 * 符合ISO 4217标准的三位字母代码，默认人民币：CNY
@@ -189,7 +189,7 @@ export class TradeCreateModel {
 	 * @see TradeTypeEnum
 	 */
 	@Expose({ name: "trade_type" })
-	tradeType: TradeTypeEnum = TradeTypeEnum.JSAPI;
+	readonly tradeType: TradeTypeEnum = TradeTypeEnum.JSAPI;
 
 	/**
 	 * 商品ID tradeType=TradeTypeEnum.NATIVE时，此参数必传。此参数为二维码中包含的商品ID，商户自行定义。

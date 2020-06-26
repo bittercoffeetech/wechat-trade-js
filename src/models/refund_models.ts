@@ -1,14 +1,12 @@
+import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
-import { Expose, Type, Transform } from 'class-transformer';
 import { customAlphabet } from 'nanoid';
 
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { RefundAccountEnum } from '../enums/RefundAccountEnum';
-import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
-import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import {
-    TradeCashFeeModel, TradeFeeModel, TradeNoModel, TradeRefundCouponInfo, XmlModel, TradeId
-} from './TradeCommons';
+import { FeeTypeEnum } from '../enums/fee_type';
+import { RefundAccountEnum } from '../enums/refund_account';
+import { RefundRequestSourceEnum } from '../enums/refund_request_source';
+import { RefundStatusEnum } from '../enums/refund_status';
+import { TradeCashFeeModel, TradeFeeModel, TradeId, TradeNoModel, TradeRefundCouponInfo, XmlModel } from './base';
 
 const nanoid = customAlphabet('1234567890', 32);
 /**
@@ -31,7 +29,7 @@ export class TradeRefundModel extends TradeNoModel {
 	 * 商户退款单号 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
 	 */
 	@Expose({ name: "out_refund_no" })
-	refundNo!: string;
+	readonly refundNo!: string;
 
 	/**
 	 * 退款金额 退款总金额，订单总金额，单位为分，只能为整数
