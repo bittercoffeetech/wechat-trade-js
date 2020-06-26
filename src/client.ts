@@ -17,19 +17,19 @@ import zlib from 'zlib';
 
 import { TradeAction, TradeCsvAction, TradeCsvResponse, TradeXmlResponse } from './actions/base';
 import { TradeCreateNotify, TradeRefundNotify } from './actions/notifies';
-import { TradeCloseAction, TradeCreateAction, TradeQueryAction, TradeRefundAction, TradeRefundQueryAction } from './actions/order_actions';
-import { TradeBillAllAction, TradeBillRefundAction, TradeBillSuccessAction, TradeFundflowAction } from './actions/sheet_actions';
+import { TradeBillAllAction, TradeBillRefundAction, TradeBillSuccessAction, TradeFundflowAction } from './actions/sheets';
+import { TradeCloseAction, TradeCreateAction, TradeQueryAction, TradeRefundAction, TradeRefundQueryAction } from './actions/trades';
 import { ErrorCodeEnum } from './enums/error_code';
 import { SignTypeEnum } from './enums/sign_type';
 import { API_ERROR_MESSAGES, TradeNoModel, TradeResultModel, TradeReturnModel, WechatApiError, XmlModel } from './models/base';
-import { TradeCreateModel, TradeCreateNotifyModel, TradeCreateResponseModel } from './models/create_models';
-import { TradeQueryResponseModel } from './models/query_models';
-import { TradeRefundModel, TradeRefundNotifyModel, TradeRefundResponseModel } from './models/refund_models';
-import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from './models/refund_query_models';
+import { TradeCreateModel, TradeCreateNotifyModel, TradeCreateResponseModel } from './models/creation';
+import { TradeQueryResponseModel } from './models/query';
+import { TradeRefundModel, TradeRefundNotifyModel, TradeRefundResponseModel } from './models/refund';
+import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from './models/refund_query';
 import {
     TradeBillAllInfo, TradeBillAllModel, TradeBillRefundInfo, TradeBillRefundModel, TradeBillSuccessInfo, TradeBillSuccessModel, TradeBillSummaryInfo,
     TradeCsvlModel, TradeCsvResponseModel, TradeFundflowInfo, TradeFundflowModel, TradeFundflowSummaryInfo
-} from './models/sheet_models';
+} from './models/sheets';
 
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);

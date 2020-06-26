@@ -1,8 +1,8 @@
 import { TradeNoModel } from '../models/base';
-import { TradeCreateModel, TradeCreateResponseModel } from '../models/create_models';
-import { TradeQueryResponseModel } from '../models/query_models';
-import { TradeRefundModel, TradeRefundResponseModel } from '../models/refund_models';
-import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from '../models/refund_query_models';
+import { TradeCreateModel, TradeCreateResponseModel } from '../models/creation';
+import { TradeQueryResponseModel } from '../models/query';
+import { TradeRefundModel, TradeRefundResponseModel } from '../models/refund';
+import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from '../models/refund_query';
 import { DefaultTradeRequest, DefaultTradeResponse, TradeAction } from './base';
 
 /**

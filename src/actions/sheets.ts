@@ -2,7 +2,7 @@ import { SignTypeEnum } from '../enums/sign_type';
 import {
     TradeBillAllInfo, TradeBillAllModel, TradeBillRefundInfo, TradeBillRefundModel, TradeBillSuccessInfo, TradeBillSuccessModel, TradeBillSummaryInfo,
     TradeFundflowInfo, TradeFundflowModel, TradeFundflowSummaryInfo
-} from '../models/sheet_models';
+} from '../models/sheets';
 import { DefaultTradeRequest, TradeCsvAction } from './base';
 
 /**

@@ -1,5 +1,5 @@
-import { TradeCreateNotifyModel } from '../models/create_models';
-import { TradeRefundNotifyModel } from '../models/refund_models';
+import { TradeCreateNotifyModel } from '../models/creation';
+import { TradeRefundNotifyModel } from '../models/refund';
 import { DefaultTradeResponse, TradeXmlResponse } from './base';
 
 /**
