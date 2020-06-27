@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { Expose } from 'class-transformer';
 
 import { ResultStatusEnum, SignTypeEnum } from '../enums/commons';
-import { CouponTypeEnum, FeeTypeEnum } from '../enums/trades';
+import { FeeTypeEnum } from '../enums/trades';
 
 /**
  * 接口调用返回的错误信息封装的异常类
@@ -17,12 +17,11 @@ export class WechatApiError extends Error {
 }
 
 /**
- * Xml级联标签定义
+ * Xml级联标签数据定义，用于将返回的单层XML转换为嵌套结构的对象
  */
 export interface XmlModel {
     name: string;
     subType: new(...args: any[]) => any;
-    subName: string;
     countName: string
 }
 
@@ -166,7 +165,7 @@ export class TradeResultModel {
 }
 
 /**
- * ID类型
+ * 区分商户流水号和微信交易编号的ID类型
  */
 export type TradeId = 'tno' | 'tid';
 
@@ -246,73 +245,6 @@ export class TradeCashFeeModel extends TradeFeeModel {
 	 */
 	@Expose({ name: "cash_fee_type" })
 	cashFeeType?: FeeTypeEnum;
-
-}
-
-/**
- * 优惠券
- */
-export class TradeCouponInfo {
-
-	/**
-	 * 代金券ID
-	 */
-	@Expose({ name: "coupon_id" })
-	@XmlModel('coupon_id')
-	id!: string;
-
-	/**
-	 * 单个代金券支付金额
-	 */
-	@Expose({ name: "coupon_fee" })
-	@XmlModel('coupon_fee')
-	fee!: number;
-
-	/**
-	 * 代金券类型 开通免充值券功能，并且订单使用了优惠券后有返回（取值：CASH、NO_CASH）。
-	 * 
-	 * @see CouponTypeEnum
-	 */
-	@Expose({ name: "coupon_type" })
-	@XmlModel('coupon_type')
-	type!: CouponTypeEnum;
-
-}
-
-/**
- * 退款优惠券
- */
-export class TradeRefundCouponInfo {
-
-	/**
-	 * 代金券ID
-	 */
-	@Expose({ name: "coupon_refund_id" })
-	@XmlModel('coupon_refund_id')
-	id!: string;
-
-	/**
-	 * 单个代金券支付金额
-	 */
-	@Expose({ name: "coupon_refund_fee" })
-	@XmlModel('coupon_refund_fee')
-	fee!: number;
-
-	/**
-	 * 代金券类型 开通免充值券功能，并且订单使用了优惠券后有返回（取值：CASH、NO_CASH）。
-	 * 
-	 * @see CouponTypeEnum
-	 */
-	@Expose({ name: "coupon_type" })
-	@XmlModel('coupon_type')
-	type!: CouponTypeEnum;
-
-}
-
-/**
- * 无需返回内容的请求
- */
-export class TradeEmptyResponseModel {
 
 }
 

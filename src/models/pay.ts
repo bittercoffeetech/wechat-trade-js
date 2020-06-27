@@ -2,8 +2,8 @@ import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 import { customAlphabet } from 'nanoid';
 
-import { FeeTypeEnum, TradeTypeEnum } from '../enums/trades';
-import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo, XmlModel } from './base';
+import { CouponTypeEnum, FeeTypeEnum, TradeTypeEnum } from '../enums/trades';
+import { TradeAppModel, TradeCashFeeModel, XmlModel } from './base';
 
 const nanoid = customAlphabet('1234567890', 32);
 
@@ -270,6 +270,36 @@ export class TradeCreateResponseModel extends TradeAppModel {
 }
 
 /**
+ * 优惠券
+ */
+export class TradeCouponInfo {
+
+	/**
+	 * 代金券ID
+	 */
+	@Expose({ name: "coupon_id" })
+	@XmlModel('coupon_id')
+	id!: string;
+
+	/**
+	 * 单个代金券支付金额
+	 */
+	@Expose({ name: "coupon_fee" })
+	@XmlModel('coupon_fee')
+	fee!: number;
+
+	/**
+	 * 代金券类型 开通免充值券功能，并且订单使用了优惠券后有返回（取值：CASH、NO_CASH）。
+	 * 
+	 * @see CouponTypeEnum
+	 */
+	@Expose({ name: "coupon_type" })
+	@XmlModel('coupon_type')
+	type!: CouponTypeEnum;
+
+}
+
+/**
  * 付款结果通知
  */
 export class TradeCreateNotifyModel extends TradeCashFeeModel {
@@ -335,3 +365,4 @@ export class TradeCreateNotifyModel extends TradeCashFeeModel {
 	@XmlModel('coupons', TradeCouponInfo, "coupon_count")
 	coupons?: TradeCouponInfo[];
 }
+

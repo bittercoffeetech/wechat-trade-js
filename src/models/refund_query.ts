@@ -2,22 +2,23 @@ import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 
 import { RefundAccountEnum, RefundChannelEnum, RefundStatusEnum } from '../enums/refunds';
-import { TradeCashFeeModel, TradeId, TradeNoModel, TradeRefundCouponInfo, XmlModel } from './base';
+import { TradeCashFeeModel, TradeId, TradeNoModel, XmlModel } from './base';
+import { TradeRefundCouponInfo } from './refund';
 
 /**
- * 退款ID类型
+ * 退款ID类型，区分使用哪个ID来进行退款查询
  */
 export type RefundId = TradeId | 'rno' | 'rid';
 
 /**
  * 
- * @param id 商户退款所属商户单号
+ * @param id 商户支付单号
  */
 export const RTNO = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("tno", id);
 
 /**
  * 
- * @param id 微信退款所属交易流水号
+ * @param id 微信支付交易号
  */
 export const RTID = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("tid", id);
 
@@ -38,6 +39,11 @@ export const RID = (id: string) : TradeRefundQueryModel => new TradeRefundQueryM
  */
 export class TradeRefundQueryModel extends TradeNoModel {
 
+	/**
+	 * 
+	 * @param idType ID类型
+	 * @param id ID内容
+	 */
 	constructor(idType: RefundId, id: string) {
 		super(idType as TradeId, id)
 		if(idType == 'rno') {
