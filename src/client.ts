@@ -22,8 +22,8 @@ import { TradeCloseAction, TradeCreateAction, TradeQueryAction, TradeRefundActio
 import { ErrorCodeEnum } from './enums/error_code';
 import { SignTypeEnum } from './enums/sign_type';
 import { API_ERROR_MESSAGES, TradeNoModel, TradeResultModel, TradeReturnModel, WechatApiError, XmlModel } from './models/base';
-import { TradeCreateModel, TradeCreateNotifyModel, TradeCreateResponseModel } from './models/creation';
-import { TradeQueryResponseModel } from './models/query';
+import { TradeCreateModel, TradeCreateNotifyModel, TradeCreateResponseModel } from './models/pay';
+import { TradeQueryResponseModel } from './models/pay_query';
 import { TradeRefundModel, TradeRefundNotifyModel, TradeRefundResponseModel } from './models/refund';
 import { TradeRefundQueryModel, TradeRefundQueryResponseModel } from './models/refund_query';
 import {

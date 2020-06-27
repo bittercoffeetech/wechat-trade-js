@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
 import { TradeStatusEnum } from '../enums/trade_status';
-import { TradeCreateNotifyModel } from './creation';
+import { TradeCreateNotifyModel } from './pay';
 
 /**
  * 查询结果返回
