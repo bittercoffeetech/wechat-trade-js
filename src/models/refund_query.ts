@@ -1,9 +1,7 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 
-import { RefundAccountEnum } from '../enums/refund_account';
-import { RefundChannelEnum } from '../enums/refund_channel';
-import { RefundStatusEnum } from '../enums/refund_status';
+import { RefundAccountEnum, RefundChannelEnum, RefundStatusEnum } from '../enums/refunds';
 import { TradeCashFeeModel, TradeId, TradeNoModel, TradeRefundCouponInfo, XmlModel } from './base';
 
 /**

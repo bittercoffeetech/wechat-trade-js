@@ -1,6 +1,6 @@
 import 'jest';
 
-import { ErrorCodeEnum } from '../src/enums/error_code';
+import { ErrorCodeEnum } from '../src/enums/commons';
 import * as wechatClient from '../src/main';
 import { TNO, WechatApiError } from '../src/models/base';
 import { TradeQueryResponseModel } from '../src/models/pay_query';

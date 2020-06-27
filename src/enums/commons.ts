@@ -165,3 +165,38 @@ export enum ErrorCodeEnum {
 	 */
 	OTHERS = "OTHERS"
 };
+
+/**
+ * 返回状态码/业务结果
+ * 
+ * @author BitterCoffee
+ *
+ */
+export enum ResultStatusEnum {
+	/**
+	 * 成功
+	 */
+	SUCCESS = "SUCCESS", 
+	/**
+	 * 失败
+	 */
+	FAIL = "FAIL"
+};
+
+/**
+ * 签名类型
+ * 
+ * @author BitterCoffee
+ *
+ */
+export enum SignTypeEnum {
+	/**
+	 * SHA256
+	 */
+	HMAC_SHA256 = "HMAC-SHA256", 
+	
+	/**
+	 * 默认MD5
+	 */
+	MD5 = "MD5"
+};

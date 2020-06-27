@@ -2,10 +2,8 @@ import 'reflect-metadata';
 
 import { Expose } from 'class-transformer';
 
-import { CouponTypeEnum } from '../enums/coupon_type';
-import { FeeTypeEnum } from '../enums/fee_type';
-import { ResultStatusEnum } from '../enums/result_status';
-import { SignTypeEnum } from '../enums/sign_type';
+import { ResultStatusEnum, SignTypeEnum } from '../enums/commons';
+import { CouponTypeEnum, FeeTypeEnum } from '../enums/trades';
 
 /**
  * 接口调用返回的错误信息封装的异常类

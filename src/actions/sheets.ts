@@ -1,4 +1,4 @@
-import { SignTypeEnum } from '../enums/sign_type';
+import { SignTypeEnum } from '../enums/commons';
 import {
     TradeBillAllInfo, TradeBillAllModel, TradeBillRefundInfo, TradeBillRefundModel, TradeBillSuccessInfo, TradeBillSuccessModel, TradeBillSummaryInfo,
     TradeFundflowInfo, TradeFundflowModel, TradeFundflowSummaryInfo

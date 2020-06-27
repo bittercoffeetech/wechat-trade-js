@@ -2,11 +2,11 @@ import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 import { customAlphabet } from 'nanoid';
 
-import { FeeTypeEnum } from '../enums/fee_type';
-import { TradeTypeEnum } from '../enums/trade_type';
+import { FeeTypeEnum, TradeTypeEnum } from '../enums/trades';
 import { TradeAppModel, TradeCashFeeModel, TradeCouponInfo, XmlModel } from './base';
 
 const nanoid = customAlphabet('1234567890', 32);
+
 /**
  * 商品信息
  */

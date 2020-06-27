@@ -1,4 +1,4 @@
-import { SignTypeEnum } from '../enums/sign_type';
+import { SignTypeEnum } from '../enums/commons';
 
 /**
  * 通用请求内容定义

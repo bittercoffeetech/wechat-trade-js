@@ -1,13 +1,9 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { AccountTypeEnum } from '../enums/account_type';
-import { BillTypeEnum } from '../enums/bill_type';
-import { FeeTypeEnum } from '../enums/fee_type';
-import { RefundChannelEnum } from '../enums/refund_channel';
-import { RefundStatusEnum } from '../enums/refund_status';
-import { TradeStatusEnum } from '../enums/trade_status';
-import { TradeTypeEnum } from '../enums/trade_type';
+import { RefundChannelEnum, RefundStatusEnum } from '../enums/refunds';
+import { AccountTypeEnum, BillTypeEnum } from '../enums/sheets';
+import { FeeTypeEnum, TradeStatusEnum, TradeTypeEnum } from '../enums/trades';
 import { CsvModel } from './base';
 
 /**

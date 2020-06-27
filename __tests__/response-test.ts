@@ -4,7 +4,7 @@ import { plainToClass } from 'class-transformer';
 import { parse as toJson } from 'fast-xml-parser';
 import rewire from 'rewire';
 
-import { SignTypeEnum } from '../src/enums/sign_type';
+import { SignTypeEnum } from '../src/enums/commons';
 import { TradeResultModel, TradeReturnModel } from '../src/models/base';
 
 test('Test Sign Algorithm', () => {
@@ -21,7 +21,7 @@ test('Test Sign Algorithm', () => {
         'out_refund_no': '17899357909836346900870462540973'
     };
 
-    const clientModule = rewire("../dist/index.js");
+    const clientModule = rewire("../dist/main.js");
     const sign = clientModule.__get__("sign");
 
     expect(sign(toSign, SignTypeEnum.MD5)).toBe('0188F350D33A56AF1160AE69F4AAC3E7');
@@ -53,7 +53,7 @@ test('Test Response Sign', () => {
     "</xml>";
 
     let j = toJson(xml);
-    const clientModule = rewire("../dist/index.js");
+    const clientModule = rewire("../dist/main.js");
     const sign = clientModule.__get__("sign");
 
     expect(sign(j.xml, SignTypeEnum.MD5)).toBe('20FE468851E4B1F2193B9DAAEBE824DF');
@@ -63,7 +63,7 @@ test('Test Response Sign', () => {
 test('Test REQ_INFO of Refund Notify Decrypt', () => {
     let enc = "uvKMQDEpn3NlbNP8QzKttALjM+vbORI2+L4GpbD0hO46Vt7eE33JxdAniQTiGL+VY/yyXB7GGE75LbBznrU3H/hHL45whraQtilM1EymKOK2nBZ94wbKxe2AfnYKrekaL25VEXzibrcsktDTN7naWHC8HkCkdl8zq2/lo69dZP8nCipE0VKSfMeXF5IFDKuMBPlhJ1sLX9qRyB+SkuWwFvhIbenaQi5ur7RyUuzgMbch+mDKI1FCD6664IKFycI+nihJQval6g9AdEWbHX0nK/sm6Kdz2OrGClo6KAWKxsXyTQDzecHrLr7F48NFaUz82G38RkE0o9S8dudpgIIDpw4n2B6u0GFVmu0HDk0wHtFC5DSzST0bRdOu3w9BVwicrvcYqcpEkheeJw3+Mh6tM3oYHzp6oC6fA3tXlVhYoVJeknEZWXt85v5+F4DlOn9z7X5gFUn2VHFdGgd+AMYW0BvcBUJmLupWfT96v9yC4YtvYTsn8SPIhpHRU7fRXGpnBcRyapRdTyQ79PuqQ1UCc7swLHA9vHAZX2fv+o8zuczxjARBCAV4F9hYX2dU4gVNs14mfwPwxUBzZEyvTNzMJlg4mphMCmlZcuKBsUzIRmmvMnKrFMdgDBsTEdfU/5Tu6RAP46rgK0y1nKafmkaoBAFzUFbmWHHl2xkub5wGimacHOT+TgxBSO3LUjGk5zPhnX8XJ320fm1p3l5XfoIazFaeC2kTLdwLXHkAGe08e8eesl7fOgQ1lJfW+dMFNV7BviFnDW5++zzv2pw4ZvttjeUgSY5HYioIgCJSG/t+L5DxlsvDv+O7Yr4JvBjTKswmcq+zpg2M8aaX5MbEe9vJHP40tTZK051rUQAPW2iEKCDVMBgsj+U0IhZDVwr9zMxb+8dSAsnbrzjj1gnCJkpbncFWIl08RTZxl80oqL6ak0F4Ios2QuxtaRDSz3LrqdkSBYi17Ut95+wlgqEmekr0NCZ26EFcfnp7qfbbh33LGA+1ZteWjQKueWxBsMuCtBvKhJomn2Wga6qrAfBxYdUES8opno7wj5iNhs0qBUQfyr8FQechAeX3j4fMrPcHg1r/CJN770qx3d+WB+Nk7EkJDWVCAeKSbGDQ0E5jYILTnVM=";
 
-    const clientModule = rewire("../dist/index.js");
+    const clientModule = rewire("../dist/main.js");
     const decrypt = clientModule.__get__("decrypt");
     let out = decrypt(enc, 'a10add3849ba56abbe56e056f20f883f');
 
@@ -103,7 +103,7 @@ test('Test Hierarchy Plain', () => {
         "</xml>";
 
     let values = toJson(xml, { parseTrueNumberOnly: true }).xml;
-    const clientModule = rewire("../dist/index.js");
+    const clientModule = rewire("../dist/main.js");
     const hierarchy = clientModule.__get__("hierarchy");
 
     const modelModule = rewire("../dist/models/refund_query.js");
@@ -118,7 +118,7 @@ test('Test Hierarchy Plain', () => {
 
 // it('Test CSV Response Parse', async () => {
 
-//     const rootModule = rewire("../dist/index.js");
+//     const rootModule = rewire("../dist/main.js");
 //     let parseCsvResponse = rootModule.__get__('parseCsvResponse');
 
 //     const csvModule = rewire("../dist/models/sheets.js");

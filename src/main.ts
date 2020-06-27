@@ -21,9 +21,8 @@ import { TradeAction, TradeCsvAction, TradeCsvResponse, TradeXmlResponse } from 
 import { TradeCreateNotify, TradeRefundNotify } from './actions/notifies';
 import { TradeBillAllAction, TradeBillRefundAction, TradeBillSuccessAction, TradeFundflowAction } from './actions/sheets';
 import { TradeCloseAction, TradeCreateAction, TradeQueryAction, TradeRefundAction, TradeRefundQueryAction } from './actions/trades';
-import { AccountTypeEnum } from './enums/account_type';
-import { ErrorCodeEnum } from './enums/error_code';
-import { SignTypeEnum } from './enums/sign_type';
+import { ErrorCodeEnum, SignTypeEnum } from './enums/commons';
+import { AccountTypeEnum } from './enums/sheets';
 import { API_ERROR_MESSAGES, TradeNoModel, TradeResultModel, TradeReturnModel, WechatApiError, XmlModel } from './models/base';
 import { TradeCreateModel, TradeCreateNotifyModel, TradeCreateResponseModel } from './models/pay';
 import { TradeQueryResponseModel } from './models/pay_query';

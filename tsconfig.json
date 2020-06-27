@@ -70,7 +70,9 @@
     "excludeNotExported": true,
     "excludePrivate": true,
     "excludeProtected": true,
-    "name": "微信支付客户端API"
+    "disableSources": true,
+    "name": "微信支付客户端API",
+    "readme": "./README.md"
   },
   "include":[
     "./src/**/*"

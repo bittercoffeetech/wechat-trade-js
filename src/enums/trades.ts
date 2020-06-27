@@ -1,4 +1,69 @@
 /**
+ * 交易类型
+ * @author BitterCoffee
+ *
+ */
+export enum TradeTypeEnum {
+	/**
+	 * JSAPI支付（或小程序支付）
+	 */
+	JSAPI = "JSAPI", 
+	/**
+	 * Native支付
+	 */
+	NATIVE = "NATIVE",
+	/**
+	 * app支付
+	 */
+	APP = "APP",
+	/**
+	 * H5支付
+	 */
+	MWEB = "MWEB",
+	/**
+	 * 付款码支付
+	 */
+	MICROPAY = "MICROPAY"
+};
+
+/**
+ * 交易状态
+ * 
+ * @author BitterCoffee
+ *
+ */
+export enum TradeStatusEnum {
+	/**
+	 * 支付成功
+	 */
+	SUCCESS = "SUCCESS", 
+	/**
+	 * REFUND
+	 */
+	REFUND = "REFUND",
+	/**
+	 * 未支付
+	 */
+	NOTPAY = "NOTPAY",
+	/**
+	 * 已关闭
+	 */
+	CLOSED = "CLOSED",
+	/**
+	 * 已撤销（刷卡支付）
+	 */
+	REVOKED = "REVOKED",
+	/**
+	 * 用户支付中
+	 */
+	USERPAYING = "USERPAYING",
+	/**
+	 * 支付失败 = 其他原因，如银行返回失败
+	 */
+	PAYERROR = "PAYERROR"
+};
+
+/**
  * ISO 4217 货币代码
  * 
  * @author BitterCoffee
@@ -724,4 +789,21 @@ export enum FeeTypeEnum {
 	 * 967 2 赞比亚克瓦查 赞比亚
 	 */
 	ZMW = "ZMW"
+};
+
+/**
+ * 代金券类型
+ * 
+ * @author BitterCoffee
+ *
+ */
+export enum CouponTypeEnum {
+	/**
+	 * 充值代金券
+	 */
+	CASH = "CASH", 
+	/**
+	 * 非充值优惠券
+	 */
+	NO_CASH = "NO_CASH"
 };
