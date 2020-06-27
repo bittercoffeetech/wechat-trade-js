@@ -5,7 +5,6 @@ import { ErrorCodeEnum } from '../src/enums/error_code';
 import { TNO, WechatApiError } from '../src/models/base';
 import { TradeQueryResponseModel } from '../src/models/pay_query';
 import { RTNO, TradeRefundQueryResponseModel } from '../src/models/refund_query';
-import { BasicFundflow, BillAll, TradeBillRefundModel, TradeBillSuccessModel } from '../src/models/sheets';
 
 it('Test Trade Query OK', async () => {   
     await client.queryTrade(TNO('90013580520959892632499715588959')).then((r: TradeQueryResponseModel | undefined) => {
@@ -39,7 +38,7 @@ it('Test Query Refund', async () =>{
 });
 
 test('Test Sheet Invalid Date', async() => {
-    await client.downloadBillAll(BillAll(2019,6,22,true)).then((_data) => {
+    await client.downloadBillAll(2019,6,22,true).then((_data) => {
         // never happened
     }).catch((e: WechatApiError) => {
         expect(e.code).toBe('20001')
@@ -47,7 +46,7 @@ test('Test Sheet Invalid Date', async() => {
 })
 
 test('Test Ziped Content', async() => {
-    await client.downloadBillAll(BillAll(2020,6,22,true)).then((_data) => {
+    await client.downloadBillAll(2020,6,22,true).then((_data) => {
         expect(_data.records.length > 0);
         expect(_data.summary.totalTrades).toBe(2);
         expect(_data.summary.totalRefundFee).toBe(220.4);
@@ -57,7 +56,7 @@ test('Test Ziped Content', async() => {
 })
 
 test('Test No ziped Content', async() => {
-    await client.downloadBillAll(BillAll(2020,6,22,false)).then((_data) => {
+    await client.downloadBillAll(2020,6,22,false).then((_data) => {
         expect(_data.records.length > 0);
         expect(_data.summary.totalTrades).toBe(2);
         expect(_data.summary.totalRefundFee).toBe(220.4);
@@ -67,7 +66,7 @@ test('Test No ziped Content', async() => {
 })
 
 test('Test Download Fundflow', async () => {
-    await client.downloadFundflow(BasicFundflow(2020,6,22)).then((_data) => {
+    await client.downloadBasicFundflow(2020,6,22).then((_data) => {
         expect(_data.summary.totalFlows).toBe(4);
         expect(_data.summary.totalIncomeFee).toBe(300);
         expect(_data.records.length).toBe(4);
@@ -77,7 +76,7 @@ test('Test Download Fundflow', async () => {
 })
 
 test('Test Bill Refund', async() => {
-    await client.downloadBillRefund(new TradeBillRefundModel(2020,6,22,true)).then((_data) => {
+    await client.downloadBillRefund(2020,6,22,true).then((_data) => {
         expect(_data.records.length).toBe(1);
         expect(_data.summary.totalTrades).toBe(1);
         expect(_data.summary.totalRefundFee).toBe(220.4);
@@ -88,7 +87,7 @@ test('Test Bill Refund', async() => {
 })
 
 test('Test Bill Success', async() => {
-    await client.donwloadBillSuccess(new TradeBillSuccessModel(2020,6,22,true)).then((_data) => {
+    await client.donwloadBillSuccess(2020,6,22,true).then((_data) => {
           expect(_data.records.length).toBe(1);
         expect(_data.summary.totalTrades).toBe(1);
         expect(_data.summary.settlementTotalFee).toBe(300);

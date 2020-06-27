@@ -79,36 +79,6 @@ export class TradeBillRefundModel extends TradeCsvlModel {
     readonly billType: BillTypeEnum = BillTypeEnum.REFUND;
 }
 
-export const BillAll = (year: number, month: number, day: number, tar?: boolean) : TradeBillAllModel => {
-	return new TradeBillAllModel(year, month, day, tar);
-}
-
-export const BillSuccess = (year: number, month: number, day: number, tar?: boolean) : TradeBillSuccessModel => {
-	return new TradeBillSuccessModel(year, month, day, tar);
-}
-
-export const BillRefund = (year: number, month: number, day: number, tar?: boolean) : TradeBillRefundModel => {
-	return new TradeBillRefundModel(year, month, day, tar);
-}
-
-export const BasicFundflow = (year: number, month: number, day: number, tar?: boolean) : TradeFundflowModel => {
-	let model = new TradeFundflowModel(year, month, day, tar);
-	model.accountType = AccountTypeEnum.BASIC;
-	return model;
-}
-
-export const FeesFundflow = (year: number, month: number, day: number, tar?: boolean) : TradeFundflowModel => {
-	let model = new TradeFundflowModel(year, month, day, tar);
-	model.accountType = AccountTypeEnum.FEES;
-	return model;
-}
-
-export const OperationFundflow = (year: number, month: number, day: number, tar?: boolean) : TradeFundflowModel => {
-	let model = new TradeFundflowModel(year, month, day, tar);
-	model.accountType = AccountTypeEnum.OPERATION;
-	return model;
-}
-
 /**
  * 交易概要信息
  */
@@ -370,6 +340,11 @@ export class TradeBillRefundInfo extends TradeBillAllInfo {
  * 资金账单请求
  */
 export class TradeFundflowModel extends TradeCsvlModel {
+
+	constructor(year: number, month: number, day: number, accountType: AccountTypeEnum, tar?: boolean) {
+		super(year, month, day, tar);
+		this.accountType = accountType;
+	}
 
 	/**
 	 * 资金账户类型

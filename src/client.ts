@@ -21,6 +21,7 @@ import { TradeAction, TradeCsvAction, TradeCsvResponse, TradeXmlResponse } from 
 import { TradeCreateNotify, TradeRefundNotify } from './actions/notifies';
 import { TradeBillAllAction, TradeBillRefundAction, TradeBillSuccessAction, TradeFundflowAction } from './actions/sheets';
 import { TradeCloseAction, TradeCreateAction, TradeQueryAction, TradeRefundAction, TradeRefundQueryAction } from './actions/trades';
+import { AccountTypeEnum } from './enums/account_type';
 import { ErrorCodeEnum } from './enums/error_code';
 import { SignTypeEnum } from './enums/sign_type';
 import { API_ERROR_MESSAGES, TradeNoModel, TradeResultModel, TradeReturnModel, WechatApiError, XmlModel } from './models/base';
@@ -305,20 +306,28 @@ export function queryRefund(model: TradeRefundQueryModel): Promise<TradeRefundQu
     return execute(TradeRefundQueryAction, model);
 }
 
-export function downloadBillAll(model: TradeBillAllModel): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
-    return download(TradeBillAllAction, model);
+export function downloadBillAll(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
+    return download(TradeBillAllAction, new TradeBillAllModel(year, month, day, tar));
 }
 
-export function donwloadBillSuccess(model: TradeBillSuccessModel): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
-    return download(TradeBillSuccessAction, model);
+export function donwloadBillSuccess(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
+    return download(TradeBillSuccessAction, new TradeBillSuccessModel(year, month, day, tar));
 }
 
-export function downloadBillRefund(model: TradeBillRefundModel): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
-    return download(TradeBillRefundAction, model);
+export function downloadBillRefund(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
+    return download(TradeBillRefundAction, new TradeBillRefundModel(year, month, day, tar));
 }
 
-export function downloadFundflow(model: TradeFundflowModel): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
-    return download(TradeFundflowAction, model);
+export function downloadBasicFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
+    return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.BASIC, tar));
+}
+
+export function downloadFeesFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
+    return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.FEES, tar));
+}
+
+export function downloadOperationFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
+    return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.OPERATION, tar));
 }
 
 export function onPayNotified(xml: string): TradeCreateNotifyModel | undefined {
