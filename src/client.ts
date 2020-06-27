@@ -42,7 +42,7 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestXml(model, action.requestSignType);
+    let forPost = toXmlRequest(model, action.requestSignType);
     let forResult: S | undefined = undefined;
     var httpsAgent;
 
@@ -60,7 +60,7 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
     }).then((resp: AxiosResponse<string>) => {
         let values = fetchValues(resp.data);
         checkReturn(values);
-        forResult = parseXmlResponse(values, action);
+        forResult = fromXmlResponse(values, action);
     }).catch((e: WechatApiError) => {
         throw e;
     });
@@ -74,7 +74,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestXml(model, action.requestSignType);
+    let forPost = toXmlRequest(model, action.requestSignType);
     let forResult = new TradeCsvResponseModel<ST, RT>();
     var httpsAgent;
     
@@ -91,7 +91,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
         httpsAgent: httpsAgent
     }).then(async (resp: AxiosResponse<Buffer>) => {
         if ((resp.headers['content-type'] as string).indexOf('gzip') >= 0) {
-            await parseCsvResponse(zlib.unzipSync(resp.data).toString(), action).then((result) => {
+            await fromCsvResponse(zlib.unzipSync(resp.data).toString(), action).then((result) => {
                 forResult = result;
             });
         } else {
@@ -100,7 +100,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
                 let values = fetchValues(data);
                 checkReturn(values);
             } else {
-                await parseCsvResponse(data, action).then((result) => {
+                await fromCsvResponse(data, action).then((result) => {
                     forResult = result;
                 });
             }
@@ -112,7 +112,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
     return forResult;
 }
 
-function toRequestXml(request: any, signType: SignTypeEnum = SignTypeEnum.MD5): string {
+function toXmlRequest(request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -129,11 +129,11 @@ function toRequestXml(request: any, signType: SignTypeEnum = SignTypeEnum.MD5): 
     }).parse({ xml: forSign }).toString();
 }
 
-function fetchValues(xml: string) {
+function fetchValues(xml: string) : {} {
     return toJson(xml, { parseTrueNumberOnly: true })["xml"];
 }
 
-function checkReturn(values: any): void {
+function checkReturn(values: {}): void {
     let returnModel = plainToClass(TradeReturnModel, values,
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
@@ -141,7 +141,7 @@ function checkReturn(values: any): void {
     }    
 }
 
-function parseXmlResponse<T>(values: any, response: TradeXmlResponse<T>): T | undefined {
+function fromXmlResponse<T>(values: {}, response: TradeXmlResponse<T>): T | undefined {
     if(response.hasResult) {
         let resultModel = plainToClass(TradeResultModel, values,
             { excludeExtraneousValues: true });
@@ -167,7 +167,7 @@ function parseXmlResponse<T>(values: any, response: TradeXmlResponse<T>): T | un
     }
 }
 
-async function parseCsvResponse<ST, RT>(csvData: string, response: TradeCsvResponse<ST, RT>): Promise<TradeCsvResponseModel<ST, RT>> {
+async function fromCsvResponse<ST, RT>(csvData: string, response: TradeCsvResponse<ST, RT>): Promise<TradeCsvResponseModel<ST, RT>> {
 
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
     let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
@@ -203,7 +203,7 @@ async function parseCsvResponse<ST, RT>(csvData: string, response: TradeCsvRespo
     return result;
 }
 
-function sign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
+function sign(forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
     var sorted = new TreeMap<string, any>(Collections.getStringComparator());
     for (let prop in forSign) {
         if (forSign[prop] != undefined && forSign[prop] != '' && prop != 'sign') {
@@ -333,11 +333,11 @@ export function downloadOperationFundflow(year: number, month: number, day: numb
 export function onPayNotified(xml: string): TradeCreateNotifyModel | undefined {
     let values = fetchValues(xml);
     checkReturn(values);
-    return parseXmlResponse(values, TradeCreateNotify);
+    return fromXmlResponse(values, TradeCreateNotify);
 }
 
 export function onRefundNotified(xml: string): TradeRefundNotifyModel | undefined {
     let values = fetchValues(xml);
     checkReturn(values);
-    return parseXmlResponse(values, TradeRefundNotify);
+    return fromXmlResponse(values, TradeRefundNotify);
 }
