@@ -8,7 +8,9 @@ import md5 from 'crypto-js/md5';
 import csv from 'csvtojson';
 import { CSVParseParam } from 'csvtojson/v2/Parameters';
 import { j2xParser as toXml, parse as toJson, validate } from 'fast-xml-parser';
+import fs from 'fs';
 import he from 'he';
+import https from 'https';
 import { customAlphabet } from 'nanoid';
 import nconf from 'nconf';
 import { resolve } from 'path';
@@ -39,14 +41,24 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestXml(model);
+    let forPost = toRequestXml(model, action.requestSignType);
     let forResult: S | undefined = undefined;
+    var httpsAgent;
+
+    if(action.certificated) {
+        httpsAgent = new https.Agent({  
+            pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
+            maxVersion: 'TLSv1.2',
+            passphrase: nconf.get('mch_id')
+          });
+    }
 
     await axios.post(action.url, forPost, {
-        responseType: 'text'
+        responseType: 'text',
+        httpsAgent: httpsAgent
     }).then((resp: AxiosResponse<string>) => {
         let values = fetchValues(resp.data);
-        checkResult(values);
+        checkReturn(values);
         forResult = parseXmlResponse(values, action);
     }).catch((e: WechatApiError) => {
         throw e;
@@ -55,27 +67,37 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
     return forResult;
 }
 
-async function executeSheet<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction<R, ST, RT>, model: R): Promise<TradeCsvResponseModel<ST, RT>> {
+async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction<R, ST, RT>, model: R): Promise<TradeCsvResponseModel<ST, RT>> {
 
     if (model == undefined) {
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestXml(model);
+    let forPost = toRequestXml(model, action.requestSignType);
     let forResult = new TradeCsvResponseModel<ST, RT>();
+    var httpsAgent;
+    
+    if(action.certificated) {
+        httpsAgent = new https.Agent({  
+            pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
+            maxVersion: 'TLSv1.2',
+            passphrase: nconf.get('mch_id')
+          });
+    }
 
     await axios.post(action.url, forPost, {
-        responseType: 'arraybuffer'
+        responseType: 'arraybuffer',
+        httpsAgent: httpsAgent
     }).then(async (resp: AxiosResponse<Buffer>) => {
         if ((resp.headers['content-type'] as string).indexOf('gzip') >= 0) {
             await parseCsvResponse(zlib.unzipSync(resp.data).toString(), action).then((result) => {
                 forResult = result;
             });
         } else {
-            let data = resp.data.toString();
-            if (validate(data)) {
+            let data = resp.data.toString();    
+            if (validate(data) == true) {
                 let values = fetchValues(data);
-                checkResult(values);
+                checkReturn(values);
             } else {
                 await parseCsvResponse(data, action).then((result) => {
                     forResult = result;
@@ -89,7 +111,7 @@ async function executeSheet<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAc
     return forResult;
 }
 
-function toRequestXml(request: any): string {
+function toRequestXml(request: any, signType: SignTypeEnum = SignTypeEnum.MD5): string {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -98,7 +120,7 @@ function toRequestXml(request: any): string {
             'nonce_str': nanoid()
         }
     };
-    forSign["sign"] = sign(forSign);
+    forSign["sign"] = sign(forSign, signType);
 
     return new toXml({
         format: true,
@@ -110,20 +132,23 @@ function fetchValues(xml: string) {
     return toJson(xml, { parseTrueNumberOnly: true })["xml"];
 }
 
-function checkResult(values: any): void {
+function checkReturn(values: any): void {
     let returnModel = plainToClass(TradeReturnModel, values,
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
-    }
-    let resultModel = plainToClass(TradeResultModel, values,
-        { excludeExtraneousValues: true });
-    if (!resultModel.isSuccess) {
-        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
-    }
+    }    
 }
 
 function parseXmlResponse<T>(values: any, response: TradeXmlResponse<T>): T | undefined {
+    if(response.hasResult) {
+        let resultModel = plainToClass(TradeResultModel, values,
+            { excludeExtraneousValues: true });
+        if (!resultModel.isSuccess) {
+            throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
+        }
+    }
+
     if (response.responseType == undefined) {
         return undefined;
     } else {
@@ -191,12 +216,13 @@ function sign(forSign: any, signType: SignTypeEnum | undefined = SignTypeEnum.MD
         params.push(n.getKey() + "=" + n.getValue());
     }
     params.push("key=" + nconf.get('mch_key'));
+    let signString = params.join("&");
 
     if (SignTypeEnum.MD5 == signType || signType == undefined) {
-        return md5(params.join("&")).toString().toUpperCase();
+        return md5(signString).toString().toUpperCase();
     }
     else if (SignTypeEnum.HMAC_SHA256 == signType) {
-        return hmacSha256(params.join("&")).toString().toUpperCase();
+        return hmacSha256(signString, nconf.get('mch_key')).toString().toUpperCase();
     } else {
         return undefined;
     }
@@ -280,25 +306,29 @@ export function queryRefund(model: TradeRefundQueryModel): Promise<TradeRefundQu
 }
 
 export function downloadBillAll(model: TradeBillAllModel): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
-    return executeSheet(TradeBillAllAction, model);
+    return download(TradeBillAllAction, model);
 }
 
 export function donwloadBillSuccess(model: TradeBillSuccessModel): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
-    return executeSheet(TradeBillSuccessAction, model);
+    return download(TradeBillSuccessAction, model);
 }
 
 export function downloadBillRefund(model: TradeBillRefundModel): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
-    return executeSheet(TradeBillRefundAction, model);
+    return download(TradeBillRefundAction, model);
 }
 
 export function downloadFundflow(model: TradeFundflowModel): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
-    return executeSheet(TradeFundflowAction, model);
+    return download(TradeFundflowAction, model);
 }
 
-export function onCreateNotifier(xml: string): TradeCreateNotifyModel | undefined {
-    return parseXmlResponse(xml, TradeCreateNotify);
+export function onPayNotified(xml: string): TradeCreateNotifyModel | undefined {
+    let values = fetchValues(xml);
+    checkReturn(values);
+    return parseXmlResponse(values, TradeCreateNotify);
 }
 
-export function onRefundNotifier(xml: string): TradeRefundNotifyModel | undefined {
-    return parseXmlResponse(xml, TradeRefundNotify);
+export function onRefundNotified(xml: string): TradeRefundNotifyModel | undefined {
+    let values = fetchValues(xml);
+    checkReturn(values);
+    return parseXmlResponse(values, TradeRefundNotify);
 }

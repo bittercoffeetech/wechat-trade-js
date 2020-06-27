@@ -13,15 +13,27 @@ export type RefundId = TradeId | 'rno' | 'rid';
 
 /**
  * 
+ * @param id 商户退款所属商户单号
+ */
+export const RTNO = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("tno", id);
+
+/**
+ * 
+ * @param id 微信退款所属交易流水号
+ */
+export const RTID = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("tid", id);
+
+/**
+ * 
  * @param id 商户退款单号
  */
-export const withRefundNo = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rno", id);
+export const RNO = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rno", id);
 
 /**
  * 
  * @param id 微信退款交易号
  */
-export const withRefundId = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rid", id);
+export const RID = (id: string) : TradeRefundQueryModel => new TradeRefundQueryModel("rid", id);
 
 /**
  * 退款查询

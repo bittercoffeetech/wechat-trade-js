@@ -25,6 +25,8 @@ export const TradeCreateNotify: TradeXmlResponse<TradeCreateNotifyModel> = {
 export const TradeRefundNotify: TradeXmlResponse<TradeRefundNotifyModel> = {
 	...DefaultTradeResponse,
 	...{
+		hasResult: false,
+		hasSigned: false,
 		encrypted: 'req_info',
 		responseType: TradeRefundNotifyModel
 	}

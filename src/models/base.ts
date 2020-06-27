@@ -176,13 +176,13 @@ export type TradeId = 'tno' | 'tid';
  * 
  * @param tradeNo 商户流水号
  */
-export const withTradeNo = (tradeNo: string) : TradeNoModel => new TradeNoModel('tno', tradeNo);
+export const TNO = (tradeNo: string) : TradeNoModel => new TradeNoModel('tno', tradeNo);
 
 /**
  * 
  * @param transId 微信交易号
  */
-export const withTransactionId = (transId: string) : TradeNoModel => new TradeNoModel('tid', transId);
+export const TID = (transId: string) : TradeNoModel => new TradeNoModel('tid', transId);
 
 /**
  * 交易标识

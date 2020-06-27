@@ -13,7 +13,7 @@ import { CsvModel } from './base';
 /**
  * 账单请求
  */
-export class TradeCsvlModel {
+export abstract class TradeCsvlModel {
 
 	constructor(year: number, month: number, day: number, tar?: boolean) {
 		this.billDate = moment([year, month - 1, day]);
@@ -77,6 +77,36 @@ export class TradeBillRefundModel extends TradeCsvlModel {
 	 */
     @Expose({ name: "bill_type" })
     readonly billType: BillTypeEnum = BillTypeEnum.REFUND;
+}
+
+export const BillAll = (year: number, month: number, day: number, tar?: boolean) : TradeBillAllModel => {
+	return new TradeBillAllModel(year, month, day, tar);
+}
+
+export const BillSuccess = (year: number, month: number, day: number, tar?: boolean) : TradeBillSuccessModel => {
+	return new TradeBillSuccessModel(year, month, day, tar);
+}
+
+export const BillRefund = (year: number, month: number, day: number, tar?: boolean) : TradeBillRefundModel => {
+	return new TradeBillRefundModel(year, month, day, tar);
+}
+
+export const BasicFundflow = (year: number, month: number, day: number, tar?: boolean) : TradeFundflowModel => {
+	let model = new TradeFundflowModel(year, month, day, tar);
+	model.accountType = AccountTypeEnum.BASIC;
+	return model;
+}
+
+export const FeesFundflow = (year: number, month: number, day: number, tar?: boolean) : TradeFundflowModel => {
+	let model = new TradeFundflowModel(year, month, day, tar);
+	model.accountType = AccountTypeEnum.FEES;
+	return model;
+}
+
+export const OperationFundflow = (year: number, month: number, day: number, tar?: boolean) : TradeFundflowModel => {
+	let model = new TradeFundflowModel(year, month, day, tar);
+	model.accountType = AccountTypeEnum.OPERATION;
+	return model;
 }
 
 /**
