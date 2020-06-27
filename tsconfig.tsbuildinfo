@@ -113,6 +113,14 @@
         "version": "8d6d51a5118d000ed3bfe6e1dd1335bebfff3fef23cd2af2f84a24d30f90cc90",
         "signature": "8d6d51a5118d000ed3bfe6e1dd1335bebfff3fef23cd2af2f84a24d30f90cc90"
       },
+      "./node_modules/@types/nconf/index.d.ts": {
+        "version": "c5bf2a8d103c2f35af14b970c34547157c62187639315eb743a83795f69d2835",
+        "signature": "c5bf2a8d103c2f35af14b970c34547157c62187639315eb743a83795f69d2835"
+      },
+      "./src/index.ts": {
+        "version": "8740447b879813f42400a1d09c5b159794962690162001848dd0c2353f46fb0b",
+        "signature": "396a3607ca8288c7dd02dff9b04e6ffb057b3c6f3d12965421373c3da78b65cc"
+      },
       "./node_modules/axios/index.d.ts": {
         "version": "e7df7eb51c5090db4bdcdbf9efe053530dff0e33796f40b08b1a3be6c3a351d0",
         "signature": "e7df7eb51c5090db4bdcdbf9efe053530dff0e33796f40b08b1a3be6c3a351d0"
@@ -393,10 +401,6 @@
         "version": "8f6844399108503b4c0806cfd479711aec7861fd545db1fae17da89a7c37d84e",
         "signature": "8f6844399108503b4c0806cfd479711aec7861fd545db1fae17da89a7c37d84e"
       },
-      "./node_modules/@types/nconf/index.d.ts": {
-        "version": "c5bf2a8d103c2f35af14b970c34547157c62187639315eb743a83795f69d2835",
-        "signature": "c5bf2a8d103c2f35af14b970c34547157c62187639315eb743a83795f69d2835"
-      },
       "./node_modules/typescriptcollectionsframework/definitions/src/collectable.d.ts": {
         "version": "f9ec23684265d2207154937f6a16984ee3192faee724fe6a4705c20a3ff63da5",
         "signature": "f9ec23684265d2207154937f6a16984ee3192faee724fe6a4705c20a3ff63da5"
@@ -653,13 +657,9 @@
         "version": "04aa5a5d6dbd1de9d39c36aac86856ada1674c5c90523ad8e506b49ba79f4fef",
         "signature": "415f10679803ae5418a721ca8dba846756711d75aa0c67eef5b27674294da6be"
       },
-      "./src/client.ts": {
-        "version": "7acadd95b515f2c78c03dcd1c409f83378edacf888cd72a40adeba1f70d10f41",
+      "./src/main.ts": {
+        "version": "7912954e8778ad6b5c3ad5de2e47df20a095ef53279ea6eca41a7d661f8aa4b5",
         "signature": "d52f270094ffa876c10833fcb38063de304bdbe0799a88012651eac6f6a81292"
-      },
-      "./src/index.ts": {
-        "version": "8740447b879813f42400a1d09c5b159794962690162001848dd0c2353f46fb0b",
-        "signature": "396a3607ca8288c7dd02dff9b04e6ffb057b3c6f3d12965421373c3da78b65cc"
       }
     },
     "options": {
@@ -670,6 +670,7 @@
         "lib.es2015.d.ts",
         "lib.es2015.promise.d.ts"
       ],
+      "declaration": true,
       "outDir": "./dist",
       "rootDir": "./src",
       "removeComments": true,
@@ -862,6 +863,21 @@
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "./node_modules/reflect-metadata/index.d.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/nconf/index.d.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/index.ts": [
+        "./node_modules/reflect-metadata/index.d.ts",
+        "./node_modules/@types/nconf/index.d.ts",
+        "./node_modules/@types/node/path.d.ts",
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
@@ -1406,12 +1422,6 @@
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "./node_modules/nanoid/index.d.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "./node_modules/@types/nconf/index.d.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
@@ -2027,7 +2037,7 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "./src/client.ts": [
+      "./src/main.ts": [
         "./node_modules/reflect-metadata/index.d.ts",
         "./node_modules/axios/index.d.ts",
         "./node_modules/class-transformer/index.d.ts",
@@ -2058,15 +2068,6 @@
         "./src/models/refund.ts",
         "./src/models/refund_query.ts",
         "./src/models/sheets.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "./src/index.ts": [
-        "./node_modules/reflect-metadata/index.d.ts",
-        "./node_modules/@types/nconf/index.d.ts",
-        "./node_modules/@types/node/path.d.ts",
-        "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
@@ -2240,6 +2241,15 @@
         "./node_modules/@types/node/ts3.2/fs.d.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./node_modules/@types/nconf/index.d.ts": [
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/node/ts3.2/fs.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/index.ts": [
+        "./node_modules/reflect-metadata/index.d.ts"
       ],
       "./node_modules/axios/index.d.ts": [
         "./node_modules/@types/node/fs.d.ts",
@@ -2785,12 +2795,6 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "./node_modules/@types/nconf/index.d.ts": [
-        "./node_modules/@types/node/fs.d.ts",
-        "./node_modules/@types/node/ts3.2/fs.d.ts",
-        "./node_modules/@types/node/util.d.ts",
-        "./node_modules/@types/node/ts3.2/util.d.ts"
-      ],
       "./node_modules/typescriptcollectionsframework/definitions/src/collectable.d.ts": [
         "./node_modules/@types/node/fs.d.ts",
         "./node_modules/@types/node/ts3.2/fs.d.ts",
@@ -3272,7 +3276,7 @@
         "./src/models/refund.ts",
         "./src/models/refund_query.ts"
       ],
-      "./src/client.ts": [
+      "./src/main.ts": [
         "./node_modules/reflect-metadata/index.d.ts",
         "./src/models/pay.ts",
         "./src/models/base.ts",
@@ -3280,9 +3284,6 @@
         "./src/models/refund.ts",
         "./src/models/refund_query.ts",
         "./src/models/sheets.ts"
-      ],
-      "./src/index.ts": [
-        "./node_modules/reflect-metadata/index.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -3314,6 +3315,8 @@
       "../../../../../../usr/local/lib/node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "../../../../../../usr/local/lib/node_modules/typescript/lib/lib.esnext.bigint.d.ts",
       "./node_modules/reflect-metadata/index.d.ts",
+      "./node_modules/@types/nconf/index.d.ts",
+      "./src/index.ts",
       "./node_modules/axios/index.d.ts",
       "./node_modules/class-transformer/classtransformoptions.d.ts",
       "./node_modules/class-transformer/classtransformer.d.ts",
@@ -3384,7 +3387,6 @@
       "./node_modules/fast-xml-parser/src/parser.d.ts",
       "./node_modules/@types/he/index.d.ts",
       "./node_modules/nanoid/index.d.ts",
-      "./node_modules/@types/nconf/index.d.ts",
       "./node_modules/typescriptcollectionsframework/definitions/src/collectable.d.ts",
       "./node_modules/typescriptcollectionsframework/definitions/src/allfieldcollectable.d.ts",
       "./node_modules/typescriptcollectionsframework/definitions/src/hashable.d.ts",
@@ -3443,14 +3445,13 @@
       "./src/enums/bill_type.ts",
       "./src/enums/refund_channel.ts",
       "./src/enums/trade_status.ts",
+      "./src/models/sheets.ts",
+      "./src/actions/sheets.ts",
       "./src/models/pay_query.ts",
       "./src/models/refund_query.ts",
       "./src/actions/trades.ts",
       "./src/enums/error_code.ts",
-      "./src/index.ts",
-      "./src/models/sheets.ts",
-      "./src/client.ts",
-      "./src/actions/sheets.ts"
+      "./src/main.ts"
     ]
   },
   "version": "3.7.5"

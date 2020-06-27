@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
+    "compile": "rm -Rf dist/* & tsc",
     "test": "tsc & jest",
-    "tcover": "jest --coverage"
+    "tcover": "tsc & jest --coverage"
   },
   "keywords": [
     "Wechat",
@@ -25,8 +26,7 @@
     "nanoid": "^3.1.9",
     "nconf": "^0.10.0",
     "reflect-metadata": "^0.1.13",
-    "typescriptcollectionsframework": "^4.4.13",
-    "utf8": "^3.0.0"
+    "typescriptcollectionsframework": "^4.4.13"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

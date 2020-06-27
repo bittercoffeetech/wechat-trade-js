@@ -286,56 +286,147 @@ function hierarchy(model: new (...args: any[]) => any, source: object): object {
     }
 }
 
+/**
+ * 统一下单
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function createTrade(model: TradeCreateModel): Promise<TradeCreateResponseModel | undefined> {
     return execute(TradeCreateAction, model);
 }
 
+/**
+ * 订单查询
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function queryTrade(model: TradeNoModel): Promise<TradeQueryResponseModel | undefined> {
     return execute(TradeQueryAction, model);
 }
 
+/**
+ * 关闭订单
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function closeTrade(model: TradeNoModel): Promise<undefined> {
     return execute(TradeCloseAction, model);
 }
 
+/**
+ * 发起退款
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function createRefund(model: TradeRefundModel): Promise<TradeRefundResponseModel | undefined> {
     return execute(TradeRefundAction, model);
 }
 
+/**
+ * 查询退款
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function queryRefund(model: TradeRefundQueryModel): Promise<TradeRefundQueryResponseModel | undefined> {
     return execute(TradeRefundQueryAction, model);
 }
 
+/**
+ * 下载所有交易数据
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function downloadBillAll(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
     return download(TradeBillAllAction, new TradeBillAllModel(year, month, day, tar));
 }
 
+/**
+ * 下载所有成功的交易数据
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function donwloadBillSuccess(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
     return download(TradeBillSuccessAction, new TradeBillSuccessModel(year, month, day, tar));
 }
 
+/**
+ * 下载所有退款的交易数据
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function downloadBillRefund(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
     return download(TradeBillRefundAction, new TradeBillRefundModel(year, month, day, tar));
 }
 
+/**
+ * 下载基本账户资金账单
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function downloadBasicFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
     return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.BASIC, tar));
 }
 
+/**
+ * 下载手续费账户资金账单
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function downloadFeesFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
     return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.FEES, tar));
 }
 
+/**
+ * 下载运营账户资金账单
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function downloadOperationFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
     return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.OPERATION, tar));
 }
 
+/**
+ * 解析支付结果通知消息
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function onPayNotified(xml: string): TradeCreateNotifyModel | undefined {
     let values = fetchValues(xml);
     checkReturn(values);
     return fromXmlResponse(values, TradeCreateNotify);
 }
 
+/**
+ * 解析退款结果通知消息
+ * 
+ * @since 1.0
+ * @async
+ * @author BitterCoffee
+ */
 export function onRefundNotified(xml: string): TradeRefundNotifyModel | undefined {
     let values = fetchValues(xml);
     checkReturn(values);
