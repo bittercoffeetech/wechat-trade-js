@@ -12,9 +12,11 @@ const nanoid = customAlphabet('1234567890', 32);
  */
 export class TradeRefundModel extends TradeNoModel {
 
-	constructor(idType: TradeId, id: string) {
+	constructor(idType: TradeId, id: string, totalFee: number, refundFee: number) {
 		super(idType, id);
 		this.refundNo = nanoid();
+		this.totalFee = totalFee;
+		this.refundFee = refundFee;
 	}
 
     /**
@@ -43,8 +45,6 @@ export class TradeRefundModel extends TradeNoModel {
 
 	/**
 	 * 退款资金来源 仅针对老资金流商户使用
-	 * 
-	 * @see RefundAccountEnum
 	 */
 	@Expose({ name: "refund_account" })
 	refundAccount?: RefundAccountEnum;

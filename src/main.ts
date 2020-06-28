@@ -313,6 +313,8 @@ export function queryTrade(model: TradeNoModel): Promise<TradeQueryResponseModel
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param model {@link TNO} 商户订单号<br>{@link TID} 微信交易号
  */
 export function closeTrade(model: TradeNoModel): Promise<undefined> {
     return execute(TradeCloseAction, model);
@@ -335,6 +337,8 @@ export function createRefund(model: TradeRefundModel): Promise<TradeRefundRespon
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param model {@link RTNO} 商户支付单号<br>{@link RTID} 微信支付交易号<br>{@Link RNO} 商户退款单号<br>{@Link RID} 微信退款交易号
  */
 export function queryRefund(model: TradeRefundQueryModel): Promise<TradeRefundQueryResponseModel | undefined> {
     return execute(TradeRefundQueryAction, model);
@@ -346,6 +350,11 @@ export function queryRefund(model: TradeRefundQueryModel): Promise<TradeRefundQu
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param year 年
+ * @param month 月
+ * @param day 日
+ * @param tar 是否使用压缩格式返回
  */
 export function downloadBillAll(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
     return download(TradeBillAllAction, new TradeBillAllModel(year, month, day, tar));
@@ -357,6 +366,11 @@ export function downloadBillAll(year: number, month: number, day: number, tar?: 
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param year 年
+ * @param month 月
+ * @param day 日
+ * @param tar 是否使用压缩格式返回
  */
 export function donwloadBillSuccess(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
     return download(TradeBillSuccessAction, new TradeBillSuccessModel(year, month, day, tar));
@@ -368,6 +382,11 @@ export function donwloadBillSuccess(year: number, month: number, day: number, ta
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param year 年
+ * @param month 月
+ * @param day 日
+ * @param tar 是否使用压缩格式返回
  */
 export function downloadBillRefund(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
     return download(TradeBillRefundAction, new TradeBillRefundModel(year, month, day, tar));
@@ -379,6 +398,11 @@ export function downloadBillRefund(year: number, month: number, day: number, tar
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param year 年
+ * @param month 月
+ * @param day 日
+ * @param tar 是否使用压缩格式返回
  */
 export function downloadBasicFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
     return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.BASIC, tar));
@@ -390,6 +414,11 @@ export function downloadBasicFundflow(year: number, month: number, day: number, 
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param year 年
+ * @param month 月
+ * @param day 日
+ * @param tar 是否使用压缩格式返回
  */
 export function downloadFeesFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
     return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.FEES, tar));
@@ -401,6 +430,11 @@ export function downloadFeesFundflow(year: number, month: number, day: number, t
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param year 年
+ * @param month 月
+ * @param day 日
+ * @param tar 是否使用压缩格式返回
  */
 export function downloadOperationFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
     return download(TradeFundflowAction, new TradeFundflowModel(year, month, day, AccountTypeEnum.OPERATION, tar));
@@ -412,6 +446,8 @@ export function downloadOperationFundflow(year: number, month: number, day: numb
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param xml 微信回调的XML字符串
  */
 export function onPayNotified(xml: string): TradeCreateNotifyModel | undefined {
     let values = fetchValues(xml);
@@ -425,6 +461,8 @@ export function onPayNotified(xml: string): TradeCreateNotifyModel | undefined {
  * @since 1.0
  * @async
  * @author BitterCoffee
+ * 
+ * @param xml 微信回调的XML字符串
  */
 export function onRefundNotified(xml: string): TradeRefundNotifyModel | undefined {
     let values = fetchValues(xml);
