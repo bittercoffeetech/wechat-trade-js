@@ -45,12 +45,12 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
     let forResult: S | undefined = undefined;
     var httpsAgent;
 
-    if(action.certificated) {
-        httpsAgent = new https.Agent({  
+    if (action.certificated) {
+        httpsAgent = new https.Agent({
             pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
             maxVersion: 'TLSv1.2',
             passphrase: nconf.get('mch_id')
-          });
+        });
     }
 
     await axios.post(action.url, forPost, {
@@ -68,7 +68,6 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
 }
 
 async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction<R, ST, RT>, model: R): Promise<TradeCsvResponseModel<ST, RT>> {
-
     if (model == undefined) {
         throw Error("Model Object must not be null");
     }
@@ -76,13 +75,13 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
     let forPost = toXmlRequest(model, action.requestSignType);
     let forResult = new TradeCsvResponseModel<ST, RT>();
     var httpsAgent;
-    
-    if(action.certificated) {
-        httpsAgent = new https.Agent({  
+
+    if (action.certificated) {
+        httpsAgent = new https.Agent({
             pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
             maxVersion: 'TLSv1.2',
             passphrase: nconf.get('mch_id')
-          });
+        });
     }
 
     await axios.post(action.url, forPost, {
@@ -94,7 +93,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
                 forResult = result;
             });
         } else {
-            let data = resp.data.toString();    
+            let data = resp.data.toString();
             if (validate(data) == true) {
                 let values = fetchValues(data);
                 checkReturn(values);
@@ -128,7 +127,7 @@ function toXmlRequest(request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): s
     }).parse({ xml: forSign }).toString();
 }
 
-function fetchValues(xml: string) : {} {
+function fetchValues(xml: string): {} {
     return toJson(xml, { parseTrueNumberOnly: true })["xml"];
 }
 
@@ -137,11 +136,11 @@ function checkReturn(values: {}): void {
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
-    }    
+    }
 }
 
 function fromXmlResponse<T>(values: {}, response: TradeXmlResponse<T>): T | undefined {
-    if(response.hasResult) {
+    if (response.hasResult) {
         let resultModel = plainToClass(TradeResultModel, values,
             { excludeExtraneousValues: true });
         if (!resultModel.isSuccess) {
@@ -167,24 +166,22 @@ function fromXmlResponse<T>(values: {}, response: TradeXmlResponse<T>): T | unde
 }
 
 async function fromCsvResponse<ST, RT>(csvData: string, response: TradeCsvResponse<ST, RT>): Promise<TradeCsvResponseModel<ST, RT>> {
-
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
     let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
-    let summaryLine: string = '';
-    let isSummary: boolean = false;
+    let summaryLine: string = '', isSummary: boolean = false;
     let result = new TradeCsvResponseModel<ST, RT>();
 
     await csv({ ...csvParam, headers: Reflect.getMetadata('columns', response.recordType) })
         .fromString(csvData)
         .preFileLine((line: string, index: number) => {
             if (isSummary) { summaryLine = line; return ','; }
-            let traw = line.replace(/`/g, "");
+            let raw = line.replace(/`/g, "");
 
-            if (hasChineseWord(traw.substr(0, 1))) {
-                traw = ',';
+            if (hasChineseWord(raw.substr(0, 1))) {
+                raw = ',';
                 if (index > 0 && !isSummary) { isSummary = true; }
             }
-            return traw;
+            return raw;
         })
         .then((csvRow: any[]) => {
             for (var i = 0; i < csvRow.length; i++) {
@@ -209,19 +206,19 @@ function sign(forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5
             sorted.put(prop, forSign[prop]);
         }
     }
+
     let params = [];
     let entities = sorted.entrySet().iterator();
     while (entities.hasNext()) {
-        let n = entities.next();
-        params.push(n.getKey() + "=" + n.getValue());
+        let entity = entities.next();
+        params.push(entity.getKey() + "=" + entity.getValue());
     }
     params.push("key=" + nconf.get('mch_key'));
-    let signString = params.join("&");
 
+    let signString = params.join("&");
     if (SignTypeEnum.MD5 == signType || signType == undefined) {
         return md5(signString).toString().toUpperCase();
-    }
-    else if (SignTypeEnum.HMAC_SHA256 == signType) {
+    } else if (SignTypeEnum.HMAC_SHA256 == signType) {
         return hmacSha256(signString, nconf.get('mch_key')).toString().toUpperCase();
     } else {
         return undefined;
@@ -229,10 +226,11 @@ function sign(forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5
 }
 
 function decrypt(content: string, key: string): object {
+    let chunks = [];
     let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
     let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
+
     decipher.setAutoPadding(true);
-    let chunks = [];
     chunks.push(decipher.update(content, 'base64', 'utf8'));
     chunks.push(decipher.final('utf8'));
 
@@ -241,6 +239,7 @@ function decrypt(content: string, key: string): object {
 
 function hierarchy(model: new (...args: any[]) => any, source: object): object {
     let result = {};
+
     morphValues(model, source, result, []);
     clearValues(source);
 
