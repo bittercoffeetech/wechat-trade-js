@@ -356,7 +356,7 @@ export function queryRefund(model: TradeRefundQueryModel): Promise<TradeRefundQu
  * @param day 日
  * @param tar 是否使用压缩格式返回
  */
-export function downloadBillAll(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
+export function downloadAllBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillAllInfo>> {
     return download(TradeBillAllAction, new TradeBillAllModel(year, month, day, tar));
 }
 
@@ -372,7 +372,7 @@ export function downloadBillAll(year: number, month: number, day: number, tar?: 
  * @param day 日
  * @param tar 是否使用压缩格式返回
  */
-export function donwloadBillSuccess(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
+export function donwloadSuccessBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
     return download(TradeBillSuccessAction, new TradeBillSuccessModel(year, month, day, tar));
 }
 
@@ -388,7 +388,7 @@ export function donwloadBillSuccess(year: number, month: number, day: number, ta
  * @param day 日
  * @param tar 是否使用压缩格式返回
  */
-export function downloadBillRefund(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
+export function downloadRefundBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeCsvResponseModel<TradeBillSummaryInfo, TradeBillRefundInfo>> {
     return download(TradeBillRefundAction, new TradeBillRefundModel(year, month, day, tar));
 }
 
