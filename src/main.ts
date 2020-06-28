@@ -60,8 +60,8 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         let values = fetchValues(resp.data);
         checkReturn(values);
         forResult = fromXmlResponse(values, action);
-    }).catch((e: WechatApiError) => {
-        throw e;
+    }).catch((error: WechatApiError) => {
+        throw error;
     });
 
     return forResult;
@@ -103,8 +103,8 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
                 });
             }
         }
-    }).catch((e: WechatApiError) => {
-        throw e;
+    }).catch((error: WechatApiError) => {
+        throw error;
     });
 
     return forResult;
@@ -214,8 +214,8 @@ function sign(forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5
         params.push(entity.getKey() + "=" + entity.getValue());
     }
     params.push("key=" + nconf.get('mch_key'));
-
     let signString = params.join("&");
+
     if (SignTypeEnum.MD5 == signType || signType == undefined) {
         return md5(signString).toString().toUpperCase();
     } else if (SignTypeEnum.HMAC_SHA256 == signType) {
@@ -247,8 +247,8 @@ function hierarchy(model: new (...args: any[]) => any, source: object): object {
 
     function clearValues(source: object) {
         for (const key of Object.keys(source)) {
-            let m = key.match('.*(_)[0-9]+$');
-            if (m != null && m.length > 0) {
+            let matched = key.match('.*(_)[0-9]+$');
+            if (matched != null && matched.length > 0) {
                 delete source[key];
             }
         }
@@ -271,13 +271,13 @@ function hierarchy(model: new (...args: any[]) => any, source: object): object {
                 let count: number = source[xmlModel.countName + suffix] as number;
 
                 if (count > 0) {
-                    let subObjects = [];
+                    let childs = [];
                     for (let i = 0; i < count; i++) {
-                        let subObject = {};
-                        morphValues(xmlModel.subType, source, subObject, levels.concat(i));
-                        subObjects.push(subObject);
+                        let child = {};
+                        morphValues(xmlModel.subType, source, child, levels.concat(i));
+                        childs.push(child);
                     }
-                    result[xmlModel.name] = subObjects;
+                    result[xmlModel.name] = childs;
                 }
             }
         });
