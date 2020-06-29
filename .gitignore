@@ -8,3 +8,5 @@ coverage
 *.db
 *.log
 .metals
+wechat*.json
+__test__
