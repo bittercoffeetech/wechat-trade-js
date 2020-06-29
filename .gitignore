@@ -9,4 +9,6 @@ coverage
 *.log
 .metals
 wechat*.json
-__test__
+__tests__
+jest*.json
+

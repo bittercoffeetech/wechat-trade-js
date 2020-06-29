@@ -1,6 +1,0 @@
-{
-    "watch": ["src", "__tests__"],
-    "ext": "ts",
-    "ignore": ["src/**/*.spec.ts"],
-    "exec": "export NODE_ENV='dev' && yarn test"
-  }

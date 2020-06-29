@@ -1,13 +1,12 @@
 {
-  "name": "wechat-trade",
-  "version": "0.1.0",
+  "name": "wechat-trade-js",
+  "version": "1.0",
   "description": "Wechat Trade Client",
-  "main": "dist/index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
     "compile": "rm -Rf dist/* & tsc",
-    "test": "tsc & jest",
-    "tcover": "tsc & jest --coverage",
+    "test": "tsc & jest --config jest.config.json",
+    "tcover": "tsc & jest --config jest.config.json --coverage",
     "docs": "npx typedoc"
   },
   "keywords": [
@@ -15,7 +14,7 @@
     "API"
   ],
   "author": "BitterCoffee",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
     "class-transformer": "^0.2.3",
@@ -45,28 +44,5 @@
     "ts-jest": "^26.1.0",
     "typedoc": "^0.17.7",
     "typescript": "^3.9.5"
-  },
-  "jest": {
-    "verbose": true,
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/__tests__/*-test.ts"
-    ],
-    "testTimeout": 10000,
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "globals": {
-      "ts-jest": {
-        "babelConfig": true,
-        "isolatedModules": true
-      }
-    },
-    "modulePaths": [
-      "<rootDir>/"
-    ]
   }
 }
