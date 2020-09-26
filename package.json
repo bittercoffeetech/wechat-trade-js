@@ -1,6 +1,6 @@
 {
   "name": "wechat-trade-js",
-  "version": "1.0",
+  "version": "0.0.9",
   "description": "Wechat Trade Client",
   "main": "dist/main.js",
   "scripts": {
@@ -11,9 +11,10 @@
   },
   "keywords": [
     "Wechat",
-    "API"
+    "Trade",
+    "MiniProgram"
   ],
-  "author": "BitterCoffee",
+  "author": "tech.bittercoffee",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
@@ -29,14 +30,12 @@
     "typescriptcollectionsframework": "^4.4.13"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/crypto-js": "^3.1.47",
     "@types/he": "^1.1.1",
     "@types/jest": "^25.2.3",
     "@types/moment": "^2.13.0",
     "@types/nconf": "^0.10.0",
     "@types/node": "^14.0.4",
-    "@types/reflect-metadata": "^0.1.0",
     "@types/rewire": "^2.5.28",
     "@types/utf8": "^2.1.6",
     "jest": "^26.0.1",

@@ -11,3 +11,4 @@ wechat*.json
 __tests__
 jest*.json
 nodemon.json
+/nbproject/private/
