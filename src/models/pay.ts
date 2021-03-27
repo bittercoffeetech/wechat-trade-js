@@ -111,15 +111,7 @@ export class TradeCreateModel {
 		this.tradeType = tradeType;
 		this.totalFee = totalFee;
 		this.body = body;
-		this.tradeNo = nanoid();
 	}
-
-	/**
-	 * 商户订单号 商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*且在同一个商户号下唯一。
-	 */
-	@Expose({ name: "out_trade_no" })
-	readonly tradeNo!: string;
-
 	/**
 	 * 符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 */
@@ -242,6 +234,18 @@ export class TradeCreateModel {
  * 统一下单返回
  */
 export class TradeCreateResponseModel extends TradeAppModel {
+
+	constructor() {
+		super();
+		this.tradeNo = nanoid();
+	}
+
+	/**
+	 * 商户订单号 商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*且在同一个商户号下唯一。
+	 */
+	 @Expose({ name: "out_trade_no" })
+	 tradeNo!: string;
+
 	/**
 	 * 二维码链接
 	 */

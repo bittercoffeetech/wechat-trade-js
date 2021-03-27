@@ -60,7 +60,11 @@ export enum TradeStatusEnum {
 	/**
 	 * 支付失败 = 其他原因，如银行返回失败
 	 */
-	PAYERROR = "PAYERROR"
+	PAYERROR = "PAYERROR",
+	/**
+	 * 已接收，等待扣款
+	 */
+	 ACCEPT = "ACCEPT"
 };
 
 /**
