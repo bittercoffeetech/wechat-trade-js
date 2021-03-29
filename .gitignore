@@ -5,6 +5,7 @@ yarn*.*
 dist
 coverage
 *.db
+*.js
 *.log
 .metals
 .idea

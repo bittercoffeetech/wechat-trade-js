@@ -210,6 +210,6 @@ export class TradeRefundNotifyModel extends TradeFeeModel {
 	 * 退款成功时间 资金退款至用户帐号的时间，格式2017-12-15 09:46:01
 	 */
 	@Expose({ name: "success_time" })
-	@Transform(value => (value != undefined) ? moment(value, 'YYYY-MM-DD hh:mm:ss') : undefined)
+	@Transform(({ value }) => value || moment(value, 'YYYY-MM-DD hh:mm:ss'), { toClassOnly: true })
 	successTime!: moment.Moment;
 }

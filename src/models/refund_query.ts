@@ -139,8 +139,8 @@ export class TradeRefundInfo {
 	 */
 	@Expose({ name: "refund_success_time" })
 	@XmlModel('refund_success_time')
-	@Transform(value => (value != undefined) ? moment(value, 'YYYY-MM-DD hh:mm:ss') : undefined)
-	successTime!: moment.Moment;
+	@Transform(({ value }) => value || moment(value, 'YYYY-MM-DD hh:mm:ss'), { toClassOnly: true })
+	successTime!: moment.Moment;	
 
 	/**
 	 * 代金券使用数量

@@ -20,15 +20,15 @@ export abstract class TradeCsvlModel {
 	 * 下载对账单的日期，格式：20140603
 	 */
 	@Expose({ name: "bill_date" })
-	@Transform(value => (value != undefined) ? moment(value).utcOffset('+08:00').format('YYYYMMDD') : undefined)
-    billDate!: Moment;
+	@Transform(({ value }) => value.utcOffset('+08:00').format('YYYYMMDD'), { toPlainOnly: true})
+    billDate!: Moment;	
 
 	/**
 	 * 压缩账单
 	 */
     @Expose({ name: "tar_type" })
-    @Transform(value => (value as boolean) ? 'GZIP' : undefined)
-    tarType?: boolean = false;
+    @Transform(({ value }) => (value as boolean) ? 'GZIP' : undefined, { toPlainOnly: true})
+    tarType?: boolean = false;	
 }
 
 /**
@@ -138,8 +138,8 @@ export class TradeBillSuccessInfo {
 	 * 交易时间
 	 */
 	@Expose({ name: "trade_time" })
-	@Transform(value => moment(value, 'YYYY-MM-DD hh:mm:ss'))
-	tradeTime!: Moment;
+	@Transform(({ value }) => moment(value, 'YYYY-MM-DD hh:mm:ss'), { toClassOnly: true })
+	tradeTime!: Moment;	
 
 	/**
 	 * 公众账号ID
@@ -321,14 +321,14 @@ export class TradeBillRefundInfo extends TradeBillAllInfo {
 	 * 退款申请时间
 	 */
 	@Expose({ name: "refund_time" })
-	@Transform(value => moment(value, 'YYYY-MM-DD hh:mm:ss'))
-	refundTime!: Moment;
+	@Transform(({ value }) => moment(value, 'YYYY-MM-DD hh:mm:ss'), { toClassOnly: true })
+	refundTime!: Moment;	
 
 	/**
 	 * 退款成功时间
 	 */
 	@Expose({ name: "refund_success_time" })
-	@Transform(value => moment(value, 'YYYY-MM-DD hh:mm:ss'))
+	@Transform(({ value }) => moment(value, 'YYYY-MM-DD hh:mm:ss'), { toClassOnly: true })
 	refundSuccessTime!: Moment;
 }
 

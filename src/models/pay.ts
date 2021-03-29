@@ -152,7 +152,7 @@ export class TradeCreateModel {
 	 * 交易起始时间 订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010
 	 */
 	@Expose({ name: "time_start" })
-	@Transform(value => (value != undefined) ? moment(value).utcOffset('+08:00').format('YYYYMMDDhhmmss') : undefined)
+	@Transform(({ value }) => value || moment(value).utcOffset('+08:00').format('YYYYMMDDhhmmss'), { toPlainOnly: true })
 	timeStart?: moment.Moment;
 
 	/**
@@ -160,7 +160,7 @@ export class TradeCreateModel {
 	 * 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。订单失效时间是针对订单号而言的，由于在请求支付的时候有一个必传参数prepay_id只有两小时的有效期，所以在重入时间超过2小时的时候需要重新请求下单接口获取新的prepay_id。
 	 */
 	@Expose({ name: "time_expire" })
-	@Transform(value => (value != undefined) ? moment(value).utcOffset('+08:00').format('YYYYMMDDhhmmss') : undefined)
+	@Transform(({ value }) => value || moment(value).utcOffset('+08:00').format('YYYYMMDDhhmmss'), { toPlainOnly: true })
 	timeExpire?: moment.Moment;
 
 	// /**
@@ -205,8 +205,8 @@ export class TradeCreateModel {
 	 * 电子发票入口开放标识 Y，传入Y时，支付成功消息和支付详情页将出现开票入口。需要在微信支付商户平台或微信公众平台开通电子发票功能，传此字段才可生效
 	 */
 	@Expose({ name: "receipt" })
-	@Transform(value => (value as boolean) ? 'Y' : 'N')
-	receipt?: boolean;
+	@Transform(({ value }) => (value as boolean) ? 'Y' : 'N', { toPlainOnly: true })
+	receipt?: boolean;	
 
 	/**
 	 * 场景信息 该字段常用于线下活动时的场景信息上报，支持上报实际门店信息，商户也可以按需求自己上报相关信息。该字段为JSON对象数据，对象格式为:
@@ -217,7 +217,7 @@ export class TradeCreateModel {
 	 * @see TradeSceneInfo
 	 */
 	@Expose({ name: "scene_info" })
-	@Transform(value => JSON.stringify({ "scene_info": value }))
+	@Transform(value => JSON.stringify({ "scene_info": value }), { toPlainOnly: true })
 	sceneInfo?: TradeSceneInfo;
 
 	/**
@@ -226,7 +226,7 @@ export class TradeCreateModel {
 	 * @see TradeGoodsDetailInfo
 	 */
 	@Expose({ name: "detail" })
-	@Transform(value => JSON.stringify(value))
+	@Transform(value => JSON.stringify(value), { toPlainOnly: true })
 	detail?: TradeGoodsDetailInfo;
 }
 
@@ -344,7 +344,7 @@ export class TradeCreateNotifyModel extends TradeCashFeeModel {
 	 * 支付完成时间 订单支付时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。
 	 */
 	@Expose({ name: "time_end" })
-	@Transform(value => (value != undefined) ? moment(value, 'YYYYMMDDhhmmss') : undefined)
+	@Transform(({ value }) => value || moment(value, 'YYYYMMDDhhmmss'), { toClassOnly: true })
 	timeEnd?: moment.Moment;
 
 	/**
