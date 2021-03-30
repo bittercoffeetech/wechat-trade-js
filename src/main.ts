@@ -41,7 +41,7 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toXmlRequest(model, action.requestSignType);
+    let forPost = toRequestBody(model, action.requestSignType);
     let forResult: S | undefined = undefined;
     var httpsAgent;
 
@@ -72,7 +72,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toXmlRequest(model, action.requestSignType);
+    let forPost = toRequestBody(model, action.requestSignType);
     let forResult = new TradeCsvResponseModel<ST, RT>();
     var httpsAgent;
 
@@ -110,7 +110,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
     return forResult;
 }
 
-function toXmlRequest(request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string {
+let toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -127,25 +127,25 @@ function toXmlRequest(request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): s
     }).parse({ xml: forSign }).toString();
 }
 
-function fetchValues(xml: string): {} {
-    return toJson(xml, { parseTrueNumberOnly: true })["xml"];
-}
-
-function checkReturn(values: {}): void {
+let fetchValues = (xml: string): {} => toJson(xml, { parseTrueNumberOnly: true })["xml"];
+let checkReturn = (values: {}): void => {
     let returnModel = plainToClass(TradeReturnModel, values,
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
     }
 }
+let checkResult = (values: {}): void => {
+    let resultModel = plainToClass(TradeResultModel, values,
+        { excludeExtraneousValues: true });
+    if (!resultModel.isSuccess) {
+        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
+    }
+}
 
 function fromXmlResponse<T>(values: {}, response: TradeXmlResponse<T>): T | undefined {
     if (response.hasResult) {
-        let resultModel = plainToClass(TradeResultModel, values,
-            { excludeExtraneousValues: true });
-        if (!resultModel.isSuccess) {
-            throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
-        }
+        checkResult(values);
     }
 
     if (response.responseType == undefined) {
@@ -199,7 +199,7 @@ async function fromCsvResponse<ST, RT>(csvData: string, response: TradeCsvRespon
     return result;
 }
 
-function sign(forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined {
+let sign = (forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined => {
     var sorted = new TreeMap<string, any>(Collections.getStringComparator());
     for (let prop in forSign) {
         if (forSign[prop] != undefined && forSign[prop] != '' && prop != 'sign') {
@@ -225,7 +225,7 @@ function sign(forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5
     }
 }
 
-function decrypt(content: string, key: string): object {
+let decrypt = (content: string, key: string): object => {
     let chunks = [];
     let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
     let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
@@ -237,7 +237,7 @@ function decrypt(content: string, key: string): object {
     return toJson(chunks.join(''), { parseTrueNumberOnly: true })["root"];
 }
 
-function hierarchy(model: new (...args: any[]) => any, source: object): object {
+let hierarchy = (model: new (...args: any[]) => any, source: object): object => {
     let result = {};
 
     morphValues(model, source, result, []);
