@@ -240,12 +240,12 @@ let decrypt = (content: string, key: string): object => {
 let hierarchy = (model: new (...args: any[]) => any, source: object): object => {
     let result = {};
 
-    morphValues(model, source, result, []);
-    clearValues(source);
+    merge(model, source, result, []);
+    clear(source);
 
     return { ...source, ...result };
 
-    function clearValues(source: object) {
+    function clear(source: object) {
         for (const key of Object.keys(source)) {
             let matched = key.match('.*(_)[0-9]+$');
             if (matched != null && matched.length > 0) {
@@ -254,7 +254,7 @@ let hierarchy = (model: new (...args: any[]) => any, source: object): object => 
         }
     }
 
-    function morphValues(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
+    function merge(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
 
         Reflect.getMetadataKeys(model).forEach((key: string) => {
@@ -274,7 +274,7 @@ let hierarchy = (model: new (...args: any[]) => any, source: object): object => 
                     let childs = [];
                     for (let i = 0; i < count; i++) {
                         let child = {};
-                        morphValues(xmlModel.subType, source, child, levels.concat(i));
+                        merge(xmlModel.subType, source, child, levels.concat(i));
                         childs.push(child);
                     }
                     result[xmlModel.name] = childs;
