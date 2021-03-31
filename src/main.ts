@@ -110,7 +110,7 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
     return forResult;
 }
 
-let toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
+const toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -127,15 +127,15 @@ let toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): st
     }).parse({ xml: forSign }).toString();
 }
 
-let fetchValues = (xml: string): {} => toJson(xml, { parseTrueNumberOnly: true })["xml"];
-let checkReturn = (values: {}): void => {
+const fetchValues = (xml: string): {} => toJson(xml, { parseTrueNumberOnly: true })["xml"];
+const checkReturn = (values: {}): void => {
     let returnModel = plainToClass(TradeReturnModel, values,
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
     }
 }
-let checkResult = (values: {}): void => {
+const checkResult = (values: {}): void => {
     let resultModel = plainToClass(TradeResultModel, values,
         { excludeExtraneousValues: true });
     if (!resultModel.isSuccess) {
@@ -199,7 +199,7 @@ async function fromCsvResponse<ST, RT>(csvData: string, response: TradeCsvRespon
     return result;
 }
 
-let sign = (forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined => {
+const sign = (forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined => {
     var sorted = new TreeMap<string, any>(Collections.getStringComparator());
     for (let prop in forSign) {
         if (forSign[prop] != undefined && forSign[prop] != '' && prop != 'sign') {
@@ -225,7 +225,7 @@ let sign = (forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5):
     }
 }
 
-let decrypt = (content: string, key: string): object => {
+const decrypt = (content: string, key: string): object => {
     let chunks = [];
     let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
     let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
@@ -237,7 +237,7 @@ let decrypt = (content: string, key: string): object => {
     return toJson(chunks.join(''), { parseTrueNumberOnly: true })["root"];
 }
 
-let hierarchy = (model: new (...args: any[]) => any, source: object): object => {
+const hierarchy = (model: new (...args: any[]) => any, source: object): object => {
     let result = {};
 
     merge(model, source, result, []);
