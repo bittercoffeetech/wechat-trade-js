@@ -123,13 +123,13 @@ export class TradeReturnModel {
 	}
 
 	get errorCode(): string {
-		return this._errorCode == undefined ? this._returnCode : this._errorCode;
+		return this._errorCode ? this._errorCode : this._returnCode;
 	}
 
 	get errorMessage(): string | undefined{
-		if(this._returnMessage != undefined && SHEET_ERROR_CODES[this._returnMessage] != undefined) {
+		if(this._returnMessage && SHEET_ERROR_CODES[this._returnMessage]) {
 			return SHEET_ERROR_CODES[this._returnMessage];
-		} else if(this.errorCode != undefined && SHEET_ERROR_CODES[this.errorCode] != undefined) {
+		} else if(this.errorCode && SHEET_ERROR_CODES[this.errorCode]) {
 			return SHEET_ERROR_CODES[this.errorCode];
 		} else {
 			return this._returnMessage;

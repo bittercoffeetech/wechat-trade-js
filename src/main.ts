@@ -37,7 +37,7 @@ nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
 
 async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | undefined> {
-    if (model == undefined) {
+    if (!model) {
         throw Error("Model Object must not be null");
     }
 
@@ -68,7 +68,7 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
 }
 
 async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction<R, ST, RT>, model: R): Promise<TradeCsvResponseModel<ST, RT>> {
-    if (model == undefined) {
+    if (!model) {
         throw Error("Model Object must not be null");
     }
 
@@ -143,25 +143,25 @@ const checkResult = (values: {}): void => {
     }
 }
 
-function fromXmlResponse<T>(values: {}, response: TradeXmlResponse<T>): T | undefined {
+function fromXmlResponse<T>(values: {}, response: TradeXmlResponse<T>): T {
     if (response.hasResult) {
         checkResult(values);
     }
 
-    if (response.responseType == undefined) {
-        return undefined;
-    } else {
+    if (response.responseType) {        
         if (response.hasSigned && sign(values, response.responseSignType) != values['sign']) {
             throw new WechatApiError(ErrorCodeEnum.SIGNERROR, API_ERROR_MESSAGES[ErrorCodeEnum.SIGNERROR]);
         }
-        if (response.encrypted != undefined) {
+        if (response.encrypted) {
             values = { ...values, ...decrypt(values[response.encrypted], nconf.get('mch_key')) };
             delete values[response.encrypted];
         }
-        if (response.hasHierarchy && response.responseType != undefined) {
+        if (response.hasHierarchy && response.responseType) {
             values = hierarchy(response.responseType, values);
         }
         return plainToClass(response.responseType, values, { enableImplicitConversion: true, excludeExtraneousValues: true });
+    } else {
+        return {} as T;
     }
 }
 
@@ -199,10 +199,10 @@ async function fromCsvResponse<ST, RT>(csvData: string, response: TradeCsvRespon
     return result;
 }
 
-const sign = (forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5): string | undefined => {
+const sign = (forSign: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
     var sorted = new TreeMap<string, any>(Collections.getStringComparator());
     for (let prop in forSign) {
-        if (forSign[prop] != undefined && forSign[prop] != '' && prop != 'sign') {
+        if (forSign[prop] && forSign[prop] != '' && prop != 'sign') {
             sorted.put(prop, forSign[prop]);
         }
     }
@@ -216,12 +216,12 @@ const sign = (forSign: {}, signType: SignTypeEnum | undefined = SignTypeEnum.MD5
     params.push("key=" + nconf.get('mch_key'));
     let signString = params.join("&");
 
-    if (SignTypeEnum.MD5 == signType || signType == undefined) {
+    if (SignTypeEnum.MD5 == signType) {
         return md5(signString).toString().toUpperCase();
     } else if (SignTypeEnum.HMAC_SHA256 == signType) {
         return hmacSha256(signString, nconf.get('mch_key')).toString().toUpperCase();
     } else {
-        return undefined;
+        return '';
     }
 }
 
@@ -261,13 +261,7 @@ const hierarchy = (model: new (...args: any[]) => any, source: object): object =
             let xmlModel = Reflect.getMetadata(key, model) as XmlModel;
             let propName = xmlModel.name + suffix;
 
-            if (xmlModel.subType == undefined) {
-                let propValue = source[propName];
-
-                if (propValue != undefined) {
-                    result[xmlModel.name] = propValue;
-                }
-            } else {
+            if(xmlModel.subType) {
                 let count: number = source[xmlModel.countName + suffix] as number;
 
                 if (count > 0) {
@@ -278,6 +272,12 @@ const hierarchy = (model: new (...args: any[]) => any, source: object): object =
                         childs.push(child);
                     }
                     result[xmlModel.name] = childs;
+                }
+            } else {
+                let propValue = source[propName];
+
+                if (propValue != undefined) {
+                    result[xmlModel.name] = propValue;
                 }
             }
         });
