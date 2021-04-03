@@ -61,9 +61,11 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         checkReturn(values);
         forResult = fromXmlResponse(values, action);
     }).catch((error: WechatApiError) => {
-        throw error;
-    }).catch((e: Error) => {
-        throw new WechatApiError('SYSTEMERROR', e.message);
+        if(error instanceof WechatApiError) {
+            throw error;
+        } else {
+            throw new WechatApiError('SYSTEMERROR', error);
+        }        
     });
 
     return forResult;
@@ -106,9 +108,11 @@ async function download<R extends TradeCsvlModel, ST, RT>(action: TradeCsvAction
             }
         }
     }).catch((error: WechatApiError) => {
-        throw error;
-    }).catch((e: Error) => {
-        throw new WechatApiError('SYSTEMERROR', e.message);
+        if(error instanceof WechatApiError) {
+            throw error;
+        } else {
+            throw new WechatApiError('SYSTEMERROR', error);
+        }    
     });
 
     return forResult;
