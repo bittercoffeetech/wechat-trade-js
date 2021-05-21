@@ -1,13 +1,13 @@
 {
   "name": "wechat-trade-js",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "Wechat Trade Client",
   "main": "dist/main.js",
   "scripts": {
     "compile": "rm -Rf dist/* & tsc",
     "test": "tsc & jest --config jest.config.json",
     "tcover": "tsc & jest --config jest.config.json --coverage",
-    "docs": "npx typedoc"
+    "docs": "rm -Rf docs/* & typedoc"
   },
   "keywords": [
     "Wechat",
@@ -18,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
+    "axios-logger-plus": "^1.0.1",
     "class-transformer": "^0.4.0",
     "crypto-js": "^4.0.0",
     "csvtojson": "^2.0.10",

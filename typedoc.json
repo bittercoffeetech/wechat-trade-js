@@ -1,0 +1,10 @@
+{
+    "entryPoints": ["./src/WechatTradeClient.ts", "src/models", "src/enums"],
+    "includes": ["./src"],
+    "out": "docs",
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "disableSources": true,
+    "name": "微信支付客户端API",
+    "readme": "./README.md"
+  }

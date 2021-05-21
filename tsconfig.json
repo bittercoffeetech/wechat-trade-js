@@ -60,20 +60,8 @@
     /* Experimental Options */
     "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
-    "suppressImplicitAnyIndexErrors":  true
-  },
-  "typedocOptions": {
-    "inputFiles": ["./src"],
-    "exclude": ["./src/actions/**/*"],
-    "mode": "modules",
-    "out": "docs",
-    "excludeNotExported": true,
-    "excludePrivate": true,
-    "excludeProtected": true,
-    "disableSources": true,
-    "name": "微信支付客户端API",
-    "readme": "./README.md"
-  },
+    "suppressImplicitAnyIndexErrors": true
+  },  
   "include":[
     "./src/**/*"
   ],
