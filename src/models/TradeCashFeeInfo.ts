@@ -1,12 +1,12 @@
 import { Expose } from 'class-transformer';
 
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { TradeFee } from './TradeFee';
+import { TradeFeeInfo } from './TradeFeeInfo';
 
 /**
  * 现金信息
  */
- export class TradeCashFee extends TradeFee {
+ export class TradeCashFeeInfo extends TradeFeeInfo {
 	/**
 	 * 符合ISO 4217标准的三位字母代码，默认人民币：CNY
 	 */

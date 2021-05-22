@@ -1,13 +1,13 @@
 import { Expose, Type } from 'class-transformer';
 
 import { XmlProperty } from '../decorators/XmlProperty';
-import { TradeCashFee } from './TradeCashFee';
+import { TradeCashFeeInfo } from './TradeCashFeeInfo';
 import { TradeRefundCouponInfo } from './TradeRefundCouponInfo';
 
 /**
  * 退款请求返回
  */
- export class TradeRefundResponse extends TradeCashFee {
+ export class TradeRefundResponse extends TradeCashFeeInfo {
 	/**
 	 * 商户退款单号 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
 	 */

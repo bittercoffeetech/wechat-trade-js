@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { TradeId, TradeNo } from './TradeNo';
+import { TradeId, TradeNoInfo } from './TradeNoInfo';
 
 /**
  * 退款ID类型，区分使用哪个ID来进行退款查询
@@ -34,7 +34,7 @@ export const RID = (id: string) : TradeRefundQueryRequest => new TradeRefundQuer
 /**
  * 退款查询
  */
-export class TradeRefundQueryRequest extends TradeNo {
+export class TradeRefundQueryRequest extends TradeNoInfo {
 
 	/**
 	 * 

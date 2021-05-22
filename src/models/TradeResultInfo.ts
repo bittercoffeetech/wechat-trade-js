@@ -5,7 +5,7 @@ import { ResultStatusEnum } from '../enums/ResultStatusEnum';
 /**
  * 业务结果
  */
- export class TradeResult {
+ export class TradeResultInfo {
 	/**
 	 * 返回状态码 SUCCESS/FAIL
 	 */

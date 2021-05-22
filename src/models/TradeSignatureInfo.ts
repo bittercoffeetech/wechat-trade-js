@@ -1,12 +1,12 @@
 import { Expose } from 'class-transformer';
 
 import { SignTypeEnum } from '../enums/SignTypeEnum';
-import { TradeApp } from './TradeApp';
+import { TradeAppInfo } from './TradeAppInfo';
 
 /**
  * 签名信息
  */
- export class TradeSignature extends TradeApp {
+ export class TradeSignatureInfo extends TradeAppInfo {
 
     /**
      * 干扰字符串

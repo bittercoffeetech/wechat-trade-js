@@ -36,7 +36,6 @@ import { XmlPropertyModel } from './decorators/XmlProperty';
 import { AccountTypeEnum } from './enums/AccountTypeEnum';
 import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
 import { SignTypeEnum } from './enums/SignTypeEnum';
-import { API_ERROR_MESSAGES } from './models/ErrorCodes';
 import { TradeBillAllInfo } from './models/TradeBillAllInfo';
 import { TradeBillAllRequest } from './models/TradeBillAllRequest';
 import { TradeBillRefundInfo } from './models/TradeBillRefundInfo';
@@ -52,16 +51,16 @@ import { TradeDownloadResponse } from './models/TradeDownloadResponse';
 import { TradeFundflowInfo } from './models/TradeFundflowInfo';
 import { TradeFundflowRequest } from './models/TradeFundflowRequest';
 import { TradeFundflowSummaryInfo } from './models/TradeFundflowSummaryInfo';
-import { TradeNo } from './models/TradeNo';
+import { TradeNoInfo } from './models/TradeNoInfo';
 import { TradeQueryResponse } from './models/TradeQueryResponse';
 import { TradeRefundNotify } from './models/TradeRefundNotify';
 import { TradeRefundQueryRequest } from './models/TradeRefundQueryRequest';
 import { TradeRefundQueryResponse } from './models/TradeRefundQueryResponse';
 import { TradeRefundRequest } from './models/TradeRefundRequest';
 import { TradeRefundResponse } from './models/TradeRefundResponse';
-import { TradeResult } from './models/TradeResult';
-import { TradeReturn } from './models/TradeReturn';
-import { WechatApiError } from './WechatApiError';
+import { TradeResultInfo } from './models/TradeResultInfo';
+import { TradeReturnInfo } from './models/TradeReturnInfo';
+import { WechatApiError, WechatApiErrorMessages } from './WechatApiError';
 
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
@@ -168,14 +167,14 @@ const toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): 
 
 const fetchValues = (xml: string): {} => toJson(xml, { parseTrueNumberOnly: true })["xml"];
 const checkReturn = (values: {}): void => {
-    let returnModel = plainToClass(TradeReturn, values,
+    let returnModel = plainToClass(TradeReturnInfo, values,
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
         throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
     }
 }
 const checkResult = (values: {}): void => {
-    let resultModel = plainToClass(TradeResult, values,
+    let resultModel = plainToClass(TradeResultInfo, values,
         { excludeExtraneousValues: true });
     if (!resultModel.isSuccess) {
         throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
@@ -189,7 +188,7 @@ function fromXmlResponse<T>(values: {}, response: TradeResponse<T>): T {
 
     if (response.responseType) {        
         if (response.hasSigned && sign(values, response.responseSignType) != values['sign']) {
-            throw new WechatApiError(ErrorCodeEnum.SIGNERROR, API_ERROR_MESSAGES[ErrorCodeEnum.SIGNERROR]);
+            throw new WechatApiError(ErrorCodeEnum.SIGNERROR, WechatApiErrorMessages[ErrorCodeEnum.SIGNERROR]);
         }
         if (response.encrypted) {
             values = { ...values, ...decrypt(values[response.encrypted], nconf.get('mch_key')) };
@@ -341,7 +340,7 @@ export function createTrade(model: TradeCreateRequest): Promise<TradeCreateRespo
  * @async
  * @author BitterCoffee
  */
-export function queryTrade(model: TradeNo): Promise<TradeQueryResponse | undefined> {
+export function queryTrade(model: TradeNoInfo): Promise<TradeQueryResponse | undefined> {
     return execute(TradeQueryAction, model);
 }
 
@@ -354,7 +353,7 @@ export function queryTrade(model: TradeNo): Promise<TradeQueryResponse | undefin
  * 
  * @param model {@link TNO} 商户订单号<br>{@link TID} 微信交易号
  */
-export function closeTrade(model: TradeNo): Promise<undefined> {
+export function closeTrade(model: TradeNoInfo): Promise<undefined> {
     return execute(TradeCloseAction, model);
 }
 

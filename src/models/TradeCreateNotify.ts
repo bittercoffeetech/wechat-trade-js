@@ -3,13 +3,13 @@ import moment from 'moment';
 
 import { XmlProperty } from '../decorators/XmlProperty';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { TradeCashFee } from './TradeCashFee';
+import { TradeCashFeeInfo } from './TradeCashFeeInfo';
 import { TradeCouponInfo } from './TradeCouponInfo';
 
 /**
  * 付款结果通知
  */
- export class TradeCreateNotify extends TradeCashFee {
+ export class TradeCreateNotify extends TradeCashFeeInfo {
 
 	/**
 	 * 用户标识 tradeType=TradeTypeEnum.JSAPI，此参数必传，用户在商户appid下的唯一标识。

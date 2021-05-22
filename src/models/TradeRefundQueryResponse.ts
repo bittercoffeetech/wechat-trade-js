@@ -1,13 +1,13 @@
 import { Expose, Type } from 'class-transformer';
 
 import { XmlProperty } from '../decorators/XmlProperty';
-import { TradeCashFee } from './TradeCashFee';
+import { TradeCashFeeInfo } from './TradeCashFeeInfo';
 import { TradeRefundInfo } from './TradeRefundInfo';
 
 /**
  * 退款请求返回
  */
- export class TradeRefundQueryResponse extends TradeCashFee {
+ export class TradeRefundQueryResponse extends TradeCashFeeInfo {
 	/**
 	 * 退款笔数
 	 */

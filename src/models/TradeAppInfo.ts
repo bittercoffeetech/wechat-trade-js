@@ -3,7 +3,7 @@ import { Expose } from 'class-transformer';
 /**
  * 应用标识
  */
- export class TradeApp {
+ export class TradeAppInfo {
 
     /**
      * 应用标识

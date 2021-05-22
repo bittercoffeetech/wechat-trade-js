@@ -1,11 +1,11 @@
 import { Expose } from 'class-transformer';
 
-import { TradeNo } from './TradeNo';
+import { TradeNoInfo } from './TradeNoInfo';
 
 /**
  * 金额相关
  */
- export class TradeFee extends TradeNo {
+ export class TradeFeeInfo extends TradeNoInfo {
 	/**
 	 * 标价金额 订单总金额，单位为分
 	 */

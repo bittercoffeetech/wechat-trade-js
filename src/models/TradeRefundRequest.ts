@@ -3,14 +3,14 @@ import { customAlphabet } from 'nanoid';
 
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
-import { TradeId, TradeNo } from './TradeNo';
+import { TradeId, TradeNoInfo } from './TradeNoInfo';
 
 const nanoid = customAlphabet('1234567890', 32);
 
 /**
  * 退款请求
  */
- export class TradeRefundRequest extends TradeNo {
+ export class TradeRefundRequest extends TradeNoInfo {
 
 	constructor(idType: TradeId, id: string, totalFee: number, refundFee: number) {
 		super(idType, id);

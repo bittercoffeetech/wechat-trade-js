@@ -1,4 +1,4 @@
-import { TradeNo } from '../models/TradeNo';
+import { TradeNoInfo } from '../models/TradeNoInfo';
 import { DefaultTradeRequest } from './DefaultTradeRequest';
 import { DefaultTradeResponse } from './DefaultTradeResponse';
 import { TradeAction } from './TradeAction';
@@ -9,12 +9,12 @@ import { TradeAction } from './TradeAction';
  * @author BitterCoffee
  *
  */
- export const TradeCloseAction: TradeAction<TradeNo, undefined> = {
+ export const TradeCloseAction: TradeAction<TradeNoInfo, undefined> = {
 	...DefaultTradeRequest,
 	...DefaultTradeResponse,
 	...{
 		url: "https://api.mch.weixin.qq.com/pay/closeorder",
-		requestType: TradeNo,
+		requestType: TradeNoInfo,
 		responseType: undefined //TradeEmptyResponseModel
 	}
 };

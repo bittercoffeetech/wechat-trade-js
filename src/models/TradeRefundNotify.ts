@@ -4,12 +4,12 @@ import moment from 'moment';
 import { RefundAccountEnum } from '../enums/RefundAccountEnum';
 import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
 import { RefundStatusEnum } from '../enums/RefundStatusEnum';
-import { TradeFee } from './TradeFee';
+import { TradeFeeInfo } from './TradeFeeInfo';
 
 /**
  * 退款结果通知
  */
- export class TradeRefundNotify extends TradeFee {
+ export class TradeRefundNotify extends TradeFeeInfo {
 
 	/**
 	 * 商户退款单号 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。

@@ -11,18 +11,18 @@ export type TradeId = 'tno' | 'tid';
  * 
  * @param tradeNo 商户流水号
  */
-export const TNO = (tradeNo: string) : TradeNo => new TradeNo('tno', tradeNo);
+export const TNO = (tradeNo: string) : TradeNoInfo => new TradeNoInfo('tno', tradeNo);
 
 /**
  * 
  * @param transId 微信交易号
  */
-export const TID = (transId: string) : TradeNo => new TradeNo('tid', transId);
+export const TID = (transId: string) : TradeNoInfo => new TradeNoInfo('tid', transId);
 
 /**
  * 交易标识
  */
-export class TradeNo {
+export class TradeNoInfo {
 
 	constructor(idType: TradeId, id: string) {
 		if(idType == 'tno') {
