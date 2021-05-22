@@ -278,7 +278,7 @@ const decrypt = (content: string, key: string): object => {
 const hierarchy = (model: new (...args: any[]) => any, source: object): object => {
     let result = {};
 
-    merge(model, source, result, []);
+    aggregate(model, source, result, []);
     clear(source);
 
     return { ...source, ...result };
@@ -292,7 +292,7 @@ const hierarchy = (model: new (...args: any[]) => any, source: object): object =
         }
     }
 
-    function merge(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
+    function aggregate(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
 
         Reflect.getMetadataKeys(model).forEach((key: string) => {
@@ -306,7 +306,7 @@ const hierarchy = (model: new (...args: any[]) => any, source: object): object =
                     let childs = [];
                     for (let i = 0; i < count; i++) {
                         let child = {};
-                        merge(xmlModel.subType, source, child, levels.concat(i));
+                        aggregate(xmlModel.subType, source, child, levels.concat(i));
                         childs.push(child);
                     }
                     result[xmlModel.name] = childs;
@@ -322,187 +322,197 @@ const hierarchy = (model: new (...args: any[]) => any, source: object): object =
     }
 }
 
-/**
- * 统一下单
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- */
-export function createTrade(model: TradeCreateRequest): Promise<TradeCreateResponse | undefined> {
-    return execute(TradeCreateAction, model);
+export namespace trade {
+    /**
+     * 统一下单
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     */
+    export function create(model: TradeCreateRequest): Promise<TradeCreateResponse | undefined> {
+        return execute(TradeCreateAction, model);
+    }
+
+    /**
+     * 订单查询
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     */
+    export function query(model: TradeNoInfo): Promise<TradeQueryResponse | undefined> {
+        return execute(TradeQueryAction, model);
+    }
+
+    /**
+     * 关闭订单
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param model {@link TNO} 商户订单号<br>{@link TID} 微信交易号
+     */
+    export function close(model: TradeNoInfo): Promise<undefined> {
+        return execute(TradeCloseAction, model);
+    }
+
+    /**
+     * 发起退款
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     */
+    export function creatreRefund(model: TradeRefundRequest): Promise<TradeRefundResponse | undefined> {
+        return execute(TradeRefundAction, model);
+    }
+
+    /**
+     * 查询退款
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param model {@link RTNO} 商户支付单号<br>{@link RTID} 微信支付交易号<br>{@Link RNO} 商户退款单号<br>{@Link RID} 微信退款交易号
+     */
+    export function queryRefund(model: TradeRefundQueryRequest): Promise<TradeRefundQueryResponse | undefined> {
+        return execute(TradeRefundQueryAction, model);
+    }
+
 }
 
-/**
- * 订单查询
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- */
-export function queryTrade(model: TradeNoInfo): Promise<TradeQueryResponse | undefined> {
-    return execute(TradeQueryAction, model);
+export namespace sheet {
+    /**
+     * 下载所有交易数据
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param tar 是否使用压缩格式返回
+     */
+    export function allBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeBillSummaryInfo, TradeBillAllInfo>> {
+        return download(TradeBillAllAction, new TradeBillAllRequest(year, month, day, tar));
+    }
+
+    /**
+     * 下载所有成功的交易数据
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param tar 是否使用压缩格式返回
+     */
+    export function successBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
+        return download(TradeBillSuccessAction, new TradeBillSuccessRequest(year, month, day, tar));
+    }
+
+    /**
+     * 下载所有退款的交易数据
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param tar 是否使用压缩格式返回
+     */
+    export function refundBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeBillSummaryInfo, TradeBillRefundInfo>> {
+        return download(TradeBillRefundAction, new TradeBillRefundRequest(year, month, day, tar));
+    }
+
+    /**
+     * 下载基本账户资金账单
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param tar 是否使用压缩格式返回
+     */
+    export function basicFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
+        return download(TradeFundflowAction, new TradeFundflowRequest(year, month, day, AccountTypeEnum.BASIC, tar));
+    }
+
+    /**
+     * 下载手续费账户资金账单
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param tar 是否使用压缩格式返回
+     */
+    export function feesFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
+        return download(TradeFundflowAction, new TradeFundflowRequest(year, month, day, AccountTypeEnum.FEES, tar));
+    }
+
+    /**
+     * 下载运营账户资金账单
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param tar 是否使用压缩格式返回
+     */
+    export function operationFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
+        return download(TradeFundflowAction, new TradeFundflowRequest(year, month, day, AccountTypeEnum.OPERATION, tar));
+    }
+
 }
 
-/**
- * 关闭订单
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param model {@link TNO} 商户订单号<br>{@link TID} 微信交易号
- */
-export function closeTrade(model: TradeNoInfo): Promise<undefined> {
-    return execute(TradeCloseAction, model);
-}
+export namespace notifier {
 
-/**
- * 发起退款
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- */
-export function createRefund(model: TradeRefundRequest): Promise<TradeRefundResponse | undefined> {
-    return execute(TradeRefundAction, model);
-}
+    /**
+     * 解析支付结果通知消息
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param xml 微信回调的XML字符串
+     */
+    export function onPayed(xml: string): TradeCreateNotify | undefined {
+        let values = fetchValues(xml);
+        checkReturn(values);
+        return fromXmlResponse(values, TradeCreateNotifyAction);
+    }
 
-/**
- * 查询退款
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param model {@link RTNO} 商户支付单号<br>{@link RTID} 微信支付交易号<br>{@Link RNO} 商户退款单号<br>{@Link RID} 微信退款交易号
- */
-export function queryRefund(model: TradeRefundQueryRequest): Promise<TradeRefundQueryResponse | undefined> {
-    return execute(TradeRefundQueryAction, model);
-}
+    /**
+     * 解析退款结果通知消息
+     * 
+     * @since 1.0
+     * @async
+     * @author BitterCoffee
+     * 
+     * @param xml 微信回调的XML字符串
+     */
+    export function onRefunded(xml: string): TradeRefundNotify | undefined {
+        let values = fetchValues(xml);
+        checkReturn(values);
+        return fromXmlResponse(values, TradeRefundNotifyAction);
+    }
 
-/**
- * 下载所有交易数据
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param year 年
- * @param month 月
- * @param day 日
- * @param tar 是否使用压缩格式返回
- */
-export function downloadAllBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeBillSummaryInfo, TradeBillAllInfo>> {
-    return download(TradeBillAllAction, new TradeBillAllRequest(year, month, day, tar));
-}
-
-/**
- * 下载所有成功的交易数据
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param year 年
- * @param month 月
- * @param day 日
- * @param tar 是否使用压缩格式返回
- */
-export function donwloadSuccessBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeBillSummaryInfo, TradeBillSuccessInfo>> {
-    return download(TradeBillSuccessAction, new TradeBillSuccessRequest(year, month, day, tar));
-}
-
-/**
- * 下载所有退款的交易数据
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param year 年
- * @param month 月
- * @param day 日
- * @param tar 是否使用压缩格式返回
- */
-export function downloadRefundBill(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeBillSummaryInfo, TradeBillRefundInfo>> {
-    return download(TradeBillRefundAction, new TradeBillRefundRequest(year, month, day, tar));
-}
-
-/**
- * 下载基本账户资金账单
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param year 年
- * @param month 月
- * @param day 日
- * @param tar 是否使用压缩格式返回
- */
-export function downloadBasicFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
-    return download(TradeFundflowAction, new TradeFundflowRequest(year, month, day, AccountTypeEnum.BASIC, tar));
-}
-
-/**
- * 下载手续费账户资金账单
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param year 年
- * @param month 月
- * @param day 日
- * @param tar 是否使用压缩格式返回
- */
-export function downloadFeesFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
-    return download(TradeFundflowAction, new TradeFundflowRequest(year, month, day, AccountTypeEnum.FEES, tar));
-}
-
-/**
- * 下载运营账户资金账单
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param year 年
- * @param month 月
- * @param day 日
- * @param tar 是否使用压缩格式返回
- */
-export function downloadOperationFundflow(year: number, month: number, day: number, tar?: boolean): Promise<TradeDownloadResponse<TradeFundflowSummaryInfo, TradeFundflowInfo>> {
-    return download(TradeFundflowAction, new TradeFundflowRequest(year, month, day, AccountTypeEnum.OPERATION, tar));
-}
-
-/**
- * 解析支付结果通知消息
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param xml 微信回调的XML字符串
- */
-export function onPayNotified(xml: string): TradeCreateNotify | undefined {
-    let values = fetchValues(xml);
-    checkReturn(values);
-    return fromXmlResponse(values, TradeCreateNotifyAction);
-}
-
-/**
- * 解析退款结果通知消息
- * 
- * @since 1.0
- * @async
- * @author BitterCoffee
- * 
- * @param xml 微信回调的XML字符串
- */
-export function onRefundNotified(xml: string): TradeRefundNotify | undefined {
-    let values = fetchValues(xml);
-    checkReturn(values);
-    return fromXmlResponse(values, TradeRefundNotifyAction);
 }
