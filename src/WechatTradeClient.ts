@@ -32,7 +32,7 @@ import { TradeRefundQueryAction } from './actions/TradeRefundQueryAction';
 import { TradeResponse } from './actions/TradeResponse';
 import { TradeSheetAction } from './actions/TradeSheetAction';
 import { TradeSheetResponse } from './actions/TradeSheetResponse';
-import { XmlProperty } from './decorators/XmlProperty';
+import { XmlPropertyModel } from './decorators/XmlProperty';
 import { AccountTypeEnum } from './enums/AccountTypeEnum';
 import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
 import { SignTypeEnum } from './enums/SignTypeEnum';
@@ -61,7 +61,7 @@ import { TradeRefundRequest } from './models/TradeRefundRequest';
 import { TradeRefundResponse } from './models/TradeRefundResponse';
 import { TradeResult } from './models/TradeResult';
 import { TradeReturn } from './models/TradeReturn';
-import { WechatApiError } from './models/WechatApiError';
+import { WechatApiError } from './WechatApiError';
 
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
@@ -297,7 +297,7 @@ const hierarchy = (model: new (...args: any[]) => any, source: object): object =
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
 
         Reflect.getMetadataKeys(model).forEach((key: string) => {
-            let xmlModel = Reflect.getMetadata(key, model) as XmlModel;
+            let xmlModel = Reflect.getMetadata(key, model) as XmlPropertyModel;
             let propName = xmlModel.name + suffix;
 
             if(xmlModel.subType) {

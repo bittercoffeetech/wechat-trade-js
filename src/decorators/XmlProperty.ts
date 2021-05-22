@@ -1,7 +1,7 @@
 /**
  * Xml级联标签数据定义，用于将返回的单层XML转换为嵌套结构的对象
  */
- export interface XmlModel {
+ export interface XmlPropertyModel {
     name: string;
     subType: new(...args: any[]) => any;
     countName: string
@@ -17,7 +17,7 @@
  export function XmlProperty(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
     return (target, propertyName) => {
         Reflect.defineMetadata(propertyName.toString(), 
-            {name: name, subType: subType, countName: countName} as XmlModel, 
+            {name: name, subType: subType, countName: countName} as XmlPropertyModel, 
             target.constructor); 
     }
 };
