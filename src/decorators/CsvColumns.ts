@@ -3,7 +3,7 @@
  * 
  * @param columns 列属性id数组
  */
- export function CsvModel(columns: string[]): ClassDecorator {
+ export function CsvColumns(columns: string[]): ClassDecorator {
     return (target) => {
         Reflect.defineMetadata("columns", 
             columns, 

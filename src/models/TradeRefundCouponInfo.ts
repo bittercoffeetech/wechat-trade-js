@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { XmlModel } from '../decorators/XmlModel';
+import { XmlProperty } from '../decorators/XmlProperty';
 import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 
 /**
@@ -12,14 +12,14 @@ import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 	 * 代金券ID
 	 */
 	@Expose({ name: "coupon_refund_id" })
-	@XmlModel('coupon_refund_id')
+	@XmlProperty('coupon_refund_id')
 	id!: string;
 
 	/**
 	 * 单个代金券支付金额
 	 */
 	@Expose({ name: "coupon_refund_fee" })
-	@XmlModel('coupon_refund_fee')
+	@XmlProperty('coupon_refund_fee')
 	fee!: number;
 
 	/**
@@ -28,7 +28,7 @@ import { CouponTypeEnum } from '../enums/CouponTypeEnum';
 	 * @see CouponTypeEnum
 	 */
 	@Expose({ name: "coupon_type" })
-	@XmlModel('coupon_type')
+	@XmlProperty('coupon_type')
 	type!: CouponTypeEnum;
 
 }

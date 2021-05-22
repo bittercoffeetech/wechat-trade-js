@@ -1,12 +1,12 @@
 import { Expose } from 'class-transformer';
 import { Moment } from 'moment';
 
-import { CsvModel } from '../decorators/CsvModel';
+import { CsvColumns } from '../decorators/CsvColumns';
 
 /**
  * 资金账单详情
  */
- @CsvModel(['account_time', 'transaction_id', 'trade_no', 'biz_name', 'biz_type', 'trade_type', 'fee',
+ @CsvColumns(['account_time', 'transaction_id', 'trade_no', 'biz_name', 'biz_type', 'trade_type', 'fee',
  'balance', 'proposer', 'note', 'voucher_no'])
  export class TradeFundflowInfo {
  

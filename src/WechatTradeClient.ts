@@ -32,7 +32,7 @@ import { TradeRefundQueryAction } from './actions/TradeRefundQueryAction';
 import { TradeResponse } from './actions/TradeResponse';
 import { TradeSheetAction } from './actions/TradeSheetAction';
 import { TradeSheetResponse } from './actions/TradeSheetResponse';
-import { XmlModel } from './decorators/XmlModel';
+import { XmlProperty } from './decorators/XmlProperty';
 import { AccountTypeEnum } from './enums/AccountTypeEnum';
 import { ErrorCodeEnum } from './enums/ErrorCodeEnum';
 import { SignTypeEnum } from './enums/SignTypeEnum';

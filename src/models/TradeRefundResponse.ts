@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { XmlModel } from '../decorators/XmlModel';
+import { XmlProperty } from '../decorators/XmlProperty';
 import { TradeCashFee } from './TradeCashFee';
 import { TradeRefundCouponInfo } from './TradeRefundCouponInfo';
 
@@ -57,7 +57,7 @@ import { TradeRefundCouponInfo } from './TradeRefundCouponInfo';
 	 */
 	@Expose({ name: "coupons" })
 	@Type(() => TradeRefundCouponInfo)
-	@XmlModel('coupons', TradeRefundCouponInfo, "coupon_refund_count")
+	@XmlProperty('coupons', TradeRefundCouponInfo, "coupon_refund_count")
 	coupons?: TradeRefundCouponInfo[];
 
 }

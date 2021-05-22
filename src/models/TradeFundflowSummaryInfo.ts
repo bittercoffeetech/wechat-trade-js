@@ -1,11 +1,11 @@
 import { Expose } from 'class-transformer';
 
-import { CsvModel } from '../decorators/CsvModel';
+import { CsvColumns } from '../decorators/CsvColumns';
 
 /**
  * 资金账单概要
  */
- @CsvModel(['total_flows', 'total_incomes', 'total_income_fee', 'total_expenses', 'total_expenses_fee'])
+ @CsvColumns(['total_flows', 'total_incomes', 'total_income_fee', 'total_expenses', 'total_expenses_fee'])
  export class TradeFundflowSummaryInfo {
  
      /**

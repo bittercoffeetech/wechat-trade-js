@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { CsvModel } from '../decorators/CsvModel';
+import { CsvColumns } from '../decorators/CsvColumns';
 import { FeeTypeEnum } from '../enums/FeeTypeEnum';
 import { TradeStatusEnum } from '../enums/TradeStatusEnum';
 import { TradeTypeEnum } from '../enums/TradeTypeEnum';
@@ -9,7 +9,7 @@ import { TradeTypeEnum } from '../enums/TradeTypeEnum';
 /**
  * 成功交易信息
  */
- @CsvModel(['trade_time', 'app_id', 'mch_id', 'sub_mch_id', 'device_info', 'transaction_id', 'trade_no',
+ @CsvColumns(['trade_time', 'app_id', 'mch_id', 'sub_mch_id', 'device_info', 'transaction_id', 'trade_no',
  'open_id', 'trade_type', 'trade_status', 'bank_type', 'fee_type', 'settlement_total_fee', 'coupon_fee', 'body',
  'attach', 'service_fee', 'rate', 'total_fee', 'rate_desc'])
  export class TradeBillSuccessInfo {

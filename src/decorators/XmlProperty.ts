@@ -14,10 +14,10 @@
  * @param subType 对应集合中的子类型
  * @param countName 表示数量的字段名
  */
- export function XmlModel(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
+ export function XmlProperty(name: string, subType?: new(...args: any[]) => any, countName?: string): PropertyDecorator {
     return (target, propertyName) => {
         Reflect.defineMetadata(propertyName.toString(), 
-            {name: name, subType: subType, countName: countName}, 
+            {name: name, subType: subType, countName: countName} as XmlModel, 
             target.constructor); 
     }
 };
