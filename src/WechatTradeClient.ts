@@ -71,7 +71,7 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestBody(model, action.requestSignType);
+    let forPost = toRequestXml(model, action.requestSignType);
     let forResult: S | undefined = undefined;
     var httpsAgent;
 
@@ -87,15 +87,13 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
         responseType: 'text',
         httpsAgent: httpsAgent
     }).then((resp: AxiosResponse<string>) => {
-        let values = fetchValues(resp.data);
-        checkReturn(values);
-        forResult = fromXmlResponse(values, action);
+        forResult = toResponseObject(resp.data, action);
     }).catch((error: WechatApiError) => {
-        if(error instanceof WechatApiError) {
+        if (error instanceof WechatApiError) {
             throw error;
         } else {
             throw new WechatApiError('SYSTEMERROR', error);
-        }        
+        }
     });
 
     return forResult;
@@ -106,7 +104,7 @@ async function download<R extends TradeDownloadRequest, ST, RT>(action: TradeShe
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestBody(model, action.requestSignType);
+    let forPost = toRequestXml(model, action.requestSignType);
     let forResult = new TradeDownloadResponse<ST, RT>();
     var httpsAgent;
 
@@ -123,32 +121,57 @@ async function download<R extends TradeDownloadRequest, ST, RT>(action: TradeShe
         httpsAgent: httpsAgent
     }).then(async (resp: AxiosResponse<Buffer>) => {
         if ((resp.headers['content-type'] as string).indexOf('gzip') >= 0) {
-            await fromCsvResponse(zlib.unzipSync(resp.data).toString(), action).then((result) => {
+            await toSheetResponseObject(zlib.unzipSync(resp.data).toString(), action).then((result) => {
                 forResult = result;
             });
         } else {
             let data = resp.data.toString();
             if (validate(data) == true) {
-                let values = fetchValues(data);
-                checkReturn(values);
+                toResponseObject(data);
             } else {
-                await fromCsvResponse(data, action).then((result) => {
+                await toSheetResponseObject(data, action).then((result) => {
                     forResult = result;
                 });
             }
         }
     }).catch((error: WechatApiError) => {
-        if(error instanceof WechatApiError) {
+        if (error instanceof WechatApiError) {
             throw error;
         } else {
             throw new WechatApiError('SYSTEMERROR', error);
-        }    
+        }
     });
 
     return forResult;
 }
 
-const toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
+const signatureOf = (forSign: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
+    var sorted = new TreeMap<string, any>(Collections.getStringComparator());
+    for (let prop in forSign) {
+        if (forSign[prop] && forSign[prop] != '' && prop != 'sign') {
+            sorted.put(prop, forSign[prop]);
+        }
+    }
+
+    let params = [];
+    let entities = sorted.entrySet().iterator();
+    while (entities.hasNext()) {
+        let entity = entities.next();
+        params.push(entity.getKey() + "=" + entity.getValue());
+    }
+    params.push("key=" + nconf.get('mch_key'));
+    let signString = params.join("&");
+
+    if (SignTypeEnum.MD5 == signType) {
+        return md5(signString).toString().toUpperCase();
+    } else if (SignTypeEnum.HMAC_SHA256 == signType) {
+        return hmacSha256(signString, nconf.get('mch_key')).toString().toUpperCase();
+    } else {
+        return '';
+    }
+}
+
+const toRequestXml = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -157,7 +180,7 @@ const toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): 
             'nonce_str': nanoid()
         }
     };
-    forSign["sign"] = sign(forSign, signType);
+    forSign["sign"] = signatureOf(forSign, signType);
 
     return new toXml({
         format: true,
@@ -165,29 +188,95 @@ const toRequestBody = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): 
     }).parse({ xml: forSign }).toString();
 }
 
-const fetchValues = (xml: string): {} => toJson(xml, { parseTrueNumberOnly: true })["xml"];
-const checkReturn = (values: {}): void => {
-    let returnModel = plainToClass(TradeReturnInfo, values,
-        { excludeExtraneousValues: true });
-    if (!returnModel.isSuccess) {
-        throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
+function toResponseObject<T>(xml: string, response?: TradeResponse<T> ): T | undefined {
+    const checkReturn = (values: {}): void => {
+        let returnModel = plainToClass(TradeReturnInfo, values,
+            { excludeExtraneousValues: true });
+        if (!returnModel.isSuccess) {
+            throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
+        }
     }
-}
-const checkResult = (values: {}): void => {
-    let resultModel = plainToClass(TradeResultInfo, values,
-        { excludeExtraneousValues: true });
-    if (!resultModel.isSuccess) {
-        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
-    }
-}
 
-function fromXmlResponse<T>(values: {}, response: TradeResponse<T>): T {
+    const checkResultInfo = (values: {}): void => {
+        let resultModel = plainToClass(TradeResultInfo, values,
+            { excludeExtraneousValues: true });
+        if (!resultModel.isSuccess) {
+            throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
+        }
+    }
+
+    const decrypt = (content: string, key: string): object => {
+        let chunks = [];
+        let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
+        let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
+
+        decipher.setAutoPadding(true);
+        chunks.push(decipher.update(content, 'base64', 'utf8'));
+        chunks.push(decipher.final('utf8'));
+
+        return toJson(chunks.join(''), { parseTrueNumberOnly: true })["root"];
+    }
+
+    const hierarchy = (model: new (...args: any[]) => any, source: object): object => {
+        let result = {};
+
+        aggregate(model, source, result, []);
+        clear(source);
+
+        return { ...source, ...result };
+
+        function clear(source: object) {
+            for (const key of Object.keys(source)) {
+                let matched = key.match('.*(_)[0-9]+$');
+                if (matched != null && matched.length > 0) {
+                    delete source[key];
+                }
+            }
+        }
+
+        function aggregate(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
+            let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
+
+            Reflect.getMetadataKeys(model).forEach((key: string) => {
+                let xmlModel = Reflect.getMetadata(key, model) as XmlPropertyModel;
+                let propName = xmlModel.name + suffix;
+
+                if (xmlModel.subType) {
+                    let count: number = source[xmlModel.countName + suffix] as number;
+
+                    if (count > 0) {
+                        let childs = [];
+                        for (let i = 0; i < count; i++) {
+                            let child = {};
+                            aggregate(xmlModel.subType, source, child, levels.concat(i));
+                            childs.push(child);
+                        }
+                        result[xmlModel.name] = childs;
+                    }
+                } else {
+                    let propValue = source[propName];
+
+                    if (propValue != undefined) {
+                        result[xmlModel.name] = propValue;
+                    }
+                }
+            });
+        }
+    }
+
+    let values: object = toJson(xml, { parseTrueNumberOnly: true })["xml"];
+    checkReturn(values);
+
+    if(response == undefined) {
+        return undefined;
+    }
+
     if (response.hasResult) {
-        checkResult(values);
+        checkResultInfo(values);
     }
 
-    if (response.responseType) {        
-        if (response.hasSigned && sign(values, response.responseSignType) != values['sign']) {
+    if (response.responseType) {
+        if (response.hasSigned && signatureOf(values, response.responseSignType) != values['sign']) {
             throw new WechatApiError(ErrorCodeEnum.SIGNERROR, WechatApiErrorMessages[ErrorCodeEnum.SIGNERROR]);
         }
         if (response.encrypted) {
@@ -203,7 +292,7 @@ function fromXmlResponse<T>(values: {}, response: TradeResponse<T>): T {
     }
 }
 
-async function fromCsvResponse<ST, RT>(csvData: string, response: TradeSheetResponse<ST, RT>): Promise<TradeDownloadResponse<ST, RT>> {
+async function toSheetResponseObject<ST, RT>(csvData: string, response: TradeSheetResponse<ST, RT>): Promise<TradeDownloadResponse<ST, RT>> {
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
     let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
     let summaryLine: string = '', isSummary: boolean = false;
@@ -235,91 +324,6 @@ async function fromCsvResponse<ST, RT>(csvData: string, response: TradeSheetResp
         });
 
     return result;
-}
-
-const sign = (forSign: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
-    var sorted = new TreeMap<string, any>(Collections.getStringComparator());
-    for (let prop in forSign) {
-        if (forSign[prop] && forSign[prop] != '' && prop != 'sign') {
-            sorted.put(prop, forSign[prop]);
-        }
-    }
-
-    let params = [];
-    let entities = sorted.entrySet().iterator();
-    while (entities.hasNext()) {
-        let entity = entities.next();
-        params.push(entity.getKey() + "=" + entity.getValue());
-    }
-    params.push("key=" + nconf.get('mch_key'));
-    let signString = params.join("&");
-
-    if (SignTypeEnum.MD5 == signType) {
-        return md5(signString).toString().toUpperCase();
-    } else if (SignTypeEnum.HMAC_SHA256 == signType) {
-        return hmacSha256(signString, nconf.get('mch_key')).toString().toUpperCase();
-    } else {
-        return '';
-    }
-}
-
-const decrypt = (content: string, key: string): object => {
-    let chunks = [];
-    let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
-    let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
-
-    decipher.setAutoPadding(true);
-    chunks.push(decipher.update(content, 'base64', 'utf8'));
-    chunks.push(decipher.final('utf8'));
-
-    return toJson(chunks.join(''), { parseTrueNumberOnly: true })["root"];
-}
-
-const hierarchy = (model: new (...args: any[]) => any, source: object): object => {
-    let result = {};
-
-    aggregate(model, source, result, []);
-    clear(source);
-
-    return { ...source, ...result };
-
-    function clear(source: object) {
-        for (const key of Object.keys(source)) {
-            let matched = key.match('.*(_)[0-9]+$');
-            if (matched != null && matched.length > 0) {
-                delete source[key];
-            }
-        }
-    }
-
-    function aggregate(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
-        let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
-
-        Reflect.getMetadataKeys(model).forEach((key: string) => {
-            let xmlModel = Reflect.getMetadata(key, model) as XmlPropertyModel;
-            let propName = xmlModel.name + suffix;
-
-            if(xmlModel.subType) {
-                let count: number = source[xmlModel.countName + suffix] as number;
-
-                if (count > 0) {
-                    let childs = [];
-                    for (let i = 0; i < count; i++) {
-                        let child = {};
-                        aggregate(xmlModel.subType, source, child, levels.concat(i));
-                        childs.push(child);
-                    }
-                    result[xmlModel.name] = childs;
-                }
-            } else {
-                let propValue = source[propName];
-
-                if (propValue != undefined) {
-                    result[xmlModel.name] = propValue;
-                }
-            }
-        });
-    }
 }
 
 export namespace trade {
@@ -495,9 +499,7 @@ export namespace notifier {
      * @param xml 微信回调的XML字符串
      */
     export function onPayed(xml: string): TradeCreateNotify | undefined {
-        let values = fetchValues(xml);
-        checkReturn(values);
-        return fromXmlResponse(values, TradeCreateNotifyAction);
+        return toResponseObject(xml, TradeCreateNotifyAction);
     }
 
     /**
@@ -510,9 +512,7 @@ export namespace notifier {
      * @param xml 微信回调的XML字符串
      */
     export function onRefunded(xml: string): TradeRefundNotify | undefined {
-        let values = fetchValues(xml);
-        checkReturn(values);
-        return fromXmlResponse(values, TradeRefundNotifyAction);
+        return toResponseObject(xml, TradeRefundNotifyAction);
     }
 
 }
