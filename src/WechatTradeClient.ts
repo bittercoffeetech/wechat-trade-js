@@ -65,29 +65,25 @@ import { WechatApiError, WechatApiErrorMessages } from './WechatApiError';
 nconf.file(resolve('./wechat.config.json'));
 const nanoid = customAlphabet('1234567890abcdef', 32);
 const axiosClient = axios.create();
+const httpsAgent = new https.Agent({
+    pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
+    maxVersion: 'TLSv1.2',
+    passphrase: nconf.get('mch_id')
+});
 
 async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | undefined> {
     if (!model) {
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestXml(model, action.requestSignType);
+    let forPost = serialize(model, action.requestSignType);
     let forResult: S | undefined = undefined;
-    var httpsAgent;
-
-    if (action.certificated) {
-        httpsAgent = new https.Agent({
-            pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
-            maxVersion: 'TLSv1.2',
-            passphrase: nconf.get('mch_id')
-        });
-    }
 
     await axiosClient.post(action.url, forPost, {
         responseType: 'text',
-        httpsAgent: httpsAgent
+        httpsAgent: action.certificated ? httpsAgent : undefined
     }).then((resp: AxiosResponse<string>) => {
-        forResult = toResponseObject(resp.data, action);
+        forResult = deserialize(resp.data, action);
     }).catch((error: WechatApiError) => {
         if (error instanceof WechatApiError) {
             throw error;
@@ -104,32 +100,23 @@ async function download<R extends TradeDownloadRequest, ST, RT>(action: TradeShe
         throw Error("Model Object must not be null");
     }
 
-    let forPost = toRequestXml(model, action.requestSignType);
+    let forPost = serialize(model, action.requestSignType);
     let forResult = new TradeDownloadResponse<ST, RT>();
-    var httpsAgent;
-
-    if (action.certificated) {
-        httpsAgent = new https.Agent({
-            pfx: fs.readFileSync(resolve(nconf.get('api_cert'))),
-            maxVersion: 'TLSv1.2',
-            passphrase: nconf.get('mch_id')
-        });
-    }
 
     await axiosClient.post(action.url, forPost, {
         responseType: 'arraybuffer',
-        httpsAgent: httpsAgent
+        httpsAgent: action.certificated ? httpsAgent : undefined
     }).then(async (resp: AxiosResponse<Buffer>) => {
         if ((resp.headers['content-type'] as string).indexOf('gzip') >= 0) {
-            await toSheetResponseObject(zlib.unzipSync(resp.data).toString(), action).then((result) => {
+            await deserializeSheet(zlib.unzipSync(resp.data).toString(), action).then((result) => {
                 forResult = result;
             });
         } else {
             let data = resp.data.toString();
             if (validate(data) == true) {
-                toResponseObject(data);
+                deserialize(data);
             } else {
-                await toSheetResponseObject(data, action).then((result) => {
+                await deserializeSheet(data, action).then((result) => {
                     forResult = result;
                 });
             }
@@ -171,7 +158,7 @@ const signatureOf = (forSign: {}, signType: SignTypeEnum = SignTypeEnum.MD5): st
     }
 }
 
-const toRequestXml = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
+const serialize = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): string => {
     let forSign = {
         ...classToPlain(request),
         ...{
@@ -188,82 +175,82 @@ const toRequestXml = (request: {}, signType: SignTypeEnum = SignTypeEnum.MD5): s
     }).parse({ xml: forSign }).toString();
 }
 
-function toResponseObject<T>(xml: string, response?: TradeResponse<T> ): T | undefined {
-    const checkReturn = (values: {}): void => {
-        let returnModel = plainToClass(TradeReturnInfo, values,
-            { excludeExtraneousValues: true });
-        if (!returnModel.isSuccess) {
-            throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
-        }
+const checkReturn = (values: {}): void => {
+    let returnModel = plainToClass(TradeReturnInfo, values,
+        { excludeExtraneousValues: true });
+    if (!returnModel.isSuccess) {
+        throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
     }
+}
 
-    const checkResultInfo = (values: {}): void => {
-        let resultModel = plainToClass(TradeResultInfo, values,
-            { excludeExtraneousValues: true });
-        if (!resultModel.isSuccess) {
-            throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
-        }
+const checkResult = (values: {}): void => {
+    let resultModel = plainToClass(TradeResultInfo, values,
+        { excludeExtraneousValues: true });
+    if (!resultModel.isSuccess) {
+        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
     }
+}
 
-    const decrypt = (content: string, key: string): object => {
-        let chunks = [];
-        let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
-        let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
+const decryptTo = (content: string, key: string): object => {
+    let chunks = [];
+    let encKey = crypto.createHash("md5").update(key, 'utf8').digest('hex');
+    let decipher: crypto.Decipher = crypto.createDecipheriv('aes-256-ecb', encKey, '');
 
-        decipher.setAutoPadding(true);
-        chunks.push(decipher.update(content, 'base64', 'utf8'));
-        chunks.push(decipher.final('utf8'));
+    decipher.setAutoPadding(true);
+    chunks.push(decipher.update(content, 'base64', 'utf8'));
+    chunks.push(decipher.final('utf8'));
 
-        return toJson(chunks.join(''), { parseTrueNumberOnly: true })["root"];
-    }
+    return toJson(chunks.join(''), { parseTrueNumberOnly: true })["root"];
+}
 
-    const hierarchy = (model: new (...args: any[]) => any, source: object): object => {
-        let result = {};
+const hierarchyTo = (model: new (...args: any[]) => any, source: object): object => {
+    let result = {};
 
-        aggregate(model, source, result, []);
-        clear(source);
+    aggregate(model, source, result, []);
+    clear();
 
-        return { ...source, ...result };
+    return { ...source, ...result };
 
-        function clear(source: object) {
-            for (const key of Object.keys(source)) {
-                let matched = key.match('.*(_)[0-9]+$');
-                if (matched != null && matched.length > 0) {
-                    delete source[key];
-                }
+    function clear() {
+        for (const key of Object.keys(source)) {
+            let matched = key.match('.*(_)[0-9]+$');
+            if (matched != null && matched.length > 0) {
+                delete source[key];
             }
         }
-
-        function aggregate(model: new (...args: any[]) => any, source: object, result: object, levels: number[]): void {
-            let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
-
-            Reflect.getMetadataKeys(model).forEach((key: string) => {
-                let xmlModel = Reflect.getMetadata(key, model) as XmlPropertyModel;
-                let propName = xmlModel.name + suffix;
-
-                if (xmlModel.subType) {
-                    let count: number = source[xmlModel.countName + suffix] as number;
-
-                    if (count > 0) {
-                        let childs = [];
-                        for (let i = 0; i < count; i++) {
-                            let child = {};
-                            aggregate(xmlModel.subType, source, child, levels.concat(i));
-                            childs.push(child);
-                        }
-                        result[xmlModel.name] = childs;
-                    }
-                } else {
-                    let propValue = source[propName];
-
-                    if (propValue != undefined) {
-                        result[xmlModel.name] = propValue;
-                    }
-                }
-            });
-        }
     }
 
+    function aggregate(someModel: new (...args: any[]) => any, latestSource: object, lastestResult: object, levels: number[]): void {
+        let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
+
+        Reflect.getMetadataKeys(someModel).forEach((key: string) => {
+            let xmlModel = Reflect.getMetadata(key, someModel) as XmlPropertyModel;
+            let propName = xmlModel.name + suffix;
+
+            if (xmlModel.subType) {
+                let count: number = latestSource[xmlModel.countName + suffix] as number;
+
+                if (count > 0) {
+                    let childs = [];
+                    for (let i = 0; i < count; i++) {
+                        let child = {};
+                        aggregate(xmlModel.subType, latestSource, child, levels.concat(i));
+                        childs.push(child);
+                    }
+                    lastestResult[xmlModel.name] = childs;
+                }
+            } else {
+                let propValue = latestSource[propName];
+
+                if (propValue != undefined) {
+                    lastestResult[xmlModel.name] = propValue;
+                }
+            }
+        });
+    }
+}
+
+function deserialize<T>(xml: string, response?: TradeResponse<T> ): T | undefined {
     let values: object = toJson(xml, { parseTrueNumberOnly: true })["xml"];
     checkReturn(values);
 
@@ -272,7 +259,7 @@ function toResponseObject<T>(xml: string, response?: TradeResponse<T> ): T | und
     }
 
     if (response.hasResult) {
-        checkResultInfo(values);
+        checkResult(values);
     }
 
     if (response.responseType) {
@@ -280,11 +267,11 @@ function toResponseObject<T>(xml: string, response?: TradeResponse<T> ): T | und
             throw new WechatApiError(ErrorCodeEnum.SIGNERROR, WechatApiErrorMessages[ErrorCodeEnum.SIGNERROR]);
         }
         if (response.encrypted) {
-            values = { ...values, ...decrypt(values[response.encrypted], nconf.get('mch_key')) };
+            values = { ...values, ...decryptTo(values[response.encrypted], nconf.get('mch_key')) };
             delete values[response.encrypted];
         }
         if (response.hasHierarchy && response.responseType) {
-            values = hierarchy(response.responseType, values);
+            values = hierarchyTo(response.responseType, values);
         }
         return plainToClass(response.responseType, values, { enableImplicitConversion: true, excludeExtraneousValues: true });
     } else {
@@ -292,7 +279,7 @@ function toResponseObject<T>(xml: string, response?: TradeResponse<T> ): T | und
     }
 }
 
-async function toSheetResponseObject<ST, RT>(csvData: string, response: TradeSheetResponse<ST, RT>): Promise<TradeDownloadResponse<ST, RT>> {
+async function deserializeSheet<ST, RT>(csvData: string, response: TradeSheetResponse<ST, RT>): Promise<TradeDownloadResponse<ST, RT>> {
     let hasChineseWord = (text: string): boolean => /.*[\u4e00-\u9fa5]+.*/.test(text);
     let csvParam: Partial<CSVParseParam> = { noheader: true, output: "json", delimiter: ',', ignoreEmpty: true, nullObject: true };
     let summaryLine: string = '', isSummary: boolean = false;
@@ -304,15 +291,15 @@ async function toSheetResponseObject<ST, RT>(csvData: string, response: TradeShe
             if (isSummary) { summaryLine = line; return ','; }
             let raw = line.replace(/`/g, "");
 
-            if (hasChineseWord(raw.substr(0, 1))) {
+            if (hasChineseWord(raw.substring(0, 1))) {
                 raw = ',';
                 if (index > 0 && !isSummary) { isSummary = true; }
             }
             return raw;
         })
         .then((csvRow: any[]) => {
-            for (var i = 0; i < csvRow.length; i++) {
-                result.records.push(plainToClass(response.recordType, csvRow[i], { enableImplicitConversion: true }))
+            for (var row in csvRow) {
+                result.records.push(plainToClass(response.recordType, row, { enableImplicitConversion: true }))
             }
         });
 
@@ -499,7 +486,7 @@ export namespace notifier {
      * @param xml 微信回调的XML字符串
      */
     export function onPayed(xml: string): TradeCreateNotify | undefined {
-        return toResponseObject(xml, TradeCreateNotifyAction);
+        return deserialize(xml, TradeCreateNotifyAction);
     }
 
     /**
@@ -512,7 +499,7 @@ export namespace notifier {
      * @param xml 微信回调的XML字符串
      */
     export function onRefunded(xml: string): TradeRefundNotify | undefined {
-        return toResponseObject(xml, TradeRefundNotifyAction);
+        return deserialize(xml, TradeRefundNotifyAction);
     }
 
 }
