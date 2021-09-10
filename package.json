@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "compile": "rm -Rf dist/* & tsc",
-    "test": "tsc & jest --config jest.config.json",
+    "test": "rm -Rf dist/* & tsc & jest --config jest.config.json",
     "tcover": "tsc & jest --config jest.config.json --coverage",
     "docs": "rm -Rf docs/* & typedoc"
   },
@@ -33,7 +33,7 @@
     "@types/axios": "^0.14.0",
     "@types/crypto-js": "^4.0.1",
     "@types/he": "^1.1.1",
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^27.0.1",
     "@types/moment": "^2.13.0",
     "@types/nconf": "^0.10.0",
     "@types/node": "^14.14.37",
@@ -42,6 +42,6 @@
     "@types/utf8": "^2.1.6",
     "reflect-metadata": "^0.1.13",
     "rewire": "^5.0.0",
-    "ts-jest": "^26.5.4"
+    "ts-jest": "^27.0.5"
   }
 }

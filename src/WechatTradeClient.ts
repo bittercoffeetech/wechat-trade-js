@@ -113,7 +113,7 @@ async function download<R extends TradeDownloadRequest, ST, RT>(action: TradeShe
             });
         } else {
             let data = resp.data.toString();
-            if (validate(data) == true) {
+            if (validate(data)) {
                 deserialize(data);
             } else {
                 await deserializeSheet(data, action).then((result) => {
