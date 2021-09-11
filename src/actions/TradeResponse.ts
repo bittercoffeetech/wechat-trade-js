@@ -8,7 +8,7 @@ import { SignTypeEnum } from '../enums/SignTypeEnum';
 	/**
 	 * 获取返回对象的类型信息
 	 */
-	responseType: undefined | { new(...args: any[]): S; };
+	responseType?: { new(...args: any[]): S; };
 
 	/**
 	 * 返回值中是否包括签名字段
@@ -23,7 +23,7 @@ import { SignTypeEnum } from '../enums/SignTypeEnum';
 	/**
 	 * 加密字段名
 	 */
-	encrypted: string | undefined;
+	encrypted?: string;
 
 	/**
 	 * 是否包含嵌套对象
