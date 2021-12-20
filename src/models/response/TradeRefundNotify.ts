@@ -1,9 +1,9 @@
 import { Expose, Transform } from 'class-transformer';
 import moment from 'moment';
 
-import { RefundAccountEnum } from '../enums/RefundAccountEnum';
-import { RefundRequestSourceEnum } from '../enums/RefundRequestSourceEnum';
-import { RefundStatusEnum } from '../enums/RefundStatusEnum';
+import { RefundAccountEnum } from '../../enums/RefundAccountEnum';
+import { RefundRequestSourceEnum } from '../../enums/RefundRequestSourceEnum';
+import { RefundStatusEnum } from '../../enums/RefundStatusEnum';
 import { TradeFeeInfo } from './TradeFeeInfo';
 
 /**

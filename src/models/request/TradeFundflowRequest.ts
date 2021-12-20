@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
-import { AccountTypeEnum } from '../enums/AccountTypeEnum';
-import { TradeDownloadRequest } from './TradeDownloadRequest';
+import { AccountTypeEnum } from '../../enums/AccountTypeEnum';
+import { TradeDownloadRequest } from '../request/TradeDownloadRequest';
 
 /**
  * 资金账单请求

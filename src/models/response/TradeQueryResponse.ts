@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { TradeStatusEnum } from '../enums/TradeStatusEnum';
+import { TradeStatusEnum } from '../../enums/TradeStatusEnum';
 import { TradeCreateNotify } from './TradeCreateNotify';
 
 /**

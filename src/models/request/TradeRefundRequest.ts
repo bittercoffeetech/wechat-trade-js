@@ -1,8 +1,8 @@
 import { Expose } from 'class-transformer';
 import { customAlphabet } from 'nanoid';
 
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { RefundAccountEnum } from '../enums/RefundAccountEnum';
+import { FeeTypeEnum } from '../../enums/FeeTypeEnum';
+import { RefundAccountEnum } from '../../enums/RefundAccountEnum';
 import { TradeId, TradeNoInfo } from './TradeNoInfo';
 
 const nanoid = customAlphabet('1234567890', 32);

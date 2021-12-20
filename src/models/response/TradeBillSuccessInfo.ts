@@ -1,10 +1,10 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { CsvColumns } from '../decorators/CsvColumns';
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { TradeStatusEnum } from '../enums/TradeStatusEnum';
-import { TradeTypeEnum } from '../enums/TradeTypeEnum';
+import { CsvColumns } from '../../decorators/CsvColumns';
+import { FeeTypeEnum } from '../../enums/FeeTypeEnum';
+import { TradeStatusEnum } from '../../enums/TradeStatusEnum';
+import { TradeTypeEnum } from '../../enums/TradeTypeEnum';
 
 /**
  * 成功交易信息

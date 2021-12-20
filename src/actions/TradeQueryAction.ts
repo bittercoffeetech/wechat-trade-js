@@ -1,5 +1,5 @@
-import { TradeNoInfo } from '../models/TradeNoInfo';
-import { TradeQueryResponse } from '../models/TradeQueryResponse';
+import { TradeNoInfo } from '../models/request/TradeNoInfo';
+import { TradeQueryResponse } from '../models/response/TradeQueryResponse';
 import { DefaultTradeRequest } from './DefaultTradeRequest';
 import { DefaultTradeResponse } from './DefaultTradeResponse';
 import { TradeAction } from './TradeAction';

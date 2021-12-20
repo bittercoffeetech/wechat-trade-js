@@ -1,8 +1,8 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 
-import { XmlProperty } from '../decorators/XmlProperty';
-import { TradeTypeEnum } from '../enums/TradeTypeEnum';
+import { XmlProperty } from '../../decorators/XmlProperty';
+import { TradeTypeEnum } from '../../enums/TradeTypeEnum';
 import { TradeCashFeeInfo } from './TradeCashFeeInfo';
 import { TradeCouponInfo } from './TradeCouponInfo';
 

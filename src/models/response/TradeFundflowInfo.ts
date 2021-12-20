@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { Moment } from 'moment';
 
-import { CsvColumns } from '../decorators/CsvColumns';
+import { CsvColumns } from '../../decorators/CsvColumns';
 
 /**
  * 资金账单详情

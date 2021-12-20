@@ -1,5 +1,5 @@
-import { TradeRefundRequest } from '../models/TradeRefundRequest';
-import { TradeRefundResponse } from '../models/TradeRefundResponse';
+import { TradeRefundRequest } from '../models/request/TradeRefundRequest';
+import { TradeRefundResponse } from '../models/response/TradeRefundResponse';
 import { DefaultTradeRequest } from './DefaultTradeRequest';
 import { DefaultTradeResponse } from './DefaultTradeResponse';
 import { TradeAction } from './TradeAction';

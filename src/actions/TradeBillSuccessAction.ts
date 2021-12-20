@@ -1,6 +1,6 @@
-import { TradeBillSuccessInfo } from '../models/TradeBillSuccessInfo';
-import { TradeBillSuccessRequest } from '../models/TradeBillSuccessRequest';
-import { TradeBillSummaryInfo } from '../models/TradeBillSummaryInfo';
+import { TradeBillSuccessInfo } from '../models/response/TradeBillSuccessInfo';
+import { TradeBillSuccessRequest } from '../models/request/TradeBillSuccessRequest';
+import { TradeBillSummaryInfo } from '../models/response/TradeBillSummaryInfo';
 import { DefaultTradeRequest } from './DefaultTradeRequest';
 import { TradeSheetAction } from './TradeSheetAction';
 

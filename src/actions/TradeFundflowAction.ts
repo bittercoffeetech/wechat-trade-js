@@ -1,7 +1,7 @@
 import { SignTypeEnum } from '../enums/SignTypeEnum';
-import { TradeFundflowInfo } from '../models/TradeFundflowInfo';
-import { TradeFundflowRequest } from '../models/TradeFundflowRequest';
-import { TradeFundflowSummaryInfo } from '../models/TradeFundflowSummaryInfo';
+import { TradeFundflowInfo } from '../models/response/TradeFundflowInfo';
+import { TradeFundflowRequest } from '../models/request/TradeFundflowRequest';
+import { TradeFundflowSummaryInfo } from '../models/response/TradeFundflowSummaryInfo';
 import { DefaultTradeRequest } from './DefaultTradeRequest';
 import { TradeSheetAction } from './TradeSheetAction';
 

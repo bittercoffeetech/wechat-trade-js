@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
+import { FeeTypeEnum } from '../../enums/FeeTypeEnum';
 import { TradeFeeInfo } from './TradeFeeInfo';
 
 /**

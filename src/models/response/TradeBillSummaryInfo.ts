@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { CsvColumns } from '../decorators/CsvColumns';
+import { CsvColumns } from '../../decorators/CsvColumns';
 
 /**
  * 交易概要信息

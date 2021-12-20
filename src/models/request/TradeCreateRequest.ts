@@ -1,8 +1,8 @@
 import { Expose, Transform } from 'class-transformer';
 import moment from 'moment';
 
-import { FeeTypeEnum } from '../enums/FeeTypeEnum';
-import { TradeTypeEnum } from '../enums/TradeTypeEnum';
+import { FeeTypeEnum } from '../../enums/FeeTypeEnum';
+import { TradeTypeEnum } from '../../enums/TradeTypeEnum';
 import { TradeGoodsDetailInfo } from './TradeGoodsDetailInfo';
 import { TradeSceneInfo } from './TradeSceneInfo';
 

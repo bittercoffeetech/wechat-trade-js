@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { XmlProperty } from '../decorators/XmlProperty';
+import { XmlProperty } from '../../decorators/XmlProperty';
 import { TradeCashFeeInfo } from './TradeCashFeeInfo';
 import { TradeRefundCouponInfo } from './TradeRefundCouponInfo';
 

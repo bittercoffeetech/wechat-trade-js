@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
-import { XmlProperty } from '../decorators/XmlProperty';
-import { CouponTypeEnum } from '../enums/CouponTypeEnum';
+import { XmlProperty } from '../../decorators/XmlProperty';
+import { CouponTypeEnum } from '../../enums/CouponTypeEnum';
 
 /**
  * 优惠券

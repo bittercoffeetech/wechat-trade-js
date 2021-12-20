@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { BillTypeEnum } from '../enums/BillTypeEnum';
+import { BillTypeEnum } from '../../enums/BillTypeEnum';
 import { TradeDownloadRequest } from './TradeDownloadRequest';
 
 /**

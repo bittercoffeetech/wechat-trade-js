@@ -1,18 +1,16 @@
 import { Expose } from 'class-transformer';
 import { customAlphabet } from 'nanoid';
 
-import { TradeTypeEnum } from '../enums/TradeTypeEnum';
-import { TradeAppInfo } from './TradeAppInfo';
+import { TradeTypeEnum } from '../../enums/TradeTypeEnum';
 
 const nanoid = customAlphabet('1234567890', 32);
 
 /**
  * 统一下单返回
  */
- export class TradeCreateResponse extends TradeAppInfo {
+ export class TradeCreateResponse {
 
 	constructor() {
-		super();
 		this.tradeNo = nanoid();
 	}
 

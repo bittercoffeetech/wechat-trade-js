@@ -1,8 +1,8 @@
 import { Expose } from 'class-transformer';
 
-import { CsvColumns } from '../decorators/CsvColumns';
-import { RefundChannelEnum } from '../enums/RefundChannelEnum';
-import { RefundStatusEnum } from '../enums/RefundStatusEnum';
+import { CsvColumns } from '../../decorators/CsvColumns';
+import { RefundChannelEnum } from '../../enums/RefundChannelEnum';
+import { RefundStatusEnum } from '../../enums/RefundStatusEnum';
 import { TradeBillSuccessInfo } from './TradeBillSuccessInfo';
 
 /**

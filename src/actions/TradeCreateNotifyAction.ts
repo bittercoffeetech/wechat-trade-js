@@ -1,5 +1,5 @@
 
-import { TradeCreateNotify } from '../models/TradeCreateNotify';
+import { TradeCreateNotify } from '../models/response/TradeCreateNotify';
 import { DefaultTradeResponse } from './DefaultTradeResponse';
 import { TradeResponse } from './TradeResponse';
 

@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { ResultStatusEnum } from '../enums/ResultStatusEnum';
+import { ResultStatusEnum } from '../../enums/ResultStatusEnum';
 
 /**
  * 下载账单返回的错误信息

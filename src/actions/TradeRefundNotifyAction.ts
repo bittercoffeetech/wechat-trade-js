@@ -1,4 +1,4 @@
-import { TradeRefundNotify } from '../models/TradeRefundNotify';
+import { TradeRefundNotify } from '../models/response/TradeRefundNotify';
 import { DefaultTradeResponse } from './DefaultTradeResponse';
 import { TradeResponse } from './TradeResponse';
 

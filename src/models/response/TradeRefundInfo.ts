@@ -1,10 +1,10 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import moment from 'moment';
 
-import { XmlProperty } from '../decorators/XmlProperty';
-import { RefundAccountEnum } from '../enums/RefundAccountEnum';
-import { RefundChannelEnum } from '../enums/RefundChannelEnum';
-import { RefundStatusEnum } from '../enums/RefundStatusEnum';
+import { XmlProperty } from '../../decorators/XmlProperty';
+import { RefundAccountEnum } from '../../enums/RefundAccountEnum';
+import { RefundChannelEnum } from '../../enums/RefundChannelEnum';
+import { RefundStatusEnum } from '../../enums/RefundStatusEnum';
 import { TradeRefundCouponInfo } from './TradeRefundCouponInfo';
 
 /**

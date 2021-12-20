@@ -1,4 +1,4 @@
-import { TradeNoInfo } from '../models/TradeNoInfo';
+import { TradeNoInfo } from '../models/request/TradeNoInfo';
 import { DefaultTradeRequest } from './DefaultTradeRequest';
 import { DefaultTradeResponse } from './DefaultTradeResponse';
 import { TradeAction } from './TradeAction';

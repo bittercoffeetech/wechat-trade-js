@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { TradeNoInfo } from './TradeNoInfo';
+import { TradeNoInfo } from '../request/TradeNoInfo';
 
 /**
  * 金额相关

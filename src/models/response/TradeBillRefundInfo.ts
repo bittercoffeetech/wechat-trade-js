@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { CsvColumns } from '../decorators/CsvColumns';
+import { CsvColumns } from '../../decorators/CsvColumns';
 import { TradeBillAllInfo } from './TradeBillAllInfo';
 
 /**
