@@ -205,12 +205,7 @@ const decryptTo = (content: string, key: string): object => {
 }
 
 const hierarchyTo = (model: new (...args: any[]) => any, source: object): object => {
-    let result = aggregate(model, []);
-    clear();
-
-    return { ...source, ...result };
-
-    function clear() {
+    const clear = (): void => {
         for (const key of Object.keys(source)) {
             let matched = key.match('.*(_)[0-9]+$');
             if (matched != null && matched.length > 0) {
@@ -218,8 +213,7 @@ const hierarchyTo = (model: new (...args: any[]) => any, source: object): object
             }
         }
     }
-
-    function aggregate(model: new (...args: any[]) => any, levels: number[]): object {
+    const aggregate = (model: new (...args: any[]) => any, levels: number[]): object => {
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
         let dummy: object = {};
 
@@ -248,20 +242,23 @@ const hierarchyTo = (model: new (...args: any[]) => any, source: object): object
 
         return dummy;
     }
+
+    let result = aggregate(model, []);
+    clear();
+
+    return { ...source, ...result };
 }
 
 function deserialize<T>(xml: string, response?: TradeResponse<T> ): T | undefined {
-    let values: object = toJson(xml, { parseTrueNumberOnly: true })["xml"];
-    checkReturn(values);
-
-    if(response == undefined) {
+    if(!xml || !response) {
         return undefined;
     }
 
+    let values: object = toJson(xml, { parseTrueNumberOnly: true })["xml"];
+    checkReturn(values);
     if (response.hasResult) {
         checkResult(values);
     }
-
     if (response.responseType) {
         if (response.hasSigned && signatureOf(values, response.responseSignType) != values['sign']) {
             throw new WechatApiError(ErrorCodeEnum.SIGNERROR, WechatApiErrorMessages[ErrorCodeEnum.SIGNERROR]);
