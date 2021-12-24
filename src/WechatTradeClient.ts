@@ -205,9 +205,7 @@ const decryptTo = (content: string, key: string): object => {
 }
 
 const hierarchyTo = (model: new (...args: any[]) => any, source: object): object => {
-    let result = {};
-
-    aggregate(model, source, result, []);
+    let result = aggregate(model, []);
     clear();
 
     return { ...source, ...result };
@@ -221,33 +219,34 @@ const hierarchyTo = (model: new (...args: any[]) => any, source: object): object
         }
     }
 
-    function aggregate(someModel: new (...args: any[]) => any, latestSource: object, lastestResult: object, levels: number[]): void {
+    function aggregate(model: new (...args: any[]) => any, levels: number[]): object {
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
+        let dummy: object = {};
 
-        Reflect.getMetadataKeys(someModel).forEach((key: string) => {
-            let xmlModel = Reflect.getMetadata(key, someModel) as XmlPropertyModel;
+        Reflect.getMetadataKeys(model).forEach((key: string) => {
+            let xmlModel = Reflect.getMetadata(key, model) as XmlPropertyModel;
             let propName = xmlModel.name + suffix;
 
             if (xmlModel.subType) {
-                let count: number = latestSource[xmlModel.countName + suffix] as number;
+                let count: number = source[xmlModel.countName + suffix] as number;
 
                 if (count > 0) {
                     let childs = [];
                     for (let i = 0; i < count; i++) {
-                        let child = {};
-                        aggregate(xmlModel.subType, latestSource, child, levels.concat(i));
-                        childs.push(child);
+                        childs.push(aggregate(xmlModel.subType, levels.concat(i)));
                     }
-                    lastestResult[xmlModel.name] = childs;
+                    dummy[xmlModel.name] = childs;
                 }
             } else {
-                let propValue = latestSource[propName];
+                let propValue = source[propName];
 
                 if (propValue != undefined) {
-                    lastestResult[xmlModel.name] = propValue;
+                    dummy[xmlModel.name] = propValue;
                 }
             }
         });
+
+        return dummy;
     }
 }
 
