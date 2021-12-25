@@ -250,12 +250,12 @@ const hierarchyTo = (model: new (...args: any[]) => any, source: object): object
 }
 
 function deserialize<T>(xml: string, response?: TradeResponse<T> ): T | undefined {
-    if(!xml || !response) {
-        return undefined;
-    }
-
     let values: object = toJson(xml, { parseTrueNumberOnly: true })["xml"];
     checkReturn(values);
+
+    if(response == undefined) {
+        return undefined;
+    }
     if (response.hasResult) {
         checkResult(values);
     }
