@@ -234,7 +234,7 @@ const hierarchyTo = (model: new (...args: any[]) => any, source: object): object
             } else {
                 let propValue = source[propName];
 
-                if (propValue != undefined) {
+                if (propValue) {
                     dummy[xmlModel.name] = propValue;
                 }
             }
@@ -253,7 +253,7 @@ function deserialize<T>(xml: string, response?: TradeResponse<T> ): T | undefine
     let values: object = toJson(xml, { parseTrueNumberOnly: true })["xml"];
     checkReturn(values);
 
-    if(response == undefined) {
+    if(!response) {
         return undefined;
     }
     if (response.hasResult) {
