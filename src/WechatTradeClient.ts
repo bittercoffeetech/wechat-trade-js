@@ -88,8 +88,8 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
     }).catch((error: WechatApiError) => {
         throw error;
     }).catch((e: Error) => {
-        throw new WechatApiError('SYSTEMERROR', e);
-    };
+        throw new WechatApiError(e);
+    });
 
     return forResult;
 }
@@ -121,11 +121,9 @@ async function download<R extends TradeDownloadRequest, ST, RT>(action: TradeShe
             }
         }
     }).catch((error: WechatApiError) => {
-        if (error instanceof WechatApiError) {
-            throw error;
-        } else {
-            throw new WechatApiError('SYSTEMERROR', error);
-        }
+        throw error;
+    }).catch((e: Error) => {
+        throw new WechatApiError(e);
     });
 
     return forResult;
@@ -178,7 +176,7 @@ const checkReturn = (values: {}): void => {
     let returnModel = plainToClass(TradeReturnInfo, values,
         { excludeExtraneousValues: true });
     if (!returnModel.isSuccess) {
-        throw new WechatApiError(returnModel.errorCode, returnModel.errorMessage);
+        throw new WechatApiError({code: returnModel.errorCode, message: returnModel.errorMessage});
     }
 }
 
@@ -186,7 +184,7 @@ const checkResult = (values: {}): void => {
     let resultModel = plainToClass(TradeResultInfo, values,
         { excludeExtraneousValues: true });
     if (!resultModel.isSuccess) {
-        throw new WechatApiError(resultModel.errorCode, resultModel.errorMessage);
+        throw new WechatApiError({code: resultModel.errorCode, message: resultModel.errorMessage});
     }
 }
 
@@ -259,7 +257,7 @@ function deserialize<T>(xml: string, response?: TradeResponse<T> ): T | undefine
     }
     if (response.responseType) {
         if (response.hasSigned && signatureOf(values, response.responseSignType) != values['sign']) {
-            throw new WechatApiError(ErrorCodeEnum.SIGNERROR, WechatApiErrorMessages[ErrorCodeEnum.SIGNERROR]);
+            throw new WechatApiError({code: ErrorCodeEnum.SIGNERROR, message: WechatApiErrorMessages[ErrorCodeEnum.SIGNERROR]});
         }
         if (response.encrypted) {
             values = { ...values, ...decryptTo(values[response.encrypted], nconf.get('mch_key')) };

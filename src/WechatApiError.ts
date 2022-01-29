@@ -37,8 +37,9 @@
  */
  export class WechatApiError extends Error {
     code: string;
-    constructor(code: string, message?: string) {
-        super(message);
-        this.code = code;
+    constructor(p: {code: string, message?: string} | Error) {
+        super(p.message);
+		this.code = p instanceof Error ? 'SYSTEMERROR' : p.code;
+        super.stack =  p instanceof Error ? p.stack : undefined;
     }
 }
