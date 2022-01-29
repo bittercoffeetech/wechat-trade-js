@@ -86,12 +86,10 @@ async function execute<R, S>(action: TradeAction<R, S>, model: R): Promise<S | u
     }).then((resp: AxiosResponse<string>) => {
         forResult = deserialize(resp.data, action);
     }).catch((error: WechatApiError) => {
-        if (error instanceof WechatApiError) {
-            throw error;
-        } else {
-            throw new WechatApiError('SYSTEMERROR', error);
-        }
-    });
+        throw error;
+    }).catch((e: Error) => {
+        throw new WechatApiError('SYSTEMERROR', e);
+    };
 
     return forResult;
 }
@@ -207,18 +205,18 @@ const decryptTo = (content: string, key: string): object => {
 const hierarchyTo = (model: new (...args: any[]) => any, source: object): object => {
     const clear = (): void => {
         for (const key of Object.keys(source)) {
-            let matched = key.match('.*(_)[0-9]+$');
+            let matched = key.match('.*(_)\d+$');
             if (matched != null && matched.length > 0) {
                 delete source[key];
             }
         }
     }
-    const aggregate = (model: new (...args: any[]) => any, levels: number[]): object => {
+    const aggregate = (parent: new (...args: any[]) => any, levels: number[]): object => {
         let suffix: string = levels.length == 0 ? '' : "_" + levels.join("_");
         let dummy: object = {};
 
-        Reflect.getMetadataKeys(model).forEach((key: string) => {
-            let xmlModel = Reflect.getMetadata(key, model) as XmlPropertyModel;
+        Reflect.getMetadataKeys(parent).forEach((key: string) => {
+            let xmlModel = Reflect.getMetadata(key, parent) as XmlPropertyModel;
             let propName = xmlModel.name + suffix;
 
             if (xmlModel.subType) {
